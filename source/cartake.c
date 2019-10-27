@@ -1,0 +1,2143 @@
+#include "common.h"
+#include "cartake.h"
+#define NOW -1
+#define AIM 1
+#define FASTNUM 5
+#define PLACENUM 6
+#define UNCHOOSE -1
+#define CCT 8
+
+void car_take_box(int* x, int* y, USEINFOR *infor)
+{
+	int button=0;
+    int mx=0;
+    int my=0;
+    int waitime=0;//用于判断预约时间
+    int mincar=0;//用于记录最近的那辆车
+    int aimplace=UNCHOOSE;//记录目标位置
+    CARFAST car[FASTNUM];//车辆群数组
+    PLACE location[PLACENUM];//几个地点
+    char *placename[PLACENUM]={NULL};//几个地点对应的名字
+
+    //初始化几个地点
+    location[0].x=130;//大学
+    location[0].y=440;
+    location[1].x=212;//小区
+    location[1].y=695;
+    location[2].x=395;//东湖
+    location[2].y=25;
+    location[3].x=370;//商场
+    location[3].y=490;
+    location[4].x=686;//图书馆
+    location[4].y=560;
+    location[5].x=450;//游泳馆
+    location[5].y=243;
+
+    //初始化地点名字
+    placename[0]="大学";
+    placename[1]="小区";
+    placename[2]="东湖";
+    placename[3]="商场";
+    placename[4]="图书馆";
+    placename[5]="游泳馆";
+
+    newfastcar(car);//初始化车辆
+
+    mousehide(*x,*y);
+    //保存背景
+    save_image(771,2,996,612,"cartake");
+    save_image(location[0].x-13,location[0].y-34,location[0].x+13,location[0].y+5,"school");
+    save_image(location[1].x-13,location[1].y-34,location[1].x+13,location[1].y+5,"xiaoqu");
+    save_image(location[2].x-13,location[2].y-34,location[2].x+13,location[2].y+5,"lake");
+    save_image(location[3].x-13,location[3].y-34,location[3].x+13,location[3].y+5,"market");
+    save_image(location[4].x-13,location[4].y-34,location[4].x+13,location[4].y+5,"labrary");
+    save_image(location[5].x-13,location[5].y-34,location[5].x+13,location[5].y+5,"pool");
+	
+    //画图
+	//底色
+    bar(771,2,996,612,65523);
+	
+	//快车
+	bar_round(896,90,196,96,25,1,64384);
+    bar_round(896,90,190,91,23,1,65535);
+    fdhz(840,67,3,3,"快",64384);
+    fdhz(900,67,3,3,"车",64384);
+	
+	//当前位置
+    bar_round(896,198,196,52,10,1,64384);
+    bar_round(896,198,190,47,8,1,65535);
+    fdhz(810,190,1,1,"当前位置",64384);
+	outtextxy(885,188,":",1,1,40,64384);
+    //显示当前位置
+    showplace(infor->nowplace,NOW,location,placename);
+   
+    //选择目的地
+	bar_round(896,288,196,52,10,1,64384);
+    bar_round(896,288,190,47,8,1,65535);
+    fdhz(820,280,1,1,"选",64384);
+    fdhz(855,280,1,1,"择",64384);
+    fdhz(890,280,1,1,"目",64384);
+    fdhz(925,280,1,1,"的",64384);
+	fdhz(960,280,1,1,"地",64384);
+	
+	//预计价格
+	bar_round(896,378,196,52,10,1,64384);
+    bar_round(896,378,190,47,8,1,65535);
+    fdhz(810,370,1,1,"预计价格",64384);
+	fdhz(970,370,1,1,"元",64384);
+	outtextxy(885,368,":",1,1,40,64384);
+	
+	//即时
+	bar_round(847,468,90,52,10,1,44373);
+    bar_round(847,468,84,47,8,1,65535);
+    fdhz(830,460,1,1,"即时",44373);
+	
+	//预约
+	bar_round(945,468,90,52,10,1,64384);
+    bar_round(945,468,84,47,8,1,65535);
+    fdhz(928,460,1,1,"预约",64384);
+	
+	//呼叫快车
+	bar_round(896,558,196,52,10,1,64384);
+    bar_round(896,558,190,47,8,1,65535);
+    fdhz(825,550,1,1,"呼",64384);
+    fdhz(865,550,1,1,"叫",64384);
+    fdhz(905,550,1,1,"快",64384);
+    fdhz(945,550,1,1,"车",64384);
+	
+	//小车初始位置
+	car_draw_right1(car[0].fastcar.x,car [0].fastcar.y);//学校和商场之间
+	car_draw_right1(car[1].fastcar.x,car [1].fastcar.y);//东湖
+	car_draw_left1(car[2].fastcar.x,car [2].fastcar.y);//小区
+	car_draw_left1(car[3].fastcar.x,car [3].fastcar.y);//游泳馆
+	car_draw_on1(car[4].fastcar.x,car [4].fastcar.y);//图书馆
+	
+    //存图
+    save_image(1,1,1023,767,"drivinfo");
+	//显示鼠标
+    reset_mouse(x,y);
+
+    while (1)
+    {
+        newxy(x,y,&button);
+		mx = *x;
+		my = *y;
+        if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
+        {
+            if (aimplace!=UNCHOOSE)
+            {
+                starttoendroad(infor->nowplace,aimplace,65535);
+            }
+            
+            //对地图上原有的小车进行遮挡
+            bar_round(car[0].fastcar.x,car [0].fastcar.y,42,22,2,1,65535);
+            bar_round(car[1].fastcar.x,car [1].fastcar.y,42,22,2,1,65535);
+            bar_round(car[2].fastcar.x,car [2].fastcar.y,42,22,2,1,65535);
+            bar_round(car[3].fastcar.x,car [3].fastcar.y,42,22,2,1,65535);
+            bar_round(car[4].fastcar.x,car [4].fastcar.y,22,42,2,1,65535);
+            break;
+        }
+        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        {
+            safe_box(x,y);
+        }
+		else if (mx>=798  && mx<=994 && my>=265 && my<=311 && button)//点击选择目的地，进入目的地选择进程
+        {
+            bar_round(car[0].fastcar.x,car [0].fastcar.y,42,22,2,1,65535);
+	        bar_round(car[1].fastcar.x,car [1].fastcar.y,42,22,2,1,65535);
+	        bar_round(car[2].fastcar.x,car [2].fastcar.y,42,22,2,1,65535);
+	        bar_round(car[3].fastcar.x,car [3].fastcar.y,42,22,2,1,65535);
+	        bar_round(car[4].fastcar.x,car [4].fastcar.y,22,42,2,1,65535);
+            choose_aimplace(x,y,&aimplace,location,infor,placename);
+        }
+		else if (mx>=798  && mx<=994 && my>=532 && my<=584 && button)//点击呼叫快车，弹出司机信息框
+        {
+            if(aimplace == UNCHOOSE) //避免不选目的地就直接点击呼叫快车
+            {
+                mousehide(*x,*y);
+
+                save_image(512-210,384-140,512+210,384+140,"unchoose");
+                bar_round(512,384,416,270,50,1,64384);
+                bar_round(512,384,410,265,48,1,65535);
+                fdhz(400,360,2,2,"请选择目的地",64384);
+                
+                fdhz(450,420,1,1,"按任意键继续",44373);
+                getch();
+                printf_image(512-210,384-140,512+210,384+140,"unchoose");
+                reset_mouse(x,y);
+            }
+            else
+            {
+                mincar=desidecar(infor->nowplace,car,location);//判断哪辆车来接送
+			    driver_info(x,y,infor,car,location,placename,&aimplace,mincar,waitime);
+            }
+		}
+		else if (mx>=900  && mx<=990 && my>=442 && my<=494 && button)//点击预约，弹出预约选择弹框
+        {
+			waitime=pre_appoint(x,y);
+		}
+		else if (mx>=802  && mx<=892 && my>=442 && my<=494 && button)//点击即时，返回为即时的状态
+        {
+			immediate(x,y);
+            waitime=0;
+		}
+        else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
+        {
+            exit(0);
+        }
+    }
+
+    //显示背景
+    mousehide(*x,*y); 
+
+    printf_image(771,2,996,612,"cartake");
+    printf_image(location[0].x-13,location[0].y-34,location[0].x+13,location[0].y+5,"school");
+    printf_image(location[1].x-13,location[1].y-34,location[1].x+13,location[1].y+5,"xiaoqu");
+    printf_image(location[2].x-13,location[2].y-34,location[2].x+13,location[2].y+5,"lake");
+    printf_image(location[3].x-13,location[3].y-34,location[3].x+13,location[3].y+5,"market");
+    printf_image(location[4].x-13,location[4].y-34,location[4].x+13,location[4].y+5,"labrary");
+    printf_image(location[5].x-13,location[5].y-34,location[5].x+13,location[5].y+5,"pool");
+    // bar(location[0].x-3,location[0].y-3,location[0].x+3,location[0].y+3,57083);
+    // bar(location[1].x-3,location[1].y-3,location[1].x+3,location[1].y+3,57083);
+    // bar(location[2].x-3,location[2].y-3,location[2].x+3,location[2].y+3,57083);
+    // bar(location[3].x-3,location[3].y-3,location[3].x+3,location[3].y+3,57083);
+    // bar(location[4].x-3,location[4].y-3,location[4].x+3,location[4].y+3,57083);
+    // bar(location[5].x-3,location[5].y-3,location[5].x+3,location[5].y+3,57083);
+
+    reset_mouse(x,y);
+}
+
+
+/***************************
+点击呼叫快车，产生司机信息框
+****************************/
+void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLACE *location, const char **placename, int *aimplace, int mincar,int waitime)
+{
+	int button=0;
+    int mx=0;
+    int my=0;
+    int flag=1;//判断退出
+    int sigle=0;//用于接力退出的判断
+    float price;
+    struct tm *info;//用于点击立即上车时的时间
+	char buffer[80];//格式化输出时间字符串的数组
+	time_t rawtime1;//用于获取进入呼叫快车进程的时间
+	time_t rawtime2;//用于预约时间的判断
+	time_t rawtime3;//用于获取当前时间
+	time_t rawtime4;//用于时间价格计算
+	int time_gap;//用于预约中时间间隔的判断
+	int time_gap1;//用于时间价格计算
+	int nowtime_hour;//获取进入呼叫快车进程时的时间
+	// int nowtime_min;
+	// int nowtime_sec;
+	// //用于判断的时间
+	// int judgetime_hour;
+	// int judgetime_min;
+	// int judgetime_sec;
+
+    time(&rawtime1);//获取GMT时间
+    info = gmtime(&rawtime1);//根据当前的time_t获得对应的结构体
+    nowtime_hour=info->tm_hour;
+	// nowtime_min=info->tm_min;
+	// nowtime_sec=info->tm_sec;
+    
+    mousehide(*x,*y);
+	
+	//保存背景
+    // save_image(771,2,996,612,"drivinfo");
+    // save_image(1,1,1023,767,"drivinfo");
+	bar(location[0].x-3,location[0].y-3,location[0].x+3,location[0].y+3,57083);
+    bar(location[1].x-3,location[1].y-3,location[1].x+3,location[1].y+3,57083);
+    bar(location[2].x-3,location[2].y-3,location[2].x+3,location[2].y+3,57083);
+    bar(location[3].x-3,location[3].y-3,location[3].x+3,location[3].y+3,57083);
+    bar(location[4].x-3,location[4].y-3,location[4].x+3,location[4].y+3,57083);
+    bar(location[5].x-3,location[5].y-3,location[5].x+3,location[5].y+3,57083);
+	// printf_image(location[0].x-13,location[0].y-34,location[0].x+13,location[0].y+5,"school");
+    // printf_image(location[1].x-13,location[1].y-34,location[1].x+13,location[1].y+5,"xiaoqu");
+    // printf_image(location[2].x-13,location[2].y-34,location[2].x+13,location[2].y+5,"lake");
+    // printf_image(location[3].x-13,location[3].y-34,location[3].x+13,location[3].y+5,"market");
+    // printf_image(location[4].x-13,location[4].y-34,location[4].x+13,location[4].y+5,"labrary");
+    // printf_image(location[5].x-13,location[5].y-34,location[5].x+13,location[5].y+5,"pool");
+    
+    showplace(infor->nowplace,NOW,location,placename);
+    showplace(*aimplace,AIM,location,placename);
+
+	//底色
+    bar(771,2,996,612,65523);
+	
+	
+	//司机的姓
+	bar_round(896,90,196,96,25,1,64384);
+    bar_round(896,90,190,91,23,1,65535);
+    fdhz(817,67,3,3,car[mincar].name,64384);
+    fdhz(877,67,3,3,"师",64384);
+	fdhz(937,67,3,3,"傅",64384);
+	
+	//车牌号码
+    bar_round(896,198,196,52,10,1,64384);
+    bar_round(896,198,190,47,8,1,65535);
+    fdhz(810,190,1,1,"车牌",64384);
+	outtextxy(847,188,":",1,1,40,64384);
+    fdhz(862,190,1,1,"鄂",64384);
+    outtextxy(878,190,"A-",1,1,15,64384);
+
+    outtextxy(910,190,car[mincar].fastcar.carname,1,1,15,64384);
+   
+    //车型
+	bar_round(896,288,196,52,10,1,64384);
+    bar_round(896,288,190,47,8,1,65535);
+	fdhz(810,280,1,1,"车型",64384);
+    outtextxy(847,278,":",1,1,40,64384);
+    // outtextxy(862,278,car[0].fastcar.type,1,1,40,64384);
+    fdhz(870,280,1,1,car[mincar].fastcar.type,64384);
+   
+	//取消订单
+	bar_round(896,378,196,52,10,1,64384);
+    bar_round(896,378,190,47,8,1,65535);
+    fdhz(825,370,1,1,"取",64384);
+    fdhz(865,370,1,1,"消",64384);
+    fdhz(905,370,1,1,"订",64384);
+    fdhz(945,370,1,1,"单",64384);
+	
+	//等待上车
+	bar_round(896,468,196,52,10,1,64384);
+    bar_round(896,468,190,47,8,1,65535);
+    fdhz(825,460,1,1,"等",64384);
+    fdhz(865,460,1,1,"待",64384);
+    fdhz(905,460,1,1,"上",64384);
+    fdhz(945,460,1,1,"车",64384);
+	
+	//进度条
+	bar_round(896,558,196,52,10,1,64384);
+    bar_round(896,558,190,47,8,1,65535);
+    fdhz(825,550,1,1,"进",64384);
+    fdhz(865,550,1,1,"度",64384);
+    fdhz(905,550,1,1,"显",64384);
+    fdhz(945,550,1,1,"示",64384);
+	
+    // //对地图上原有的小车进行遮挡
+	// bar_round(car[0].fastcar.x,car [0].fastcar.y,42,22,2,1,65535);
+	// bar_round(car[1].fastcar.x,car [1].fastcar.y,42,22,2,1,65535);
+	// bar_round(car[2].fastcar.x,car [2].fastcar.y,42,22,2,1,65535);
+	// bar_round(car[3].fastcar.x,car [3].fastcar.y,42,22,2,1,65535);
+	// bar_round(car[4].fastcar.x,car [4].fastcar.y,22,42,2,1,65535);
+	
+	//对BACK键进行遮挡
+    bar_round(976,664,76,44,15,1,65523);
+
+	
+	//显示鼠标
+    reset_mouse(x,y);
+    switch(waitime)
+	{
+	    case 15:
+			mousehide(*x,*y);
+		
+		    save_image(512-210,384-140,512+210,384+140,"pre11");
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+			outtextxy(380,360,"30",2,2,30,64384);
+            fdhz(450,360,2,2,"分钟后发车",64384);
+            fdhz(450,420,1,1,"按任意键继续",44373);
+            getch();
+            printf_image(512-210,384-140,512+210,384+140,"pre11");
+			reset_mouse(x,y);
+			
+		break;
+		
+		case 30:
+			mousehide(*x,*y);
+			
+		    save_image(512-210,384-140,512+210,384+140,"pre12");
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+			outtextxy(380,360,"60",2,2,30,64384);
+            fdhz(450,360,2,2,"分钟后发车",64384);
+			fdhz(450,420,1,1,"按任意键继续",44373);
+            getch();
+            printf_image(512-210,384-140,512+210,384+140,"pre12");
+			reset_mouse(x,y);
+		break;
+		
+		case 45:
+			mousehide(*x,*y);
+			
+		    save_image(512-210,384-140,512+210,384+140,"pre13");
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+			outtextxy(380,360,"90",2,2,30,64384);
+            fdhz(450,360,2,2,"分钟后发车",64384);
+			fdhz(450,420,1,1,"按任意键继续",44373);
+            getch();
+            printf_image(512-210,384-140,512+210,384+140,"pre13");
+			reset_mouse(x,y);
+		break;
+	}
+    while(waitime!=0)
+	{
+		newxy(x,y,&button);
+		mx = *x;
+		my = *y;
+		
+		 if(mx>=798  && mx<=994 && my>=352 && my<=404 && button)//点击取消订单返回
+        {
+           
+            *aimplace = UNCHOOSE;
+			flag=0;
+			waitime=0;
+            break;
+        }
+		
+		time(&rawtime2);//获取GMT时间
+		//info = gmtime(&rawtime2);//根据当前的time_t获得对应的结构体
+		time_gap=difftime(rawtime2,rawtime1);
+		if(time_gap>=waitime)
+		{
+            mousehide(*x,*y);
+            save_image(512-210,384-140,512+210,384+140,"notice");
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+            fdhz(410,360,2,2,"预约时间到了",64384);
+			fdhz(450,420,1,1,"按任意键继续",44373);
+            getch();
+            printf_image(512-210,384-140,512+210,384+140,"notice");
+            reset_mouse(x,y);
+			break;
+		}
+	}
+	// 显示过来的动画
+    if (flag==1)
+    {
+        cartostart(infor->nowplace,mincar,x,y);
+        
+        time(&rawtime3);//获取上车GMT时间
+        // info = gmtime(&rawtime3);
+        info = localtime(&rawtime3);
+		sprintf(buffer,"%d.%02d.%02d",(info->tm_year+1900),(info->tm_mon+1),info->tm_mday);
+
+        //等待上车变成立即上车，且标亮(灰色)
+        mousehide(*x,*y);
+        bar_round(896,468,196,52,10,1,44373);
+        bar_round(896,468,190,47,8,1,65535);
+        fdhz(825,460,1,1,"立",44373);
+        fdhz(865,460,1,1,"刻",44373);
+        fdhz(905,460,1,1,"上",44373);
+        fdhz(945,460,1,1,"车",44373);
+        reset_mouse(x,y);
+    }
+    
+    
+            /*time(&rawtime);//获取GMT时间
+			info = gmtime(&rawtime);//根据当前的time_t获得对应的结构体
+			sprintf(judgetime_year,"%d",(info->tm_year+1900));
+			sprintf(judgetime_mon,"%d",(info->tm_mon+1));
+			sprintf(judgetime_mday,"%d",info->tm_mday);
+			sprintf(judgetime_hour,"%d",(info->tm_hour+CCT)%24+12);
+			sprintf(judgetime_min,"%d",(info->tm_min+1));
+			sprintf(judgetime_sec,"%d",(info->tm_sec+1));
+			
+			outtextxy(350,150,judgetime_year,2,2,30,64384);
+			outtextxy(350,180,judgetime_mon,2,2,30,64384);
+			outtextxy(350,210,judgetime_mday,2,2,30,64384);
+			outtextxy(350,240,judgetime_hour,2,2,30,64384);
+			outtextxy(350,270,judgetime_min,2,2,30,64384);
+			outtextxy(350,300,judgetime_sec,2,2,30,64384);*/
+	while (flag==1)
+    {
+        newxy(x,y,&button);
+		mx = *x;
+		my = *y;
+        if(mx>=798  && mx<=994 && my>=352 && my<=404 && button)//点击取消订单返回
+        {
+			
+            *aimplace = UNCHOOSE;
+            waitime=0;
+            break;
+        }
+        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        {
+            safe_box(x,y);
+        }
+        else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
+        {
+            exit(0);
+        }
+		else if (mx>=798  && mx<=994 && my>=416 && my<=520 && button)//点击立刻/等待上车显示车行动画
+		{	
+            //重新变橙
+            mousehide(*x,*y);
+            bar_round(896,468,196,52,10,1,64384);
+            bar_round(896,468,190,47,8,1,65535);
+            fdhz(825,460,1,1,"立",64384);
+            fdhz(865,460,1,1,"刻",64384);
+            fdhz(905,460,1,1,"上",64384);
+            fdhz(945,460,1,1,"车",64384);
+            reset_mouse(x,y);
+            //确定动画
+            sigle=starttoend(infor->nowplace,*aimplace,x,y);
+            if(sigle==1)//用于安全报警后的接力退出
+			{
+				break;
+			}
+            else
+            {
+                time(&rawtime4);//获取GMT时间
+				time_gap1=difftime(rawtime4,rawtime1);
+                //计算价格并扣费
+                costmoney(&price,infor,aimplace,nowtime_hour,time_gap1,x,y);
+                
+                //生成订单并截图保存
+                neworder(x,y,infor,car,placename,aimplace,mincar,buffer,price);
+
+                //若成功到达目的地的，则修改当前位置
+                changeNowplace(infor,*aimplace);
+                *aimplace = UNCHOOSE; 
+                break;
+            }
+		}
+    }
+	
+	//显示背景
+    mousehide(*x,*y); 
+
+    // printf_image(771,2,996,612,"drivinfo");
+    printf_image(1,1,1023,767,"drivinfo");
+    //小车初始位置
+	// car_draw_right1(car[0].fastcar.x,car [0].fastcar.y);//学校和商场之间
+    // car_draw_right1(car[1].fastcar.x,car [1].fastcar.y);//东湖
+    // car_draw_left1(car[2].fastcar.x,car [2].fastcar.y);//小区
+    // car_draw_left1(car[3].fastcar.x,car [3].fastcar.y);//游泳馆
+    // car_draw_on1(car[4].fastcar.x,car [4].fastcar.y);//图书馆
+    // //返回键
+    // bar_round(976,664,76,44,15,1,64384);
+    // bar_round(976,664,70,39,13,1,65535);
+	// outtextxy(938,645,"Back",2,2,15,64384);
+
+    //遮掉所有点
+    printf_image(location[0].x-13,location[0].y-34,location[0].x+13,location[0].y+5,"school");
+    printf_image(location[1].x-13,location[1].y-34,location[1].x+13,location[1].y+5,"xiaoqu");
+    printf_image(location[2].x-13,location[2].y-34,location[2].x+13,location[2].y+5,"lake");
+    printf_image(location[3].x-13,location[3].y-34,location[3].x+13,location[3].y+5,"market");
+    printf_image(location[4].x-13,location[4].y-34,location[4].x+13,location[4].y+5,"labrary");
+    printf_image(location[5].x-13,location[5].y-34,location[5].x+13,location[5].y+5,"pool");
+
+    //遮挡之前的目的地
+    bar_round(896,288,196,52,10,1,64384);
+    bar_round(896,288,190,47,8,1,65535);
+    fdhz(820,280,1,1,"选",64384);
+    fdhz(855,280,1,1,"择",64384);
+    fdhz(890,280,1,1,"目",64384);
+    fdhz(925,280,1,1,"的",64384);
+    fdhz(960,280,1,1,"地",64384);
+
+    //返回为即时状态
+	bar_round(847,468,90,52,10,1,44373);
+    bar_round(847,468,84,47,8,1,65535);
+    fdhz(830,460,1,1,"即时",44373);
+	
+	bar_round(945,468,90,52,10,1,64384);
+    bar_round(945,468,84,47,8,1,65535);
+    fdhz(928,460,1,1,"预约",64384);
+    //显示现在所在位置
+    showplace(infor->nowplace,NOW,location,placename);
+
+    reset_mouse(x,y);
+
+	
+}
+
+
+/**************************
+点击预约，弹出预约选择弹框
+时间换算：
+	waitime = 0 = 即时
+    waitime = 30min = 15s
+	waitime = 60min = 30s
+	waitime = 90min = 45s
+**************************/
+int pre_appoint(int *x,int *y)
+{
+    int waitime=0;//用于判断预约时间
+	int button=0;
+    int mx=0;
+    int my=0;
+    
+    mousehide(*x,*y);
+
+    save_image(83,109,683,659,"preappoint");
+	
+	
+	//即时按钮颜色发生改变
+	bar_round(847,468,90,52,10,1,64384);
+    bar_round(847,468,84,47,8,1,65535);
+    fdhz(830,460,1,1,"即时",64384);
+	
+	
+	//预约按钮颜色发生改变
+	bar_round(945,468,90,52,10,1,44373);
+    bar_round(945,468,84,47,8,1,65535);
+    fdhz(928,460,1,1,"预约",44373);
+
+	
+    //画图
+    bar_round(383,384,596,546,50,1,64384);
+    bar_round(383,384,590,542,48,1,65535);
+    fdhz(210,135,3,3,"预约上车时间",44373);
+    bar(88,200,678,230,63422);
+    linelevel(88,368,678,368,5,63422);
+    linelevel(88,510,678,510,5,63422);
+	outtextxy(150,285,"30",2,2,30,44373);
+    fdhz(230,285,2,2,"分钟后",44373);
+	outtextxy(150,423,"60",2,2,30,44373);
+    fdhz(230,423,2,2,"分钟后",44373);
+	outtextxy(150,565,"90",2,2,30,44373);
+    fdhz(230,565,2,2,"分钟后",44373);
+
+    
+    reset_mouse(x,y);
+    while (1)
+    {
+        newxy(x,y,&button);
+		mx = *x;
+		my = *y;
+        if(mx>=88 && mx<=678 && my>=230 && my<=368 &&button)//点击“30分钟”按键
+		{
+			waitime=15;
+			mousehide(*x,*y);
+			
+			//标亮
+			bar(88,230,678,368,65535);
+			outtextxy(150,285,"30",2,2,30,64384);
+			fdhz(230,285,2,2,"分钟后",64384);
+			//变灰
+			bar(88,373,678,510,65535);
+			outtextxy(150,423,"60",2,2,30,44373);
+			fdhz(230,423,2,2,"分钟后",44373);
+			bar(88,515,678,615,65535);
+			outtextxy(150,565,"90",2,2,30,44373);
+			fdhz(230,565,2,2,"分钟后",44373);
+			//打钩
+			lean_line_thick(500,300,15,45,3,64384);
+			lean_line_thick(500+11,300+8,40,-45,3,64384);
+			
+			reset_mouse(x,y);
+		}
+		if(mx>=88 && mx<=678 && my>=373 && my<=510 &&button)//点击“60分钟”按键
+		{
+			waitime=30;
+			mousehide(*x,*y);
+			
+			//标亮
+			bar(88,373,678,510,65535);
+			outtextxy(150,423,"60",2,2,30,64384);
+			fdhz(230,423,2,2,"分钟后",64384);
+			//变灰
+			bar(88,230,678,368,65535);
+			outtextxy(150,285,"30",2,2,30,44373);
+			fdhz(230,285,2,2,"分钟后",44373);
+			bar(88,515,678,615,65535);
+			outtextxy(150,565,"90",2,2,30,44373);
+			fdhz(230,565,2,2,"分钟后",44373);
+			//打钩
+			lean_line_thick(500,442,15,45,3,64384);
+			lean_line_thick(500+11,442+8,40,-45,3,64384);
+			reset_mouse(x,y);
+			
+		}
+		if(mx>=88 && mx<=678 && my>=515 && my<=653 &&button)//点击“90分钟”按键
+		{
+			waitime=45;
+			mousehide(*x,*y);
+			
+			//标亮
+			bar(88,515,678,615,65535);
+			outtextxy(150,565,"90",2,2,30,64384);
+			fdhz(230,565,2,2,"分钟后",64384);
+			//变灰
+			bar(88,230,678,368,65535);
+			outtextxy(150,285,"30",2,2,30,44373);
+			fdhz(230,285,2,2,"分钟后",44373);
+			bar(88,373,678,510,65535);
+			outtextxy(150,423,"60",2,2,30,44373);
+			fdhz(230,423,2,2,"分钟后",44373);
+			//打钩
+			lean_line_thick(500,584,15,45,3,64384);
+			lean_line_thick(500+11,584+8,40,-45,3,64384);
+			
+			reset_mouse(x,y);
+		}
+        if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
+        {
+            break;
+        }
+        else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
+        {
+            exit(0);
+        }
+		
+    }
+
+    
+    mousehide(*x,*y);  //隐藏鼠标
+    printf_image(83,109,683,659,"preappoint");
+    
+    reset_mouse(x,y);   //避免留下鼠标所在位置的背景
+   
+    return waitime;
+}
+
+
+/**************************
+返回即时状态函数
+***************************/
+void immediate(int *x,int *y)
+{
+	int button=0;
+    int mx=0;
+    int my=0;
+    mousehide(*x,*y);
+	
+	//save_image(802,442,990,494,"immediate");
+	
+	//即时按钮颜色发生改变
+	bar_round(847,468,90,52,10,1,44373);
+    bar_round(847,468,84,47,8,1,65535);
+    fdhz(830,460,1,1,"即时",44373);
+	
+	
+	//预约按钮颜色发生改变
+	bar_round(945,468,90,52,10,1,64384);
+    bar_round(945,468,84,47,8,1,65535);
+    fdhz(928,460,1,1,"预约",64384);
+	
+	if (mx>=900  && mx<=990 && my>=442 && my<=494 && button)//点击预约，弹出预约选择弹框
+    {
+		pre_appoint(x,y);
+    }
+	
+    //mousehide(*x,*y);  //隐藏鼠标
+	//printf_image(802,442,990,494,"immediate");
+  
+    reset_mouse(x,y);   //避免留下鼠标所在位置的背景
+   
+}
+
+
+/***************************
+四个方向的小车画图函数
+****************************/
+void car_draw_right(CAR_CONDITION car_position)
+{
+	bar_round(car_position.xpixel,car_position.ypixel,42,22,2,1,1);
+	bar_round(car_position.xpixel,car_position.ypixel,38,18,2,1,65535);
+	bar_round(car_position.xpixel+6,car_position.ypixel,6,15,1,1,1);
+	bar_round(car_position.xpixel-16,car_position.ypixel,3,15,1,1,1);
+	bar_round(car_position.xpixel-6,car_position.ypixel-8,18,1,0,1,1);
+	bar_round(car_position.xpixel-6,car_position.ypixel+8,18,1,0,1,1);
+}	
+
+void car_draw_left(CAR_CONDITION car_position)
+{
+	bar_round(car_position.xpixel,car_position.ypixel,42,22,2,1,1);
+	bar_round(car_position.xpixel,car_position.ypixel,38,18,2,1,65535);
+	bar_round(car_position.xpixel-6,car_position.ypixel,6,15,1,1,1);
+	bar_round(car_position.xpixel+16,car_position.ypixel,3,15,1,1,1);
+	bar_round(car_position.xpixel+6,car_position.ypixel-8,18,1,0,1,1);
+	bar_round(car_position.xpixel+6,car_position.ypixel+8,18,1,0,1,1);
+}
+
+void car_draw_on(CAR_CONDITION car_position)
+{
+	bar_round(car_position.xpixel,car_position.ypixel,22,42,2,1,1);
+	bar_round(car_position.xpixel,car_position.ypixel,18,38,2,1,65535);
+	bar_round(car_position.xpixel,car_position.ypixel-6,15,6,1,1,1);
+	bar_round(car_position.xpixel,car_position.ypixel+16,15,3,1,1,1);
+	bar_round(car_position.xpixel-8,car_position.ypixel+6,1,18,0,1,1);
+	bar_round(car_position.xpixel+8,car_position.ypixel+6,1,18,0,1,1);
+}
+
+void car_draw_down(CAR_CONDITION car_position)
+{
+	bar_round(car_position.xpixel,car_position.ypixel,22,42,2,1,1);
+	bar_round(car_position.xpixel,car_position.ypixel,18,38,2,1,65535);
+	bar_round(car_position.xpixel,car_position.ypixel+6,15,6,1,1,1);
+	bar_round(car_position.xpixel,car_position.ypixel-16,15,3,1,1,1);
+	bar_round(car_position.xpixel-8,car_position.ypixel-6,1,18,0,1,1);
+	bar_round(car_position.xpixel+8,car_position.ypixel-6,1,18,0,1,1);
+}
+
+
+
+void car_draw_right1(int x,int y)
+{
+	bar_round(x,y,42,22,2,1,1);
+	bar_round(x,y,38,18,2,1,65535);
+	bar_round(x+6,y,6,15,1,1,1);
+	bar_round(x-16,y,3,15,1,1,1);
+	bar_round(x-6,y-8,18,1,0,1,1);
+	bar_round(x-6,y+8,18,1,0,1,1);
+}	
+
+void car_draw_left1(int x,int y)
+{
+	bar_round(x,y,42,22,2,1,1);
+	bar_round(x,y,38,18,2,1,65535);
+	bar_round(x-6,y,6,15,1,1,1);
+	bar_round(x+16,y,3,15,1,1,1);
+	bar_round(x+6,y-8,18,1,0,1,1);
+	bar_round(x+6,y+8,18,1,0,1,1);
+}
+
+void car_draw_on1(int x,int y)
+{
+	bar_round(x,y,22,42,2,1,1);
+	bar_round(x,y,18,38,2,1,65535);
+	bar_round(x,y-6,15,6,1,1,1);
+	bar_round(x,y+16,15,3,1,1,1);
+	bar_round(x-8,y+6,1,18,0,1,1);
+	bar_round(x+8,y+6,1,18,0,1,1);
+}
+
+void car_draw_down1(int x,int y)
+{
+	bar_round(x,y,22,42,2,1,1);
+	bar_round(x,y,18,38,2,1,65535);
+	bar_round(x,y+6,15,6,1,1,1);
+	bar_round(x,y-16,15,3,1,1,1);
+	bar_round(x-8,y-6,1,18,0,1,1);
+	bar_round(x+8,y-6,1,18,0,1,1);
+}
+
+void showplace(int place, int mode, const PLACE *location, const char **placename)
+{
+    int showx;//确定显示位置
+    int showy;
+    int color;
+
+    if (mode == NOW)
+    {   
+        showx=905;
+        showy=190;
+        bar(900,180,990,215,65535);//覆盖选择目的地
+        color = 9284; //起点为绿色
+    }
+    else if (mode == AIM)
+    {
+        showx=905;
+        showy=280;
+
+        bar_round(896,288,196,52,10,1,64384);
+        bar_round(896,288,190,47,8,1,65535);//覆盖选择目的地
+        fdhz(810,280,1,1,"目标位置",64384);
+	    outtextxy(885,278,":",1,1,40,64384);
+        color = 55463 ; //终点为红色 
+    }
+    switch (place)
+    {
+        case 0:
+            fdhz(showx,showy,1,1,placename[0],64384);
+            markpoint(location[0].x,location[0].y,color,mode);
+            break;
+        case 1:
+            fdhz(showx,showy,1,1,placename[1],64384);
+            markpoint(location[1].x,location[1].y,color,mode);
+            break;
+        case 2:
+            fdhz(showx,showy,1,1,placename[2],64384);
+            markpoint(location[2].x,location[2].y,color,mode);
+            break;
+        case 3:
+            fdhz(showx,showy,1,1,placename[3],64384);
+            markpoint(location[3].x,location[3].y,color,mode);
+            break;
+        case 4:
+            fdhz(showx,showy,1,1,placename[4],64384);
+            markpoint(location[4].x,location[4].y,color,mode);
+            break;
+        case 5:
+            fdhz(showx,showy,1,1,placename[5],64384);
+            markpoint(location[5].x,location[5].y,color,mode);
+            break;
+        default:
+            break;
+    }
+}
+
+//标记起点终点，画图
+void markpoint(int x, int y, int color, int mode)
+{
+    linever(x,y-20,x,y-3,1,color);
+    linever(x-1,y-20,x-1,y-3,1,color);
+    linever(x+1,y-20,x+1,y-3,1,color);
+    circle(x,y,4,color);
+    circle(x,y,3,color);
+    FillCircle(x,y-20,13,color);
+    FillCircle(x,y,2,0);
+    if (mode == NOW)
+    {
+        fdhz(x-7,y-27,1,1,"起",65535);
+    }
+    else 
+    {
+        fdhz(x-7,y-27,1,1,"终",65535);
+    }
+    
+    
+
+}
+
+//初始化快车车辆信息
+void newfastcar(CARFAST *car)
+{
+    int i;//用于计数
+    int n;//用于记录随机数
+    PLACE fastplace[FASTNUM];
+    char carcard[10][6];//车牌号集
+    char driver[10][3];//司机的姓
+    char cartpye[6][7];//车辆类型
+    //初始化车的位置
+    fastplace[0].x=240;
+    fastplace[0].y=465;
+    fastplace[1].x=130;
+    fastplace[1].y=25;
+    fastplace[2].x=310;
+    fastplace[2].y=719;
+    fastplace[3].x=590;
+    fastplace[3].y=269;
+    fastplace[4].x=715;
+    fastplace[4].y=680;
+
+    //初始化车牌号集
+    
+    strcpy(carcard[0],"7A128");
+    strcpy(carcard[1],"S116W");
+    strcpy(carcard[2],"0D789");
+    strcpy(carcard[3],"3D816");
+    strcpy(carcard[4],"QE722");
+    strcpy(carcard[5],"E289Q");
+    strcpy(carcard[6],"U0207");
+    strcpy(carcard[7],"02151");
+    strcpy(carcard[8],"L8553");
+    strcpy(carcard[9],"7L27D");
+
+    //初始化司机
+    strcpy(driver[0],"张");
+    strcpy(driver[1],"李");
+    strcpy(driver[2],"赵");
+    strcpy(driver[3],"王");
+    strcpy(driver[4],"孙");
+    strcpy(driver[5],"唐");
+    strcpy(driver[6],"马");
+    strcpy(driver[7],"刘");
+    strcpy(driver[8],"周");
+    strcpy(driver[9],"杨");
+
+    //初始化车辆类型
+    strcpy(cartpye[0],"朗逸");
+    strcpy(cartpye[1],"轩逸");
+    strcpy(cartpye[2],"卡罗拉");
+    strcpy(cartpye[3],"景逸");
+    strcpy(cartpye[4],"众泰");
+    strcpy(cartpye[5],"丰田");
+
+
+    srand((unsigned int)time(NULL));
+
+
+    for ( i = 0; i < FASTNUM; i++, car++)
+    {
+        n=rand()%10;
+        strcpy(car->name,driver[n]);
+        car->fastcar.x=fastplace[i].x;
+        car->fastcar.y=fastplace[i].y;
+        strcpy(car->fastcar.type,cartpye[n%6]);
+        strcpy(car->fastcar.carname,carcard[n]);
+    }
+}
+
+//选择目的地
+void choose_aimplace(int *x, int *y, int *aimplace, PLACE *location, USEINFOR *infor, char *placename[])
+{
+    int button=0;
+    int mx=0;
+    int my=0;
+    int needmoney;//需要的价钱 一个像素点5分钱
+    
+    mousehide(*x,*y);
+    
+    //  遮盖
+    switch (*aimplace)
+    {
+        case 0:
+            printf_image(location[0].x-13,location[0].y-34,location[0].x+13,location[0].y+5,"school");
+            break;
+        case 1:
+            printf_image(location[1].x-13,location[1].y-34,location[1].x+13,location[1].y+5,"xiaoqu");
+            break;
+        case 2:
+            printf_image(location[2].x-13,location[2].y-34,location[2].x+13,location[2].y+5,"lake");
+            break;
+        case 3:
+            printf_image(location[3].x-13,location[3].y-34,location[3].x+13,location[3].y+5,"market");
+        case 4:
+            printf_image(location[4].x-13,location[4].y-34,location[4].x+13,location[4].y+5,"labrary");
+            break;
+        case 5:
+            printf_image(location[5].x-13,location[5].y-34,location[5].x+13,location[5].y+5,"pool");
+            break;
+        default:
+            break;
+    }
+
+    starttoendroad(infor->nowplace,*aimplace,65535);
+
+    *aimplace =UNCHOOSE;
+    //显示上下车点
+    FillCircle(location[0].x,location[0].y,3,0);//东湖
+    FillCircle(location[1].x,location[1].y,3,0);//小区
+    FillCircle(location[2].x,location[2].y,3,0);//学校
+    FillCircle(location[3].x,location[3].y,3,0);//商场
+    FillCircle(location[4].x,location[4].y,3,0);//图书馆
+    FillCircle(location[5].x,location[5].y,3,0);//游泳馆
+    // 清除之前的目的地信息
+    bar_round(896,288,196,52,10,1,44373);
+    bar_round(896,288,190,47,8,1,65535);
+    fdhz(820,280,1,1,"选",44373);
+    fdhz(855,280,1,1,"择",44373);
+    fdhz(890,280,1,1,"目",44373);
+    fdhz(925,280,1,1,"的",44373);
+	fdhz(960,280,1,1,"地",44373);
+    //清除之前的价格信息
+    bar_round(896,378,196,52,10,1,64384);
+    bar_round(896,378,190,47,8,1,65535);
+    fdhz(810,370,1,1,"预计价格",64384);
+	fdhz(970,370,1,1,"元",64384);
+	outtextxy(885,368,":",1,1,40,64384);
+
+    //显示鼠标
+    reset_mouse(x,y);
+
+    while(1)
+    {   
+        newxy(x,y,&button);
+		mx = *x;
+		my = *y;
+        if (mx>=location[0].x-3  && mx<=location[0].x+3 && my>=location[0].y-3 && my<=location[0].y+3 && button)
+        {
+            if (infor->nowplace==0)//避免起点与终点选为同一个点
+            {
+                continue;
+            }
+            *aimplace = 0;
+            mousehide(*x,*y);
+            //对地图上原有的小车进行遮挡
+	
+            starttoendroad(infor->nowplace,*aimplace,13926);
+            showplace(*aimplace,AIM,location,placename);
+            showprice(infor->nowplace,aimplace);
+            reset_mouse(x,y);
+            
+            break;
+        }
+        else if (mx>=location[1].x-3  && mx<=location[1].x+3 && my>=location[1].y-3 && my<=location[1].y+3 && button)
+        {
+            if (infor->nowplace==1)//避免起点与终点选为同一个点
+            {
+                continue;
+            }
+            *aimplace = 1;
+            mousehide(*x,*y);
+            
+            starttoendroad(infor->nowplace,*aimplace,13926);
+            showplace(*aimplace,AIM,location,placename);
+            showprice(infor->nowplace,aimplace);
+            reset_mouse(x,y);
+            break;
+        }
+        else if (mx>=location[2].x-3  && mx<=location[2].x+3 && my>=location[2].y-3 && my<=location[2].y+3 && button)
+        {
+            if (infor->nowplace==2)//避免起点与终点选为同一个点
+            {
+                continue;
+            }
+            *aimplace = 2;
+            mousehide(*x,*y);
+            
+            starttoendroad(infor->nowplace,*aimplace,13926);
+            showplace(*aimplace,AIM,location,placename);
+            showprice(infor->nowplace,aimplace);
+            reset_mouse(x,y);
+            break;
+        }
+        else if (mx>=location[3].x-3  && mx<=location[3].x+3 && my>=location[3].y-3 && my<=location[3].y+3 && button)
+        {
+            if (infor->nowplace==3)//避免起点与终点选为同一个点
+            {
+                continue;
+            }
+            *aimplace = 3;
+            mousehide(*x,*y);
+            
+            starttoendroad(infor->nowplace,*aimplace,13926);
+            showplace(*aimplace,AIM,location,placename);
+            showprice(infor->nowplace,aimplace);
+            reset_mouse(x,y);
+            break;
+        }
+        else if (mx>=location[4].x-3  && mx<=location[4].x+3 && my>=location[4].y-3 && my<=location[4].y+3 && button)
+        {
+            if (infor->nowplace==4)//避免起点与终点选为同一个点
+            {
+                continue;
+            }
+            *aimplace = 4;
+            mousehide(*x,*y);
+            
+            starttoendroad(infor->nowplace,*aimplace,13926);
+            showplace(*aimplace,AIM,location,placename);
+            showprice(infor->nowplace,aimplace);
+            reset_mouse(x,y);
+            break;
+        }
+        else if (mx>=location[5].x-3  && mx<=location[5].x+3 && my>=location[5].y-3 && my<=location[5].y+3 && button)
+        {
+            if (infor->nowplace==5)//避免起点与终点选为同一个点
+            {
+                continue;
+            }
+            *aimplace = 5;
+            mousehide(*x,*y);
+            
+            starttoendroad(infor->nowplace,*aimplace,13926);
+            showplace(*aimplace,AIM,location,placename);
+            showprice(infor->nowplace,aimplace);
+            reset_mouse(x,y);
+            break;
+        }
+        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        {
+            safe_box(x,y);
+        }
+        else if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
+        {
+            mousehide(*x,*y);
+            bar_round(896,288,196,52,10,1,64384);
+            bar_round(896,288,190,47,8,1,65535);
+            fdhz(820,280,1,1,"选",64384);
+            fdhz(855,280,1,1,"择",64384);
+            fdhz(890,280,1,1,"目",64384);
+            fdhz(925,280,1,1,"的",64384);
+            fdhz(960,280,1,1,"地",64384);
+            reset_mouse(x,y);
+            break;
+        }
+        else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
+        {
+            exit(0);
+        }
+    }
+    
+}
+
+//确定哪辆车进行接送
+int desidecar(int nowplace, CARFAST *car, PLACE *location)
+{
+    int i;//用于计数
+    int mincar;//记录最近的一辆车
+    double distance;//记录车到起点的距离,避免超距离
+    mincar = 0;
+    distance = pow((location[nowplace].x-car[0].fastcar.x),2)+pow((location[nowplace].y-car[0].fastcar.y),2);
+    for ( i = 0; i < FASTNUM; i++)
+    {
+        if (distance > pow((location[nowplace].x-car[i].fastcar.x),2)+pow((location[nowplace].y-car[i].fastcar.y),2))
+        {
+            distance = pow((location[nowplace].x-car[i].fastcar.x),2)+pow((location[nowplace].y-car[i].fastcar.y),2);
+            mincar = i;
+        }
+    }
+    return mincar;
+}
+
+//确定哪辆车的动画
+void cartostart(int nowplace,int mincar,int *x,int *y)
+{
+    switch (mincar)
+    {
+        case 0:
+            if (nowplace==0)
+            {
+                car_school(x,y);
+            }
+            else
+            {
+                car_market(x,y);
+            }
+            break;
+        case 1:
+            car_lake(x,y);
+            break;
+        case 2:
+             car_xiaoqu(x,y);
+            break;
+        case 3:
+            car_pool(x,y);
+            break;
+        case 4:
+            car_library(x,y);
+            break;
+        default:
+            break;
+    }
+    
+}
+// 起点到终点的动画
+int starttoend(int nowplace,int aimplace,int *x,int *y)
+{
+    int sigle=0;//用于接力退出
+    switch (nowplace)
+    {
+        case 0:
+                switch (aimplace)
+                {
+                    case 1:
+                            sigle = carmove0to1(x,y);
+                            if(sigle==1)//点击了报警，退出当前的打车
+			                {
+				                break;
+			                }
+                            break;
+                    case 2:
+                            sigle = carmove0to2(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 3:
+                            sigle = carmove0to3(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 4:
+                            sigle = carmove0to4(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 5:
+                            sigle = carmove0to5(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        case 1:
+                switch (aimplace)
+                {
+                    case 0:
+                            sigle = carmove1to0(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+                            break;
+                    case 2:
+                            sigle = carmove1to2(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 3:
+                            sigle = carmove1to3(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 4:
+                            sigle = carmove1to4(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 5:
+                            sigle = carmove1to5(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        case 2:
+                switch (aimplace)
+                {
+                    case 0:
+                            sigle = carmove2to0(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+                            break;
+                    case 1:
+                            sigle = carmove2to1(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 3:
+                            sigle = carmove2to3(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 4:
+                            sigle = carmove2to4(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 5:
+                            sigle = carmove2to5(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        case 3:
+                switch (aimplace)
+                {
+                    case 0:
+                            sigle = carmove3to0(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+                            break;
+                    case 1:
+                            sigle = carmove3to1(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 2:
+                            sigle = carmove3to2(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 4:
+                            sigle = carmove3to4(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 5:
+                            sigle = carmove3to5(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        case 4:
+                switch (aimplace)
+                {
+                    case 0:
+                            sigle = carmove4to0(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+                            break;
+                    case 1:
+                            sigle = carmove4to1(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 2:
+                            sigle = carmove4to2(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 3:
+                            sigle = carmove4to3(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 5:
+                            sigle = carmove4to5(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        case 5:
+                switch (aimplace)
+                {
+                    case 0:
+                            sigle = carmove5to0(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+                            break;
+                    case 1:
+                            sigle = carmove5to1(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 2:
+                            sigle = carmove5to2(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 3:
+                            sigle = carmove5to3(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+            
+                            break;
+                    case 4:
+                            sigle = carmove5to4(x,y);
+                            if(sigle==1)
+			                {
+				                break;
+			                }
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        default:
+                break;
+    }
+    return sigle;
+}
+//显示绿色的线//13926绿色//白色65535
+void starttoendroad(int nowplace,int aimplace,int color)
+{
+    switch (nowplace)
+    {
+        case 0:
+                switch (aimplace)
+                {
+                    case 1:
+                            bar(40,460,130,470,color);
+	                        bar(40,460,50,725,color);
+	                        bar(40,715,212,725,color);
+                            break;
+                    case 2:
+                            bar(130,460,277,470,color);
+	                        bar(267,20,277,470,color);
+	                        bar(267,20,380,30,color);
+                            break;
+                    case 3:
+                            bar(130,460,357,470,color);
+            
+                            break;
+                    case 4:
+                            bar(130,460,473,470,color);
+	                        bar(463,460,473,725,color);
+	                        bar(463,715,720,725,color);
+	                        bar(710,560,720,725,color);
+	
+                            break;
+                    case 5:
+                            bar(130,460,473,470,color);
+	                        bar(463,263,473,470,color);
+	                        bar(450,263,473,273,color);
+            
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        case 1:
+                switch (aimplace)
+                {
+                    case 0:
+                            bar(40,460,130,470,color);
+                            bar(40,460,50,725,color);
+                            bar(40,715,212,725,color);
+                            break;
+                    case 2:
+                            bar(212,715,473,725,color);
+                            bar(463,460,473,725,color);
+                            bar(267,460,473,470,color);
+                            bar(267,20,277,470,color);
+                            bar(267,20,380,30,color);
+	
+                            break;
+                    case 3:
+                            bar(212,715,473,725,color);
+                            bar(463,460,473,725,color);
+                            bar(383,460,473,470,color);
+                            break;
+                    case 4:
+                            bar(212,715,720,725,color);
+	                        bar(710,560,720,725,color);
+            
+                            break;
+                    case 5:
+                            bar(212,715,473,725,color);
+                            bar(463,263,473,725,color);
+                            bar(450,263,473,273,color);
+            
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        case 2:
+                switch (aimplace)
+                {
+                    case 0:
+                            bar(130,460,277,470,color);
+                            bar(267,20,277,470,color);
+                            bar(267,20,380,30,color);
+                            break;
+                    case 1:
+                            bar(212,715,473,725,color);
+                            bar(463,460,473,725,color);
+                            bar(267,460,473,470,color);
+                            bar(267,20,277,470,color);
+                            bar(267,20,380,30,color);
+                            break;
+                    case 3:
+                            bar(267,460,357,470,color);
+                            bar(267,20,277,470,color);
+                            bar(267,20,380,30,color);
+            
+                            break;
+                    case 4:
+                            bar(267,20,380,30,color);
+                            bar(267,20,277,273,color);
+                            bar(267,263,720,273,color);
+                            bar(710,263,720,560,color);
+            
+                            break;
+                    case 5:
+                            bar(267,20,380,30,color);
+                            bar(267,20,277,273,color);
+                            bar(267,263,450,273,color);
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        case 3:
+                switch (aimplace)
+                {
+                    case 0:
+                            bar(130,460,357,470,color);
+                            break;
+                    case 1:
+                            bar(212,715,473,725,color);
+                            bar(463,460,473,725,color);
+                            bar(383,460,473,470,color);
+            
+                            break;
+                    case 2:
+                            bar(267,460,357,470,color);
+                            bar(267,20,277,470,color);
+                            bar(267,20,380,30,color);
+            
+                            break;
+                    case 4:
+                            bar(383,460,473,470,color);
+                            bar(463,460,473,725,color);
+                            bar(463,715,720,725,color);
+                            bar(710,560,720,725,color);
+                            break;
+                    case 5:
+                            bar(383,460,473,470,color);
+                            bar(463,263,473,470,color);
+                            bar(450,263,473,273,color);
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        case 4:
+                switch (aimplace)
+                {
+                    case 0:
+                            bar(130,460,473,470,color);
+                            bar(463,460,473,725,color);
+                            bar(463,715,720,725,color);
+                            bar(710,560,720,725,color);
+                            break;
+                    case 1:
+                            bar(212,715,720,725,color);
+                            bar(710,560,720,725,color);
+            
+                            break;
+                    case 2:
+                            bar(267,20,380,30,color);
+                            bar(267,20,277,273,color);
+                            bar(267,263,720,273,color);
+                            bar(710,263,720,560,color);
+            
+                            break;
+                    case 3:
+                            bar(383,460,473,470,color);
+                            bar(463,460,473,725,color);
+                            bar(463,715,720,725,color);
+                            bar(710,560,720,725,color);
+            
+                            break;
+                    case 5:
+                            bar(710,263,720,560,color);
+	                        bar(450,263,720,273,color);
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        case 5:
+                switch (aimplace)
+                {
+                    case 0:
+                            bar(130,460,473,470,color);
+                            bar(463,263,473,470,color);
+                            bar(450,263,473,273,color);
+	
+                            break;
+                    case 1:
+                            bar(212,715,473,725,color);
+                            bar(463,263,473,725,color);
+                            bar(450,263,473,273,color);
+                            break;
+                    case 2:
+                            bar(267,20,380,30,color);
+                            bar(267,20,277,273,color);
+                            bar(267,263,450,273,color);
+            
+                            break;
+                    case 3:
+                            bar(383,460,473,470,color);
+                            bar(463,263,473,470,color);
+                            bar(450,263,473,273,color);
+            
+                            break;
+                    case 4:
+                            bar(710,263,720,560,color);
+	                        bar(450,263,720,273,color);
+                            break;
+
+                    default:
+                            break;
+                }
+                break;
+        default:
+                break;
+    }
+}
+// 打车完成后生成订单
+void neworder(int *x,int *y,USEINFOR *infor, const CARFAST car[], const char **placename, int *aimplace, int mincar, char *ordertime,float price)
+{
+    int button=0;
+    int mx=0;
+    int my=0;
+    char chprice[8];
+    ORDER *order;
+    
+	if ((order = (ORDER*)malloc(sizeof(ORDER))) == NULL)
+	{
+		overflow_box(500,500);
+        getch();
+		exit(1);
+	}
+    sprintf(chprice,"%.2f",price);
+
+    save_image(83,109,683,659,"orderadd");
+
+    mousehide(*x,*y);
+    // 画图
+    //返回键
+    bar_round(976,664,76,44,15,1,64384);
+    bar_round(976,664,70,39,13,1,65535);
+    outtextxy(938,645,"Back",2,2,15,64384);
+
+    bar_round(383,384,596,546,50,1,64384);
+    bar_round(383,384,590,542,48,1,65535);
+    fdhz(340,135,3,3,"订单",44373);
+    bar(88,200,678,230,63422);
+
+
+
+    //订单要截取的内容，最后一行传值
+
+    linelevel(128,310,335,270,3,63422);
+    linelevel(431,310,638,270,3,63422);
+    fdhz(345,305,1,1,"订单详情",44373);
+
+    fdhz(135,350,1,1,"订单类型",44373);
+    outtextxy(215,350,":",1,1,10,44373);
+    fdhz(230,350,1,1,"快车",44373);
+
+    fdhz(390,350,1,1,"费用",44373);
+    outtextxy(430,350,":",1,1,10,44373);
+    outtextxy(445,350,chprice,1,1,10,44373);
+
+    fdhz(135,390,1,1,"出发点",44373);
+    outtextxy(195,390,":",1,1,10,44373);
+    fdhz(210,390,1,1,placename[infor->nowplace],44373);
+
+    fdhz(390,390,1,1,"目的地",44373);
+    outtextxy(450,390,":",1,1,10,44373);
+    fdhz(465,390,1,1,placename[*aimplace],44373);
+
+    fdhz(135,430,1,1,"日期",44373);
+    outtextxy(175,430,":",1,1,10,44373);
+    outtextxy(190,430,ordertime,1,1,10,44373);
+
+    linelevel(128,470,335,270,3,63422);
+    linelevel(431,470,638,270,3,63422);
+    fdhz(345,465,1,1,"司机信息",44373);
+
+    fdhz(135,510,1,1,"司机",44373);
+    outtextxy(175,510,":",1,1,10,44373);
+    fdhz(190,510,1,1,car[mincar].name,44373);
+    fdhz(210,510,1,1,"师傅",44373);
+
+    fdhz(135,550,1,1,"车牌",44373);
+    outtextxy(175,550,":",1,1,10,44373);
+    fdhz(190,550,1,1,"鄂",44373);
+    outtextxy(205,550,"A",1,1,10,44373);
+    outtextxy(220,550,car[mincar].fastcar.carname,1,1,10,44373);
+
+    fdhz(135,590,1,1,"车型",44373);
+    outtextxy(175,590,":",1,1,10,44373);
+    fdhz(190,590,1,1,car[mincar].fastcar.type,44373);
+
+    reset_mouse(x,y);
+    strcpy(order->name,car[mincar].name);
+    strcpy(order->carname,car[mincar].fastcar.carname);
+    strcpy(order->type,car[mincar].fastcar.type);
+    strcpy(order->startname,placename[infor->nowplace]);
+    strcpy(order->endname,placename[*aimplace]);
+    strcpy(order->money,chprice);
+    strcpy(order->orderstime,ordertime);
+    // changeOrder(infor);//更改文件中的订单数量，以及生成本次订单的图片并保存
+    addOrder(infor,order);//将订单信息存进文件
+    while (1)
+    {
+        newxy(x,y,&button);
+		mx = *x;
+		my = *y;
+        if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
+        {
+            break;
+        }
+        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        {
+            safe_box(x,y);
+        }
+        else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
+        {
+            exit(0);
+        }
+    }
+    
+    mousehide(*x,*y);
+    printf_image(83,109,683,659,"orderadd");
+    //对BACK键进行遮挡
+    bar_round(976,664,76,44,15,1,65523);
+    reset_mouse(x,y);
+
+}
+
+//计算并显示两点之间的价格
+void showprice(int nowplace,int *aimplace)
+{
+	// int pointlength[15];//两点之间里程费数组
+	float pointprice;//两点之间价格
+	int showx=905;//确定显示位置
+    int showy=370;
+    int color;
+	int timegap=0;
+	int timecase=0;
+
+	
+	char pricing[10]="\0";//用于价格数据类型转换
+	
+	
+	countprice(&pointprice,nowplace,aimplace,timegap,timecase);
+	sprintf(pricing,"%.2f",pointprice);
+	outtextxy(showx,showy,pricing,1,1,10,64384);
+	
+	
+}
+
+
+/*******************************
+ 基础里程：3km
+ 基础时长：9min
+ 里程计算方法：50像素点 = 1公里
+               超出部分算作1公里
+ 时长计算方法：2min = 1s
+               超出部分算作1分钟
+ 参数说明： timegap:用于是计算时间长度
+			timegap=0:计算预计价格
+			timegap!=0:计算最终价格
+			
+			timecase:用于判断价格计算方法
+			timecase=0:计算预计价格 起步价11元，里程费1.8元/KM
+			timecase=1: 0:00-9:00时段：起步价11元，里程费2.6元/KM，时长费0.5元/min
+			timecase=2: 12:00-15:00时段：起步价11元，里程费1.8元/KM，时长费0.5元/min
+			timecase=3: 17:00-00:00时段：起步价11元，里程费1.8元/KM，时长费0.5元/min
+			timecase=4: 普通时段：起步价10.3元，里程费1.70元/KM,时长费0.35元/min
+********************************/
+void countprice(float *pointprice,int nowplace,int *aimplace,int timegap,int timecase)//用于计算价格
+{
+	int kilometer;//用于计算公里数
+	int minite;//用于计算时间
+	float startfare;//用于计算起步价
+	int pointlength[15];//两点之间里程费数组
+    int judging=0;//用于判断选择哪一个length
+
+    pointlength[0]=507;//学校和小区之间
+	pointlength[1]=690;//学校和东湖之间
+	pointlength[2]=240;//学校和商场之间
+	pointlength[3]=1000;//学校和图书馆之间
+	pointlength[4]=553;//学校和游泳馆之间
+	pointlength[5]=1012;//小区和东湖之间
+	pointlength[6]=609;//小区和商场之间
+	pointlength[7]=663;//小区和图书馆之间
+	pointlength[8]=726;//小区和游泳馆之间
+	pointlength[9]=646;//东湖和商场之间
+	pointlength[10]=1086;//东湖和图书馆之间
+	pointlength[11]=529;//东湖到游泳馆之间
+	pointlength[12]=760;//商场和图书馆之间
+	pointlength[13]=313;//商场和游泳馆之间
+	pointlength[14]=557;//图书馆和游泳馆之间
+	
+	
+	
+	if((nowplace==0&&*aimplace==1)||(nowplace==1&&*aimplace==0))
+	{
+		judging=0;
+	}
+	else if((nowplace==0&&*aimplace==2)||(nowplace==2&&*aimplace==0))
+	{
+		judging=1;
+	}
+	else if((nowplace==0&&*aimplace==3)||(nowplace==3&&*aimplace==0))
+	{
+		judging=2;
+	}
+	else if((nowplace==0&&*aimplace==4)||(nowplace==4&&*aimplace==0))
+	{
+		judging=3;
+	}
+	else if((nowplace==0&&*aimplace==5)||(nowplace==5&&*aimplace==0))
+	{
+		judging=4;
+	}
+	else if((nowplace==1&&*aimplace==2)||(nowplace==2&&*aimplace==1))
+	{
+		judging=5;
+	}
+	else if((nowplace==1&&*aimplace==3)||(nowplace==3&&*aimplace==1))
+	{
+		judging=6;
+	}
+	else if((nowplace==1&&*aimplace==4)||(nowplace==4&&*aimplace==1))
+	{
+		judging=7;
+	}
+	else if((nowplace==1&&*aimplace==5)||(nowplace==5&&*aimplace==1))
+	{
+		judging=8;
+	}
+	else if((nowplace==2&&*aimplace==3)||(nowplace==3&&*aimplace==2))
+	{
+		judging=9;
+	}
+	else if((nowplace==2&&*aimplace==4)||(nowplace==4&&*aimplace==2))
+	{
+		judging=10;
+	}
+	else if((nowplace==2&&*aimplace==5)||(nowplace==5&&*aimplace==2))
+	{
+		judging=11;
+	}
+	else if((nowplace==3&&*aimplace==4)||(nowplace==4&&*aimplace==3))
+	{
+		judging=12;
+	}
+	else if((nowplace==3&&*aimplace==5)||(nowplace==5&&*aimplace==3))
+	{
+		judging=13;
+	}
+	else if((nowplace==4&&*aimplace==5)||(nowplace==5&&*aimplace==4))
+	{
+		judging=14;
+	}
+	
+
+	kilometer=(pointlength[judging])/100+1-3;
+	if(kilometer<0)
+	{
+		kilometer=0;
+	}
+	// minite=timegap/120+1-9;
+    minite=timegap+1-9;
+	if(minite<0)
+	{
+		minite=0;
+	}
+	
+	switch(timecase)
+	{
+		case 0:
+			startfare=11;
+			*pointprice=startfare+kilometer*1.8;
+			break;
+		
+		case 1:
+			startfare=11;
+			*pointprice=startfare+kilometer*2.6+minite*0.5;
+			break;
+		
+		case 2:
+		case 3:
+			startfare=11;
+			*pointprice=startfare+kilometer*1.8+minite*0.5;
+			break;
+		case 4:
+			startfare=10.3;
+			*pointprice=startfare+kilometer*1.7+minite*0.35;
+			break;
+			
+	}
+}
+
+void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int timegap, int *x, int *y)
+{
+    int timecase;
+    char chprice[8];
+    int mx=0;
+    int my=0;
+    int button=0;
+
+    if (nowtime_hour >= 0 && nowtime_hour <= 8)
+    {
+        timecase = 1;
+    }
+    else if (nowtime_hour >= 12 && nowtime_hour <= 14)
+    {
+        timecase = 2;
+    }
+    
+    else if (nowtime_hour >= 17 && nowtime_hour <= 23)
+    {
+        timecase = 3;
+    }
+    else 
+    {
+        timecase = 4;
+    }
+    countprice(price,infor->nowplace,aimplace,timegap,timecase);
+    
+    sprintf(chprice,"%.2f",*price);
+
+    mousehide(*x,*y);
+    save_image(512-210,384-140,512+210,384+140,"notice");
+    bar_round(512,384,416,270,50,1,64384);
+    bar_round(512,384,410,265,48,1,65535);
+    fdhz(410,360,2,2,"金额",64384);
+	outtextxy(475,360,":",2,2,20,64384);
+	outtextxy(500,360,chprice,2,2,20,64384);
+    bar_round(512,460,190,52,20,1,64384);
+    bar_round(512,460,184,47,18,1,65535);
+	fdhz(466,446,2,2,"确",44373);
+    fdhz(526,446,2,2,"定",44373);
+    reset_mouse(x,y);
+    while (1)
+    {
+        newxy(x,y,&button);
+		mx = *x;
+		my = *y;
+        if(mx>=417  && mx<=607 && my>=433 && my<=487 && button)//点击确定
+        {
+            break;
+        }
+        
+
+    }
+    mousehide(*x,*y);
+    printf_image(512-210,384-140,512+210,384+140,"notice");
+    reset_mouse(x,y);
+    while (1)
+    {
+        if (infor->payway == 1)//支付方式为余额
+        {
+            if (infor->money>=*price)
+            {
+                changeMoney(infor,*price);
+                mousehide(*x,*y);
+                save_image(512-210,384-140,512+210,384+140,"notice");
+                bar_round(512,384,416,270,50,1,64384);
+                bar_round(512,384,410,265,48,1,65535);
+                fdhz(440,360,2,2,"支付完成",64384);
+                fdhz(450,420,1,1,"按任意键继续",44373);
+                
+                getch();
+                printf_image(512-210,384-140,512+210,384+140,"notice");
+                reset_mouse(x,y);
+                break;
+            }
+        
+            else
+            {
+                mousehide(*x,*y);
+                save_image(512-210,384-140,512+210,384+140,"notice");
+                bar_round(512,384,416,270,50,1,64384);
+                bar_round(512,384,410,265,48,1,65535);
+                fdhz(440,360,2,2,"余额不足",64384);
+                fdhz(450,420,1,1,"按任意键充值",44373);
+                getch();
+                reset_mouse(x,y);
+                top_up(x,y,infor);
+                printf_image(512-210,384-140,512+210,384+140,"notice");
+                reset_mouse(x,y);
+            }
+        }
+        else if (infor->payway == 2)//支付方式为微信
+        {
+            mousehide(*x,*y);
+            save_image(512-210,384-140,512+210,384+140,"notice");
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+            
+            bar_round(255-30+160,480-100,70,70,22,1,2016);//微信绿
+            FillCircle(221+160,480-100,20,65535);
+            FillCircle(241+160,490-100,15,2016);
+            FillCircle(241+160,490-100,13,65535);
+            FillCircle(241-6+160,490-2-100,2,2016);
+            FillCircle(241+6+160,490-2-100,2,2016);
+            FillCircle(221-9+160,480-3-100,2,2016);
+            FillCircle(221+9+160,480-3-100,2,2016);
+
+            fdhz(440,360,2,2,"支付完成",64384);
+            fdhz(450,420,1,1,"按任意键继续",44373);
+            getch();
+            
+            printf_image(512-210,384-140,512+210,384+140,"notice");
+            reset_mouse(x,y);
+            break;
+        }
+        else if (infor->payway == 3)//支付方式为支付宝
+        {
+            mousehide(*x,*y);
+            save_image(512-210,384-140,512+210,384+140,"notice");
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+            
+            //画支付宝
+            bar_round(510-30-95,480-100,70,70,22,1,1535);//支付宝蓝
+            fdhz(455-95,450-100,4,4,"支",65535);
+
+            fdhz(440,360,2,2,"支付完成",64384);
+            fdhz(450,420,1,1,"按任意键继续",44373);
+            getch();
+            
+            printf_image(512-210,384-140,512+210,384+140,"notice");
+            reset_mouse(x,y);
+            break;
+        }
+        else
+        {
+            mousehide(*x,*y);
+            save_image(512-210,384-140,512+210,384+140,"notice");
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+            
+            fdhz(390,360,2,2,"未选择支付方式",64384);
+            fdhz(450,420,1,1,"按任意键继续",44373);
+            getch();
+            reset_mouse(x,y);
+            pay_way(x,y,infor);
+            printf_image(512-210,384-140,512+210,384+140,"notice");
+            reset_mouse(x,y);
+        }
+        
+    }
+    
+    
+}
+// void initialize()
