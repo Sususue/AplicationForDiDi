@@ -240,7 +240,8 @@ void addOrder(USEINFOR *infor, ORDER *order)
  	fclose(fp);
 
 	sprintf(filename,"order\\%d.txt",infor->cnt);
-	if((fp = fopen(filename,"ab+")) == NULL)
+	if((fp_order = fopen(filename,"ab+")) == NULL)
+	// if((fp = fopen(filename,"wb")) == NULL)
 	{
 		null_box(500,500);
 		getch();

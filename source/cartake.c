@@ -482,7 +482,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
             else
             {
                 time(&rawtime4);//获取GMT时间
-				time_gap1=difftime(rawtime4,rawtime1);
+				time_gap1=difftime(rawtime4,rawtime3);
                 //计算价格并扣费
                 costmoney(&price,infor,aimplace,nowtime_hour,time_gap1,x,y);
                 
@@ -1712,9 +1712,9 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFAST car[], const char **p
     int mx=0;
     int my=0;
     char chprice[8];
-    ORDER *order;
+    ORDER *ordernew;
     
-	if ((order = (ORDER*)malloc(sizeof(ORDER))) == NULL)
+	if ((ordernew = (ORDER *)malloc(sizeof(ORDER))) == NULL)
 	{
 		overflow_box(500,500);
         getch();
@@ -1784,15 +1784,15 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFAST car[], const char **p
     fdhz(190,590,1,1,car[mincar].fastcar.type,44373);
 
     reset_mouse(x,y);
-    strcpy(order->name,car[mincar].name);
-    strcpy(order->carname,car[mincar].fastcar.carname);
-    strcpy(order->type,car[mincar].fastcar.type);
-    strcpy(order->startname,placename[infor->nowplace]);
-    strcpy(order->endname,placename[*aimplace]);
-    strcpy(order->money,chprice);
-    strcpy(order->orderstime,ordertime);
+    strcpy(ordernew->name,car[mincar].name);
+    strcpy(ordernew->carname,car[mincar].fastcar.carname);
+    strcpy(ordernew->type,car[mincar].fastcar.type);
+    strcpy(ordernew->startname,placename[infor->nowplace]);
+    strcpy(ordernew->endname,placename[*aimplace]);
+    strcpy(ordernew->money,chprice);
+    strcpy(ordernew->orderstime,ordertime);
     // changeOrder(infor);//更改文件中的订单数量，以及生成本次订单的图片并保存
-    addOrder(infor,order);//将订单信息存进文件
+    addOrder(infor,ordernew);//将订单信息存进文件
     while (1)
     {
         newxy(x,y,&button);

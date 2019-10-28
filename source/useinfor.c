@@ -1070,7 +1070,7 @@ void order_box(int *x,int *y,USEINFOR *infor)//读取文件形式显示订单
 		getch();
 		exit(1);
 	}
-    if ((order = (ORDER*)malloc(sizeof(ORDER))) == NULL)
+    if ((order = (ORDER *)malloc(sizeof(ORDER))) == NULL)
 	{
 		overflow_box(500,500);
         getch();
@@ -1214,7 +1214,7 @@ void order_box(int *x,int *y,USEINFOR *infor)//读取文件形式显示订单
         //     reset_mouse(x,y);
         // }
         //尝试逆序显示订单
-        else if (page>0 && page<infor->num && mx>=630  && mx<=660 && my>=610 && my<=640 && button)//点击>查看下一页订单
+        else if (page>1 && page<=infor->num && mx>=630  && mx<=660 && my>=610 && my<=640 && button)//点击>查看下一页订单
         {
             page--;
             findOrder(infor,order,page);
@@ -1258,8 +1258,10 @@ void order_box(int *x,int *y,USEINFOR *infor)//读取文件形式显示订单
     }
     free(ordernum);
     free(orderpage);
+    free(order);
     ordernum=NULL;
     orderpage=NULL;
+    order=NULL;
     //显示背景
     mousehide(*x,*y);   
     printf_image(83,109,683,659,"order");
