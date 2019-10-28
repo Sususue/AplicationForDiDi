@@ -232,7 +232,7 @@ void addOrder(USEINFOR *infor, ORDER *order)
 		getch();
 		exit(1);
 	}
-	/*将文件内部指针移到文件中需置*/
+	/*将文件内部指针移到文件中需要更改的位置*/
     fseek(fp,sizeof(USEINFOR)*infor->cnt,SEEK_SET);
 
     fwrite(infor,sizeof(USEINFOR),1,fp);

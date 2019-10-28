@@ -35,8 +35,13 @@
 #include "map.h"
 
 #include "useinfor.h" //用户个人信息
-
+#include "paybox.h"//钱包
 #include "carmove.h"//快车动画
+
+
+#include "endorder.h"//快车完成后生成订单，以及计算价格
+#include "place.h"//快车选择目的地
+#include "judgfast.h"//判断那辆快车，哪个动画
 #include "cartake.h"//快车
 #include "select.h"  //主进程
  
