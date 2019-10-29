@@ -21,7 +21,7 @@ extern int carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag);
 输入结构体，执行方向移动(40像素点）
 flag:1:车到出发点，不用遮掉线路; 2:起点到终点，需要遮掉绿色的线
 *********************************/
-extern int carmove_onestep(CAR_CONDITION *car_position,int *x,int *y, int flag);
+// extern int carmove_onestep(CAR_CONDITION *car_position,int *x,int *y, int flag);
 //extern void carmove_onestep(CAR_CONDITION *car_position);
 
 /*************************
@@ -78,9 +78,9 @@ void car_pool(int *x,int *y);
 画路段之间的基本移动图像
 flag:1:车到出发点，不用遮掉线路; 2:起点到终点，需要遮掉绿色的线
 *****************************/
-extern int carmove_on(int x1,int y1,int x2,int y2,int *x,int *y, int flag);
-extern int carmove_down(int x1,int y1,int x2,int y2,int *x,int *y, int flag);
-extern int carmove_left(int x1,int y1,int x2,int y2,int *x,int *y, int flag);
-extern int carmove_right(int x1,int y1,int x2,int y2,int *x,int *y, int flag);
+extern int carmove_on(int x1,int y1,int x2,int y2,int *x,int *y, int flag,float *progress,float acsend);
+extern int carmove_down(int x1,int y1,int x2,int y2,int *x,int *y, int flag,float *progress,float acsend);
+extern int carmove_left(int x1,int y1,int x2,int y2,int *x,int *y, int flag,float *progress,float acsend);
+extern int carmove_right(int x1,int y1,int x2,int y2,int *x,int *y, int flag,float *progress,float acsend);
 
 #endif

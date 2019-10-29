@@ -472,8 +472,14 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
         }
 		else if (mx>=798  && mx<=994 && my>=416 && my<=520 && button)//点击立刻/等待上车显示车行动画
 		{	
-            //重新变橙
             mousehide(*x,*y);
+            //“进度显示”消失，开始显示百分比
+			bar_round(896,558,196,52,10,1,64384);
+			bar_round(896,558,190,47,8,1,65535);
+			fdhz(825,550,1,1,"进度",64384);
+			outtextxy(960,550,"%",1,1,10,64384);
+            //重新变橙
+            
             bar_round(896,468,196,52,10,1,64384);
             bar_round(896,468,190,47,8,1,65535);
             fdhz(825,460,1,1,"立",64384);

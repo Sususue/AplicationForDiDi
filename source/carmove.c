@@ -9,6 +9,8 @@ int carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag)
     int my=0;
 	int x0 = (*car_position).xpixel,y0 = (*car_position).ypixel;
 	int sigle=0;
+	//char mprogress[8]="\0";//用于进度条数字变化
+	
     
 	//判断方向并移动相应距离
 	switch((*car_position).direction)
@@ -52,6 +54,9 @@ int carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag)
 			if (flag==2)
 			{
 				bar((*car_position).xpixel-21,(*car_position).ypixel-11,(*car_position).xpixel+22,(*car_position).ypixel+12,65535);
+				//sprintf(mprogress,"%.2f",*progress);
+				//outtextxy(850,548,mprogress,1,1,15,64384);
+				//bar_round(896,558,190,47,8,1,65535);
 			}
 			(*car_position).xpixel = x0;
 	        (*car_position).ypixel = y0;
@@ -82,6 +87,9 @@ int carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag)
 			if (flag==2)
 			{
 				bar((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,65535);
+				//sprintf(mprogress,"%.2f",* progress);
+				//outtextxy(850,548,mprogress,1,1,15,64384);
+				//bar_round(896,558,190,47,8,1,65535);
 			}
 			(*car_position).xpixel = x0;
 	        (*car_position).ypixel = y0;
@@ -109,13 +117,15 @@ int carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag)
 }
 
 /*输入结构体，执行方向移动(40像素点）*/
-int carmove_onestep(CAR_CONDITION *car_position,int *x,int *y, int flag)
+/*int carmove_onestep(CAR_CONDITION *car_position,int *x,int *y, int flag,float progress)
 {
 	int i;
 	int mx=0;
 	int my=0;
 	int button;
 	int sigle=0;
+	float acsend=progress;//用于数字增长
+	char mprogress[8]="\0";//用于进度条数字变化
 	
 	switch((*car_position).direction)
 	{
@@ -158,22 +168,30 @@ int carmove_onestep(CAR_CONDITION *car_position,int *x,int *y, int flag)
 			}	
 			break;
 	}
-	/*调用最小移动单元*/
-	// for(i=0;i<20;i++);//这个分号不能少，不然就真的进循环了。这个for语句其实是个废话
-	// {
-	// 	newxy(x,y,&button);
-	// 	mx = *x;
-	// 	my = *y;
+	/*调用最小移动单元
+	//for(i=0;i<20;i++)
+	//{
+		//newxy(x,y,&button);
+		//mx = *x;
+		//my = *y;
   
 	    sigle=carmove_basic(car_position,x,y,flag);
+		
+		if(flag==2)
+		{
+			sprintf(mprogress,"%.2f",progress);
+			outtextxy(850,548,mprogress,1,1,15,64384);
+			progress+=acsend;
+		}
+		
 		if(sigle==1)
 		{
 			return sigle;
 		}
 	
-	// }
+	//}
 	return sigle;
-}
+}*/
 
 /*************************
 画某两点之间的基本运动图像
@@ -185,28 +203,34 @@ int carmove_onestep(CAR_CONDITION *car_position,int *x,int *y, int flag)
 5:  (450,243)//游泳馆
 *************************/
 
+
 /***************************
 学校与小区之间的动画
 ***************************/
 int carmove0to1(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=467;//两点之间的距离
+	float prog=100.0/467;//用于进度条填充计算
+	float pprog=100.0/467;//用于传入在某两点之间不变的值acsend
 	
-	sigle=carmove_left(130,465,55,465,x,y,2);
+	sigle=carmove_left(130,465,55,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(45,475,45,710,x,y,2);
+	sigle=carmove_down(45,475,45,710,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(55,720,212,720,x,y,2);
+	sigle=carmove_right(55,720,212,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -216,23 +240,27 @@ int carmove0to1(int *x,int *y)
 int carmove0to2(int *x,int *y)
 {
 	int sigle;
+	//int distance=630;//两点之间的距离
+	float prog=100.0/630;//用于进度条填充计算
+	float pprog=100.0/630;//用于传入在某两点之间不变的值acsend
 	
-	
-	sigle=carmove_right(130,465,262,465,x,y,2);
+	sigle=carmove_right(130,465,262,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(272,455,272,35,x,y,2);
+	sigle=carmove_on(272,455,272,35,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(282,25,360,25,x,y,2);
+	sigle=carmove_right(282,25,360,25,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -242,13 +270,18 @@ int carmove0to2(int *x,int *y)
 int carmove0to3(int * x,int *y)
 {
 	int sigle=0;
+	//int distance=206;//两点之间的距离
+	float prog=100.0/206;//用于进度条填充计算
+	float pprog=100.0/206;//用于传入在某两点之间不变的值acsend
 	// bar(130,460,370,470,13926);
 	
-	sigle=carmove_right(130,465,346,465,x,y,2);
+	sigle=carmove_right(130,465,336,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -258,31 +291,36 @@ int carmove0to3(int * x,int *y)
 int carmove0to4(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=940;//两点之间的距离
+	float prog=100.0/940;//用于进度条填充计算
+	float pprog=100.0/940;//用于传入在某两点之间不变的值acsend
 	// bar(130,460,473,470,13926);
 	// bar(463,460,473,725,13926);
 	// bar(463,715,720,725,13926);
 	// bar(710,560,720,725,13926);
 	
-	sigle=carmove_right(130,465,458,465,x,y,2);
+	sigle=carmove_right(130,465,458,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(468,475,468,710,x,y,2);
+	sigle=carmove_down(468,475,468,710,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(478,720,705,720,x,y,2);
+	sigle=carmove_right(478,720,705,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(715,710,715,560,x,y,2);
+	sigle=carmove_on(715,710,715,560,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -292,25 +330,30 @@ int carmove0to4(int *x,int *y)
 int carmove0to5(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=513;//两点之间的距离
+	float prog=100.0/513;//用于进度条填充计算
+	float pprog=100.0/513;//用于传入在某两点之间不变的值acsend
 	// bar(130,460,473,470,13926);
 	// bar(463,263,473,470,13926);
 	// bar(450,263,473,273,13926);
 	
-	sigle=carmove_right(130,465,458,465,x,y,2);
+	sigle=carmove_right(130,465,458,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(468,455,468,278,x,y,2);
+	sigle=carmove_on(468,455,468,278,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,268,450,268,x,y,2);
+	sigle=carmove_left(458,268,450,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -320,25 +363,30 @@ int carmove0to5(int *x,int *y)
 int carmove1to0(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=467;//两点之间的距离
+	float prog=100.0/467;//用于进度条填充计算
+	float pprog=100.0/467;//用于传入在某两点之间不变的值acsend
 	// bar(40,460,130,470,13926);
 	// bar(40,460,50,725,13926);
 	// bar(40,715,212,725,13926);
 	
-	sigle=carmove_left(212,720,55,720,x,y,2);
+	sigle=carmove_left(212,720,55,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(45,710,45,475,x,y,2);
+	sigle=carmove_on(45,710,45,475,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(55,465,130,465,x,y,2);
+	sigle=carmove_right(55,465,130,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -348,37 +396,42 @@ int carmove1to0(int *x,int *y)
 int carmove1to2(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=1155;//两点之间的距离
+	float prog=100.0/1155;//用于进度条填充计算
+	float pprog=100.0/1155;//用于传入在某两点之间不变的值acsend
 	// bar(212,715,473,725,13926);
 	// bar(463,460,473,725,13926);
 	// bar(267,460,473,470,13926);
 	// bar(267,20,277,470,13926);
 	// bar(267,20,380,30,13926);
 	
-	sigle=carmove_right(212,720,458,720,x,y,2);
+	sigle=carmove_right(212,720,458,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(468,710,468,475,x,y,2);
+	sigle=carmove_on(468,710,468,475,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,465,282,465,x,y,2);
+	sigle=carmove_left(458,465,282,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(272,455,272,35,x,y,2);
+	sigle=carmove_on(272,455,272,35,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(282,25,360,25,x,y,2);
+	sigle=carmove_right(282,25,360,25,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -388,25 +441,30 @@ int carmove1to2(int *x,int *y)
 int carmove1to3(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=536;//两点之间的距离
+	float prog=100.0/536;//用于进度条填充计算
+	float pprog=100.0/536;//用于传入在某两点之间不变的值acsend
 	// bar(212,715,473,725,13926);
 	// bar(463,460,473,725,13926);
 	// bar(370,460,473,470,13926);
 	
-	sigle=carmove_right(212,720,458,720,x,y,2);
+	sigle=carmove_right(212,720,458,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(468,710,468,475,x,y,2);
+	sigle=carmove_on(468,710,468,475,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,465,370,465,x,y,2);
+	sigle=carmove_left(458,465,403,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -416,19 +474,24 @@ int carmove1to3(int *x,int *y)
 int carmove1to4(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=643;//两点之间的距离
+	float prog=100.0/643;//用于进度条填充计算
+	float pprog=100.0/643;//用于传入在某两点之间不变的值acsend
 	// bar(212,715,720,725,13926);
 	// bar(710,560,720,725,13926);
 	
-	sigle=carmove_right(212,720,705,720,x,y,2);
+	sigle=carmove_right(212,720,705,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(715,710,715,560,x,y,2);
+	sigle=carmove_on(715,710,715,560,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -438,25 +501,30 @@ int carmove1to4(int *x,int *y)
 int carmove1to5(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=686;//两点之间的距离
+	float prog=100.0/686;//用于进度条填充计算
+	float pprog=100.0/686;//用于传入在某两点之间不变的值acsend
 	// bar(212,715,473,725,13926);
 	// bar(463,263,473,725,13926);
 	// bar(450,263,473,273,13926);
 	
-	sigle=carmove_right(212,720,458,720,x,y,2);
+	sigle=carmove_right(212,720,458,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(468,710,468,278,x,y,2);
+	sigle=carmove_on(468,710,468,278,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,268,450,268,x,y,2);
+	sigle=carmove_left(458,268,450,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -466,25 +534,30 @@ int carmove1to5(int *x,int *y)
 int carmove2to0(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=630;//两点之间的距离
+	float prog=100.0/630;//用于进度条填充计算
+	float pprog=100.0/630;//用于传入在某两点之间不变的值acsend
 	// bar(130,460,277,470,13926);
 	// bar(267,20,277,470,13926);
 	// bar(267,20,380,30,13926);
 	
-	sigle=carmove_left(360,25,282,25,x,y,2);
+	sigle=carmove_left(360,25,282,25,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(272,35,272,455,x,y,2);
+	sigle=carmove_down(272,35,272,455,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(262,465,130,465,x,y,2);
+	sigle=carmove_left(262,465,130,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -494,37 +567,42 @@ int carmove2to0(int *x,int *y)
 int carmove2to1(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=1155;//两点之间的距离
+	float prog=100.0/1155;//用于进度条填充计算
+	float pprog=100.0/1155;//用于传入在某两点之间不变的值acsend
 	// bar(212,715,473,725,13926);
 	// bar(463,460,473,725,13926);
 	// bar(267,460,473,470,13926);
 	// bar(267,20,277,470,13926);
 	// bar(267,20,380,30,13926);
 	
-	sigle=carmove_left(360,25,282,25,x,y,2);
+	sigle=carmove_left(360,25,282,25,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(272,35,272,455,x,y,2);
+	sigle=carmove_down(272,35,272,455,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(282,465,458,465,x,y,2);
+	sigle=carmove_right(282,465,458,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(468,475,468,710,x,y,2);
+	sigle=carmove_down(468,475,468,710,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,720,212,720,x,y,2);
+	sigle=carmove_left(458,720,212,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -534,25 +612,30 @@ int carmove2to1(int *x,int *y)
 int carmove2to3(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=552;//两点之间的距离
+	float prog=100.0/552;//用于进度条填充计算
+	float pprog=100.0/552;//用于传入在某两点之间不变的值acsend
 	// bar(267,460,370,470,13926);
 	// bar(267,20,277,470,13926);
 	// bar(267,20,380,30,13926);
 	
-	sigle=carmove_left(360,25,282,25,x,y,2);
+	sigle=carmove_left(360,25,282,25,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(272,35,272,455,x,y,2);
+	sigle=carmove_down(272,35,272,455,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(282,465,370,465,x,y,2);
+	sigle=carmove_right(282,465,336,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -562,31 +645,36 @@ int carmove2to3(int *x,int *y)
 int carmove2to4(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=1011;//两点之间的距离
+	float prog=100.0/1011;//用于进度条填充计算
+	float pprog=100.0/1011;//用于传入在某两点之间不变的值acsend
 	// bar(267,20,380,30,13926);
 	// bar(267,20,277,273,13926);
 	// bar(267,263,720,273,13926);
 	// bar(710,263,720,560,13926);
 	
-	sigle=carmove_left(360,25,282,25,x,y,2);
+	sigle=carmove_left(360,25,282,25,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(272,35,272,258,x,y,2);
+	sigle=carmove_down(272,35,272,258,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(282,268,710,268,x,y,2);
+	sigle=carmove_right(282,268,710,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(715,278,715,560,x,y,2);
+	sigle=carmove_down(715,278,715,560,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -596,26 +684,31 @@ int carmove2to4(int *x,int *y)
 int carmove2to5(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=468;//两点之间的距离
+	float prog=100.0/468;//用于进度条填充计算
+	float pprog=100.0/468;//用于传入在某两点之间不变的值acsend
 	// bar(267,20,380,30,13926);
 	// bar(267,20,277,273,13926);
 	// bar(267,263,450,273,13926);
 	
-	sigle=carmove_left(360,25,282,25,x,y,2);
+	sigle=carmove_left(360,25,282,25,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
 	
-	sigle=carmove_down(272,35,272,258,x,y,2);
+	sigle=carmove_down(272,35,272,258,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(282,268,450,268,x,y,2);
+	sigle=carmove_right(282,268,450,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -625,13 +718,18 @@ int carmove2to5(int *x,int *y)
 int carmove3to0(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=206;//两点之间的距离
+	float prog=100.0/206;//用于进度条填充计算
+	float pprog=100.0/206;//用于传入在某两点之间不变的值acsend
 	// bar(130,460,370,470,13926);
 	
-	sigle=carmove_left(370,465,130,465,x,y,2);
+	sigle=carmove_left(335,465,130,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 	
@@ -641,25 +739,30 @@ int carmove3to0(int *x,int *y)
 int carmove3to1(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=536;//两点之间的距离
+	float prog=100.0/536;//用于进度条填充计算
+	float pprog=100.0/536;//用于传入在某两点之间不变的值acsend
 	// bar(212,715,473,725,13926);
 	// bar(463,460,473,725,13926);
 	// bar(370,460,473,470,13926);
 	
-	sigle=carmove_right(370,465,458,465,x,y,2);
+	sigle=carmove_right(404,465,458,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(468,475,468,710,x,y,2);
+	sigle=carmove_down(468,475,468,710,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,720,212,720,x,y,2);
+	sigle=carmove_left(458,720,212,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -669,25 +772,30 @@ int carmove3to1(int *x,int *y)
 int carmove3to2(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=552;//两点之间的距离
+	float prog=100.0/552;//用于进度条填充计算
+	float pprog=100.0/552;//用于传入在某两点之间不变的值acsend
 	// bar(267,460,370,470,13926);
 	// bar(267,20,277,470,13926);
 	// bar(267,20,380,30,13926);
 	
-	sigle=carmove_left(370,465,282,465,x,y,2);
+	sigle=carmove_left(335,465,282,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(272,455,272,35,x,y,2);
+	sigle=carmove_on(272,455,272,35,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(282,25,360,25,x,y,2);
+	sigle=carmove_right(282,25,360,25,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -698,31 +806,36 @@ int carmove3to2(int *x,int *y)
 int carmove3to4(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=666;//两点之间的距离
+	float prog=100.0/666;//用于进度条填充计算
+	float pprog=100.0/666;//用于传入在某两点之间不变的值acsend
 	// bar(370,460,473,470,13926);
 	// bar(463,460,473,725,13926);
 	// bar(463,715,720,725,13926);
 	// bar(710,560,720,725,13926);
 	
-	sigle=carmove_right(370,465,458,465,x,y,2);
+	sigle=carmove_right(404,465,458,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(468,475,468,710,x,y,2);
+	sigle=carmove_down(468,475,468,710,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(478,720,705,720,x,y,2);
+	sigle=carmove_right(478,720,705,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(715,710,715,560,x,y,2);
+	sigle=carmove_on(715,710,715,560,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -732,25 +845,30 @@ int carmove3to4(int *x,int *y)
 int carmove3to5(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=238;//两点之间的距离
+	float prog=100.0/238;//用于进度条填充计算
+	float pprog=100.0/238;//用于传入在某两点之间不变的值acsend
 	// bar(370,460,473,470,13926);
 	// bar(463,263,473,470,13926);
 	// bar(450,263,473,273,13926);
 	
-	sigle=carmove_right(370,465,458,465,x,y,2);
+	sigle=carmove_right(404,465,458,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(468,455,468,278,x,y,2);
+	sigle=carmove_on(468,455,468,278,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,268,450,268,x,y,2);
+	sigle=carmove_left(458,268,450,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -760,31 +878,36 @@ int carmove3to5(int *x,int *y)
 int carmove4to0(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=940;//两点之间的距离
+	float prog=100.0/940;//用于进度条填充计算
+	float pprog=100.0/940;//用于传入在某两点之间不变的值acsend
 	// bar(130,460,473,470,13926);
 	// bar(463,460,473,725,13926);
 	// bar(463,715,720,725,13926);
 	// bar(710,560,720,725,13926);
 	
-	sigle=carmove_down(715,560,715,710,x,y,2);
+	sigle=carmove_down(715,560,715,710,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(705,720,478,720,x,y,2);
+	sigle=carmove_left(705,720,478,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(468,710,468,475,x,y,2);
+	sigle=carmove_on(468,710,468,475,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,465,130,465,x,y,2);
+	sigle=carmove_left(458,465,130,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -794,19 +917,24 @@ int carmove4to0(int *x,int *y)
 int carmove4to1(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=643;//两点之间的距离
+	float prog=100.0/643;//用于进度条填充计算
+	float pprog=100.0/643;//用于传入在某两点之间不变的值acsend
 	// bar(212,715,720,725,13926);
 	// bar(710,560,720,725,13926);
 
-	sigle=carmove_down(715,560,715,710,x,y,2);
+	sigle=carmove_down(715,560,715,710,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(705,720,212,720,x,y,2);
+	sigle=carmove_left(705,720,212,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -816,31 +944,36 @@ int carmove4to1(int *x,int *y)
 int carmove4to2(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=1011;//两点之间的距离
+	float prog=100.0/1011;//用于进度条填充计算
+	float pprog=100.0/1011;//用于传入在某两点之间不变的值acsend
 	// bar(267,20,380,30,13926);
 	// bar(267,20,277,273,13926);
 	// bar(267,263,720,273,13926);
 	// bar(710,263,720,560,13926);
 	
-	sigle=carmove_on(715,560,715,278,x,y,2);
+	sigle=carmove_on(715,560,715,278,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(710,268,282,268,x,y,2);
+	sigle=carmove_left(710,268,282,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(272,258,272,35,x,y,2);
+	sigle=carmove_on(272,258,272,35,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(282,25,360,25,x,y,2);
+	sigle=carmove_right(282,25,360,25,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -850,31 +983,36 @@ int carmove4to2(int *x,int *y)
 int carmove4to3(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=666;//两点之间的距离
+	float prog=100.0/666;//用于进度条填充计算
+	float pprog=100.0/666;//用于传入在某两点之间不变的值acsend
 	// bar(370,460,473,470,13926);
 	// bar(463,460,473,725,13926);
 	// bar(463,715,720,725,13926);
 	// bar(710,560,720,725,13926);
 	
-	sigle=carmove_down(715,560,715,710,x,y,2);
+	sigle=carmove_down(715,560,715,710,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(705,720,478,720,x,y,2);
+	sigle=carmove_left(705,720,478,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(468,710,468,475,x,y,2);
+	sigle=carmove_on(468,710,468,475,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,465,370,465,x,y,2);
+	sigle=carmove_left(458,465,403,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -884,19 +1022,24 @@ int carmove4to3(int *x,int *y)
 int carmove4to5(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=542;//两点之间的距离
+	float prog=100.0/542;//用于进度条填充计算
+	float pprog=100.0/542;//用于传入在某两点之间不变的值acsend
 	// bar(710,263,720,560,13926);
 	// bar(450,263,720,273,13926);
 	
-	sigle=carmove_on(715,560,715,278,x,y,2);
+	sigle=carmove_on(715,560,715,278,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(710,268,450,268,x,y,2);
+	sigle=carmove_left(710,268,450,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -906,25 +1049,30 @@ int carmove4to5(int *x,int *y)
 int carmove5to0(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=513;//两点之间的距离
+	float prog=100.0/513;//用于进度条填充计算
+	float pprog=100.0/513;//用于传入在某两点之间不变的值acsend
 	// bar(130,460,473,470,13926);
 	// bar(463,263,473,470,13926);
 	// bar(450,263,473,273,13926);
 	
-	sigle=carmove_right(450,268,458,268,x,y,2);
+	sigle=carmove_right(450,268,458,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(468,278,468,455,x,y,2);
+	sigle=carmove_down(468,278,468,455,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,465,130,465,x,y,2);
+	sigle=carmove_left(458,465,130,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -934,25 +1082,30 @@ int carmove5to0(int *x,int *y)
 int carmove5to1(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=686;//两点之间的距离
+	float prog=100.0/686;//用于进度条填充计算
+	float pprog=100.0/686;//用于传入在某两点之间不变的值acsend
 	// bar(212,715,473,725,13926);
 	// bar(463,263,473,725,13926);
 	// bar(450,263,473,273,13926);
 	
-	sigle=carmove_right(450,268,458,268,x,y,2);
+	sigle=carmove_right(450,268,458,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(468,278,468,710,x,y,2);
+	sigle=carmove_down(468,278,468,710,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,720,212,720,x,y,2);
+	sigle=carmove_left(458,720,212,720,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -962,25 +1115,30 @@ int carmove5to1(int *x,int *y)
 int carmove5to2(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=468;//两点之间的距离
+	float prog=100.0/468;//用于进度条填充计算
+	float pprog=100.0/468;//用于传入在某两点之间不变的值acsend
 	// bar(267,20,380,30,13926);
 	// bar(267,20,277,273,13926);
 	// bar(267,263,450,273,13926);
 	
-	sigle=carmove_left(450,268,282,268,x,y,2);
+	sigle=carmove_left(450,268,282,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_on(272,258,272,35,x,y,2);
+	sigle=carmove_on(272,258,272,35,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_right(282,25,360,25,x,y,2);
+	sigle=carmove_right(282,25,360,25,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -990,25 +1148,30 @@ int carmove5to2(int *x,int *y)
 int carmove5to3(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=238;//两点之间的距离
+	float prog=100.0/238;//用于进度条填充计算
+	float pprog=100.0/238;//用于传入在某两点之间不变的值acsend
 	// bar(370,460,473,470,13926);
 	// bar(463,263,473,470,13926);
 	// bar(450,263,473,273,13926);
 	
-	sigle=carmove_right(450,268,458,268,x,y,2);
+	sigle=carmove_right(450,268,458,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_down(468,278,468,455,x,y,2);
+	sigle=carmove_down(468,278,468,455,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	sigle=carmove_left(458,465,370,465,x,y,2);
+	sigle=carmove_left(458,465,403,465,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -1018,19 +1181,24 @@ int carmove5to3(int *x,int *y)
 int carmove5to4(int *x,int *y)
 {
 	int sigle=0;
+	//int distance=542;//两点之间的距离
+	float prog=100.0/542;//用于进度条填充计算
+	float pprog=100.0/542;//用于传入在某两点之间不变的值acsend
 	// bar(710,263,720,560,13926);
 	// bar(450,263,720,273,13926);
 	
-	carmove_right(450,268,710,268,x,y,2);
+	sigle=carmove_right(450,268,710,268,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
-	carmove_down(715,278,715,560,x,y,2);
+	sigle=carmove_down(715,278,715,560,x,y,2,&prog,pprog);
 	if(sigle==1)
 	{
 		return sigle;
 	}
+	bar_round(910,558,70,47,8,1,65535);
+	outtextxy(885,550,"100.00",1,1,10,64384);
 	return sigle;
 }
 
@@ -1040,32 +1208,32 @@ int carmove5to4(int *x,int *y)
 ***************************/
 void car_school(int *x,int *y)
 {
-	carmove_left(240,465,130,465,x,y,1);
+	carmove_left(240,465,130,465,x,y,1,0,0);
 }
 
 void car_xiaoqu(int *x,int *y)
 {
-	carmove_left(310,720,212,720,x,y,1);
+	carmove_left(310,720,212,720,x,y,1,0,0);
 }
 
 void car_lake(int *x,int *y)
 {
-	carmove_right(130,25,360,25,x,y,1);
+	carmove_right(130,25,360,25,x,y,1,0,0);
 }
 
 void car_market(int *x,int *y)
 {
-	carmove_right(240,465,370,465,x,y,1);
+	carmove_right(240,465,370,465,x,y,1,0,0);
 }
 
 void car_library(int *x,int *y)
 {
-	carmove_on(715,680,715,560,x,y,1);
+	carmove_on(715,680,715,560,x,y,1,0,0);
 }
 
 void car_pool(int *x,int *y)
 {
-	carmove_left(590,269,450,268,x,y,1);
+	carmove_left(590,269,450,268,x,y,1,0,0);
 }
 
 
@@ -1074,12 +1242,13 @@ void car_pool(int *x,int *y)
 /*****************************
 画路段之间的基本移动图像
 *****************************/
-int carmove_on(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
+int carmove_on(int x1,int y1, int x2, int y2,int *x,int *y, int flag,float *progress,float acsend)
 {
 	int i;
 	int j;
-
+	//float acsend=*progress;//用于数字增长
 	int sigle=0;
+	char mprogress[8]="\0";//用于进度条数字变化
 	
 	/*初始化小车*/
 	CAR_CONDITION car_position;
@@ -1109,7 +1278,15 @@ int carmove_on(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
 	/*开始动画绘制*/
 	for(i=0;i<j;i++)
 	{
-	    sigle=carmove_onestep(&car_position,x,y,flag);
+	    sigle=carmove_basic(&car_position,x,y,flag);
+		*progress=*progress+acsend;
+		if(flag==2&&i%5==0)
+		{
+			bar_round(910,558,70,47,8,1,65535);
+			sprintf(mprogress,"%.2f",*progress);
+			outtextxy(885,550,mprogress,1,1,10,64384);
+			
+		}
 		if(sigle==1)
 		{
 			return sigle;
@@ -1125,12 +1302,13 @@ int carmove_on(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
 	return sigle;
 }
 
-int carmove_down(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
+int carmove_down(int x1,int y1, int x2, int y2,int *x,int *y, int flag,float *progress,float acsend)
 {
 	int i;
 	int j;
-
+	//float acsend=*progress;//用于数字增长
 	int sigle=0;
+	char mprogress[8]="\0";//用于进度条数字变化
 	
 	/*初始化小车*/
 	CAR_CONDITION car_position;
@@ -1160,7 +1338,15 @@ int carmove_down(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
 	/*开始动画绘制*/
 	for(i=0;i<j;i++)
 	{
-        sigle=carmove_onestep(&car_position,x,y,flag);
+        sigle=carmove_basic(&car_position,x,y,flag);
+		*progress+=acsend;
+		if(flag==2&&i%5==0)
+		{
+			bar_round(910,558,70,47,8,1,65535);
+			sprintf(mprogress,"%.2f",*progress);
+			outtextxy(885,550,mprogress,1,1,10,64384);
+			
+		}
 		if(sigle==1)
 		{
 			return sigle;
@@ -1176,12 +1362,13 @@ int carmove_down(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
 	return sigle;
 }
 
-int carmove_left(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
+int carmove_left(int x1,int y1, int x2, int y2,int *x,int *y, int flag,float *progress,float acsend)
 {
 	int i;
 	int j;
-	
+	//float acsend=*progress;//用于数字增长
 	int sigle=0;
+	char mprogress[8]="\0";//用于进度条数字变化
 	
 	/*初始化小车*/
 	CAR_CONDITION car_position;
@@ -1211,7 +1398,15 @@ int carmove_left(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
 	/*开始动画绘制*/
 	for(i=0;i<j;i++)
 	{
-	    sigle=carmove_onestep(&car_position,x,y,flag);
+	    sigle=carmove_basic(&car_position,x,y,flag);
+		*progress+=acsend;
+		if(flag==2&&i%5==0)
+		{
+			bar_round(910,558,70,47,8,1,65535);
+			sprintf(mprogress,"%.2f",*progress);
+			outtextxy(885,550,mprogress,1,1,10,64384);
+			
+		}
 		if(sigle==1)
 		{
 			return sigle;
@@ -1227,12 +1422,13 @@ int carmove_left(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
 	return sigle;
 }
 
-int carmove_right(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
+int carmove_right(int x1,int y1, int x2, int y2,int *x,int *y, int flag,float *progress,float acsend)
 {
 	int i;
 	int j;
-	
+	//float acsend=*progress;//用于数字增长
 	int sigle=0;
+	char mprogress[8]="\0";//用于进度条数字变化
 	
 	/*初始化小车*/
 	CAR_CONDITION car_position;
@@ -1262,7 +1458,15 @@ int carmove_right(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
 	/*开始动画绘制*/
 	for(i=0;i<j;i++)
 	{ 
-	    sigle=carmove_onestep(&car_position,x,y,flag);
+	    sigle=carmove_basic(&car_position,x,y,flag);
+		*progress+=acsend;
+		if(flag==2&&i%5==0)
+		{
+			bar_round(910,558,70,47,8,1,65535);
+			sprintf(mprogress,"%.2f",*progress);
+			outtextxy(885,550,mprogress,1,1,10,64384);
+			
+		}
 		if(sigle==1)
 		{
 			return sigle;
