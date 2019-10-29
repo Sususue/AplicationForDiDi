@@ -28,7 +28,7 @@ int carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag)
 		case 3://左
 		{
 			car_draw_left(*car_position);
-			x0 = x0-2;
+			x0 = x0-1;
 			break;
 		}
 		case 4://右
@@ -159,11 +159,11 @@ int carmove_onestep(CAR_CONDITION *car_position,int *x,int *y, int flag)
 			break;
 	}
 	/*调用最小移动单元*/
-	for(i=0;i<20;i++);
-	{
-		newxy(x,y,&button);
-		mx = *x;
-		my = *y;
+	// for(i=0;i<20;i++);//这个分号不能少，不然就真的进循环了。这个for语句其实是个废话
+	// {
+	// 	newxy(x,y,&button);
+	// 	mx = *x;
+	// 	my = *y;
   
 	    sigle=carmove_basic(car_position,x,y,flag);
 		if(sigle==1)
@@ -171,7 +171,7 @@ int carmove_onestep(CAR_CONDITION *car_position,int *x,int *y, int flag)
 			return sigle;
 		}
 	
-	}
+	// }
 	return sigle;
 }
 
@@ -1206,7 +1206,7 @@ int carmove_left(int x1,int y1, int x2, int y2,int *x,int *y, int flag)
 	get_image((car_position).xpixel-21,(car_position).ypixel-11,(car_position).xpixel+22,(car_position).ypixel+12,(car_position).pic);
 	car_draw_left(car_position);
 	
-	j=(x1-x2)/2;
+	j=x1-x2;
 	
 	/*开始动画绘制*/
 	for(i=0;i<j;i++)

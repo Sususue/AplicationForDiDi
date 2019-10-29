@@ -66,7 +66,13 @@ extern void car_draw_down1(int x,int y);
 *********************************************/
 void newfastcar(CARFAST *car);
 
-
+/*********************************************
+功能说明:取消订单
+参数说明:x,y:鼠标
+        infor:用户信息
+返回值:返回0表示取消订单，1不取消
+*********************************************/
+int cancelorder(int *x, int *y, USEINFOR *infor);
 
 
 #endif

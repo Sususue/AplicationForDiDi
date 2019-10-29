@@ -38,7 +38,7 @@ void car_take_box(int* x, int* y, USEINFOR *infor)
     placename[1]="小区";
     placename[2]="东湖";
     placename[3]="商场";
-    placename[4]="图书馆";
+    placename[4]="图书馆"; 
     placename[5]="游泳馆";
 
     newfastcar(car);//初始化车辆
@@ -381,11 +381,14 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
 		
 		 if(mx>=798  && mx<=994 && my>=352 && my<=404 && button)//点击取消订单返回
         {
-           
-            *aimplace = UNCHOOSE;
-			flag=0;
-			waitime=0;
-            break;
+            flag=cancelorder(x,y,infor);
+            if (flag==0)
+            {
+                *aimplace = UNCHOOSE;
+                waitime=0;
+                break;
+            }
+            
         }
 		
 		time(&rawtime2);//获取GMT时间
@@ -449,10 +452,15 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
 		my = *y;
         if(mx>=798  && mx<=994 && my>=352 && my<=404 && button)//点击取消订单返回
         {
-			
-            *aimplace = UNCHOOSE;
-            waitime=0;
-            break;
+			flag=cancelorder(x,y,infor);
+            if (flag==0)
+            {
+                *aimplace = UNCHOOSE;
+                waitime=0;
+                break;
+            }
+            
+            
         }
         else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
         {
@@ -878,5 +886,54 @@ void newfastcar(CARFAST *car)
     }
 }
 
+int cancelorder(int *x, int *y, USEINFOR *infor)
+{
+    int mx;
+    int my;
+    int button;//确认鼠标是否点击
+    int flag =1;
+    mousehide(*x,*y);
+    save_image(512-210,384-140,512+210,384+140,"cancel");
+    bar_round(512,384,416,270,50,1,64384);
+    bar_round(512,384,410,265,48,1,65535);
+    fdhz(390,320,2,2,"司机已经接单",64384);
+	fdhz(380,390,1,1,"现在取消需支付费用",64384);
+    outtextxy(550,390,":",1,1,40,64384);
+    outtextxy(565,390,"2.00",1,1,10,64384);
+    fdhz(620,390,1,1,"元",64384);
+
+    bar_round(423,460,130,52,20,1,64384);
+    bar_round(423,460,124,47,18,1,65535);
+    fdhz(385,455,1,1,"确认取消",64384);
+
+    bar_round(601,460,130,52,20,1,64384);
+    bar_round(601,460,124,47,18,1,65535);
+    fdhz(580,455,1,1,"返回",64384);
+    reset_mouse(x,y);
+
+    while (1)
+    {
+        newxy(x,y,&button);
+		mx = *x;
+		my = *y;
+        if (mx>=358  && mx<=488 && my>=434 && my<=486 && button)//确认取消
+        {
+            changeMoney(infor,3.00);
+            flag = 0;
+            break;
+        }
+        else if (mx>=536  && mx<=666 && my>=434 && my<=486 && button)//返回
+        {
+            break;
+        }
+        
+        
+    }
+    mousehide(*x,*y);    
+    printf_image(512-210,384-140,512+210,384+140,"cancel");
+    reset_mouse(x,y);
+
+    return flag;
+}
 
 // void initialize()

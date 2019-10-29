@@ -225,8 +225,8 @@ void countprice(float *pointprice,int nowplace,int *aimplace,int timegap,int tim
 		judging=14;
 	}
 	
-
-	kilometer=(pointlength[judging])/100+1-3;
+    //80像素点一公里
+	kilometer=(pointlength[judging])/80+1-3;
 	if(kilometer<0)
 	{
 		kilometer=0;
