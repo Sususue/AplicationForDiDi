@@ -167,7 +167,7 @@ void choose_aimplace(int *x, int *y, int *aimplace, PLACE *location, USEINFOR *i
             
             break;
         }
-        else if (mx>=location[1].x-3  && mx<=location[1].x+3 && my>=location[1].y-3 && my<=location[1].y+3 && button)
+        else if (mx>=location[1].x-4  && mx<=location[1].x+4 && my>=location[1].y-4 && my<=location[1].y+4 && button)
         {
             if (infor->nowplace==1)//避免起点与终点选为同一个点
             {
@@ -182,7 +182,7 @@ void choose_aimplace(int *x, int *y, int *aimplace, PLACE *location, USEINFOR *i
             reset_mouse(x,y);
             break;
         }
-        else if (mx>=location[2].x-3  && mx<=location[2].x+3 && my>=location[2].y-3 && my<=location[2].y+3 && button)
+        else if (mx>=location[2].x-4  && mx<=location[2].x+4 && my>=location[2].y-4 && my<=location[2].y+4 && button)
         {
             if (infor->nowplace==2)//避免起点与终点选为同一个点
             {
@@ -197,7 +197,7 @@ void choose_aimplace(int *x, int *y, int *aimplace, PLACE *location, USEINFOR *i
             reset_mouse(x,y);
             break;
         }
-        else if (mx>=location[3].x-3  && mx<=location[3].x+3 && my>=location[3].y-3 && my<=location[3].y+3 && button)
+        else if (mx>=location[3].x-4  && mx<=location[3].x+4 && my>=location[3].y-4 && my<=location[3].y+4 && button)
         {
             if (infor->nowplace==3)//避免起点与终点选为同一个点
             {
@@ -212,7 +212,7 @@ void choose_aimplace(int *x, int *y, int *aimplace, PLACE *location, USEINFOR *i
             reset_mouse(x,y);
             break;
         }
-        else if (mx>=location[4].x-3  && mx<=location[4].x+3 && my>=location[4].y-3 && my<=location[4].y+3 && button)
+        else if (mx>=location[4].x-4  && mx<=location[4].x+4 && my>=location[4].y-4 && my<=location[4].y+4 && button)
         {
             if (infor->nowplace==4)//避免起点与终点选为同一个点
             {
@@ -227,7 +227,7 @@ void choose_aimplace(int *x, int *y, int *aimplace, PLACE *location, USEINFOR *i
             reset_mouse(x,y);
             break;
         }
-        else if (mx>=location[5].x-3  && mx<=location[5].x+3 && my>=location[5].y-3 && my<=location[5].y+3 && button)
+        else if (mx>=location[5].x-4  && mx<=location[5].x+4 && my>=location[5].y-4 && my<=location[5].y+4 && button)
         {
             if (infor->nowplace==5)//避免起点与终点选为同一个点
             {

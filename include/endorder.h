@@ -52,8 +52,12 @@ extern void countprice(float *pointprice,int nowplace,int *aimplace,int timegap,
 参数说明：price:价格
         infor:用户信息结构
         aimplace:目的地
+		nowtime_hour:现在的时间，根据时间段判断价格计算
+		timegap:从呼叫快车开始到快车结束的时间间隔(s)
+		x、y:鼠标
+		waitime:等待时间，用以判断是否为预约模式
 ******************************************************/
-void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int timegap, int *x, int *y);
+void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int timegap, int *x, int *y, int waitime);
 
 
 

@@ -255,15 +255,16 @@ void countprice(float *pointprice,int nowplace,int *aimplace,int timegap,int tim
 			startfare=11;
 			*pointprice=startfare+kilometer*1.8+minite*0.5;
 			break;
+
 		case 4:
 			startfare=10.3;
 			*pointprice=startfare+kilometer*1.7+minite*0.35;
 			break;
-			
 	}
-}
 
-void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int timegap, int *x, int *y)
+}
+//完成订单后显示金额并确认支付
+void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int timegap, int *x, int *y, int waitime)
 {
     int timecase;
     char chprice[8];
@@ -271,6 +272,7 @@ void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int t
     int my=0;
     int button=0;
 
+    //根据时间段计费
     if (nowtime_hour >= 0 && nowtime_hour <= 8)
     {
         timecase = 1;
@@ -290,10 +292,16 @@ void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int t
     }
     countprice(price,infor->nowplace,aimplace,timegap,timecase);
     
+    if (waitime != 0 && *price < 19.00)//如果是预约，预约基础费用为19.00
+    {
+        *price = 19.00;
+    }
+    
     sprintf(chprice,"%.2f",*price);
 
     mousehide(*x,*y);
     save_image(512-210,384-140,512+210,384+140,"notice");
+    //显示金额
     bar_round(512,384,416,270,50,1,64384);
     bar_round(512,384,410,265,48,1,65535);
     fdhz(410,360,2,2,"金额",64384);
@@ -339,7 +347,7 @@ void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int t
                 break;
             }
         
-            else
+            else  //若余额不足
             {
                 mousehide(*x,*y);
                 save_image(512-210,384-140,512+210,384+140,"notice");
@@ -397,7 +405,7 @@ void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int t
             reset_mouse(x,y);
             break;
         }
-        else
+        else      //若未选择支付方式则进入支付方式选择
         {
             mousehide(*x,*y);
             save_image(512-210,384-140,512+210,384+140,"notice");
@@ -408,7 +416,7 @@ void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int t
             fdhz(450,420,1,1,"按任意键继续",44373);
             getch();
             reset_mouse(x,y);
-            pay_way(x,y,infor);
+            pay_way(x,y,infor);   
             printf_image(512-210,384-140,512+210,384+140,"notice");
             reset_mouse(x,y);
         }

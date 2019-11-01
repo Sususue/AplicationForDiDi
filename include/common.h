@@ -43,6 +43,9 @@
 #include "place.h"//快车选择目的地
 #include "judgfast.h"//判断那辆快车，哪个动画
 #include "cartake.h"//快车
+#include "rentmove.h"
+#include "findway.h"
+
 #include "select.h"  //主进程
  
 

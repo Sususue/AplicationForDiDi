@@ -388,7 +388,6 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
                 waitime=0;
                 break;
             }
-            
         }
 		
 		time(&rawtime2);//获取GMT时间
@@ -478,8 +477,8 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
 			bar_round(896,558,190,47,8,1,65535);
 			fdhz(825,550,1,1,"进度",64384);
 			outtextxy(960,550,"%",1,1,10,64384);
+
             //重新变橙
-            
             bar_round(896,468,196,52,10,1,64384);
             bar_round(896,468,190,47,8,1,65535);
             fdhz(825,460,1,1,"立",64384);
@@ -498,7 +497,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
                 time(&rawtime4);//获取GMT时间
 				time_gap1=difftime(rawtime4,rawtime3);
                 //计算价格并扣费
-                costmoney(&price,infor,aimplace,nowtime_hour,time_gap1,x,y);
+                costmoney(&price,infor,aimplace,nowtime_hour,time_gap1,x,y,waitime);
                 
                 //生成订单并截图保存
                 neworder(x,y,infor,car,placename,aimplace,mincar,buffer,price);
