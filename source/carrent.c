@@ -1,7 +1,7 @@
 #include "common.h"
 #include "carrent.h"
 
-#define PARKNUM 6
+// #define PARKNUM 6
 
 void car_rent_box(int* x, int* y, USEINFOR *infor)
 {
@@ -138,7 +138,7 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 				FillCircle(182,674,30,57083);//小区
 				FillCircle(670,530,30,57083);//图书馆
 			
-				rentprocess_box(x,y,parking,rent,&carflag);
+				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				//画停车场的位置
 				FillCircle(317,70,30,9284);//东湖
 				FillCircle(513,223,30,9284);//游泳馆
@@ -183,7 +183,7 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 				FillCircle(182,674,30,57083);//小区
 				FillCircle(670,530,30,57083);//图书馆
 				
-				rentprocess_box(x,y,parking,rent,&carflag);
+				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				//画停车场的位置
 				FillCircle(317,70,30,9284);//东湖
 				FillCircle(513,223,30,9284);//游泳馆
@@ -228,7 +228,7 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 				FillCircle(182,674,30,57083);//小区
 				FillCircle(670,530,30,57083);//图书馆
 				
-				rentprocess_box(x,y,parking,rent,&carflag);
+				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				
 				//画停车场的位置
 				FillCircle(317,70,30,9284);//东湖
@@ -274,7 +274,7 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 				FillCircle(182,674,30,57083);//小区
 				FillCircle(670,530,30,57083);//图书馆
 				
-				rentprocess_box(x,y,parking,rent,&carflag);
+				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				
 				//画停车场的位置
 				FillCircle(317,70,30,9284);//东湖
@@ -320,7 +320,7 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 				FillCircle(182,674,30,57083);//小区
 				FillCircle(670,530,30,57083);//图书馆
 				
-				rentprocess_box(x,y,parking,rent,&carflag);
+				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				
 				//画停车场的位置
 				FillCircle(317,70,30,9284);//东湖
@@ -366,7 +366,7 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 				FillCircle(182,674,30,57083);//小区
 				FillCircle(670,530,30,57083);//图书馆
 				
-				rentprocess_box(x,y,parking,rent,&carflag);
+				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				
 				//画停车场的位置
 				FillCircle(317,70,30,9284);//东湖
@@ -682,7 +682,7 @@ int show_parkinfo(int *x,int *y,const PARK parking[],CARRENT rent[],int nuber,in
 
 }
 
-void rentprocess_box(int *x, int *y,const PARK parking[],const CARRENT rent[],int *carflag2)
+void rentprocess_box(int *x, int *y,const PARK parking[],const CARRENT rent[],int *carflag2, USEINFOR *infor)
 {
 	//time_t nowtime1;
 	//time_t nowtime2;//用于获取当前时间
@@ -753,7 +753,7 @@ void rentprocess_box(int *x, int *y,const PARK parking[],const CARRENT rent[],in
 
 	reset_mouse(x,y);
 
-	sigle = find(x,y,&rent[*carflag2]);
+	sigle = find(x,y,&rent[*carflag2],infor,parking);
 	//  while (1)
     // {
     //     newxy(x,y,&button);
@@ -803,12 +803,12 @@ void newrentcar(CARRENT *car,const PARK parking[],int number1)
     rentplace[5].y=268;//游泳馆
     rentplace[0].x=100;
     rentplace[0].y=465;//学校
-    rentplace[3].x=423;
+    rentplace[3].x=340;
     rentplace[3].y=465;//商场
     rentplace[1].x=182;
     rentplace[1].y=720;//小区
 	rentplace[4].x=715;
-    rentplace[4].y=685;//图书馆
+    rentplace[4].y=530;//图书馆
 
 
     //初始化车牌号集
@@ -874,12 +874,12 @@ void newpark(PARK *parking)
     parkplace[5].y=223;//游泳馆
     parkplace[0].x=100;
     parkplace[0].y=420;//学校
-    parkplace[3].x=423;
+    parkplace[3].x=340;
     parkplace[3].y=510;//商场
     parkplace[1].x=182;
     parkplace[1].y=674;//小区
 	parkplace[4].x=670;
-    parkplace[4].y=685;//图书馆
+    parkplace[4].y=530;//图书馆
 
 	for ( i = 0; i < PARKNUM; i++, parking++)
     {

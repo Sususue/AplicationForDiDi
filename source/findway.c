@@ -6,6 +6,8 @@
 // #define NOWAY -1
 // #define DIRECTNUM 4
 // #define AREONUM 8 //道路分为八个区，四个横着，四个竖着
+// #define PARKR 60 //判断停车时与停车场的半径
+// #define PARKNUM 6
 
 //最短路径算法，由于最后存储是逆序的，所以实际找的是终点到起点的最短路径
 int Dijkstra(int start, int end, int way[], int *count)
@@ -143,7 +145,7 @@ void judgeAreo(PLACE node[MAXSIZE],int x, int y, PLACE *placeto, int *flag, int 
     };
     
 
-    *flag=0;//用以判断是否在结点上,等于2时表示已经在节点
+    *flag=0;//用以判断是否在结点上,等于偶数时表示已经在节点
     placeto->x = x;
     placeto->y = y;
 
@@ -161,12 +163,12 @@ void judgeAreo(PLACE node[MAXSIZE],int x, int y, PLACE *placeto, int *flag, int 
                 placeto->x = correct[i];
                 
             }
-            *flag+=2*i+1;
+            *flag += 2*i+1;
         }
     }
-    if (*flag%2 == 0)
+    if ((*flag)%2 == 0)
     {
-        for ( i = 0; i < AREONUM; i++)
+        for ( i = 0; i < MAXSIZE; i++)
         {
             if (placeto->x == node[i].x && placeto->y == node[i].y)
             {
@@ -187,10 +189,141 @@ void judgeAreo(PLACE node[MAXSIZE],int x, int y, PLACE *placeto, int *flag, int 
 
 //判断最近的路口两个结点
 // place1/place2:暂存两个最近的路口结点
+// void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
+// {
+//     int i,j;
+//     double max;//存最大距离
+//     int temp[AREONUM][3]={
+//         {0,NOWAY,NOWAY},
+//         {1,2,3},
+//         {4,5,6},
+//         {7,8,9},
+//         {4,7,NOWAY},
+//         {0,1,5},
+//         {2,6,8},
+//         {3,9,NOWAY}
+//     };//存路与结点的关系
+//     int dele;//舍弃的点
+
+//     switch (flag)
+//     {
+//     case 3://在1号路上
+//         max = pow(node[temp[1][0]].x-place.x,2)+pow(node[temp[1][0]].y-place.y,2);
+//         dele = 0;
+//         for ( i = 0; i < 3; i++)
+//         {
+//             if (max < pow(node[temp[1][i]].x-place.x,2)+pow(node[temp[1][i]].y-place.y,2))
+//             {
+//                 max = pow(node[temp[1][i]].x-place.x,2)+pow(node[temp[1][i]].y-place.y,2);
+//                 dele = i;
+//             }
+//         }
+//         for ( i = 0,j =0; i < 2; i++,j++)
+//         {
+//             if (j==dele)
+//             {
+//                 j++;
+//             }
+//             nearplace[i]=temp[1][j];
+//         }
+//         break;
+//     case 5:
+//         max = pow(node[temp[2][0]].x-place.x,2)+pow(node[temp[2][0]].y-place.y,2);
+//         dele = 0;
+//         for ( i = 0; i < 3; i++)
+//         {
+//             if (max < pow(node[temp[2][i]].x-place.x,2)+pow(node[temp[2][i]].y-place.y,2))
+//             {
+//                 max = pow(node[temp[2][i]].x-place.x,2)+pow(node[temp[2][i]].y-place.y,2);
+//                 dele = i;
+//             }
+//         }
+//         for ( i = 0,j =0; i < 2; i++,j++)
+//         {
+//             if (j==dele)
+//             {
+//                 j++;
+//             }
+//             nearplace[i]=temp[2][j];
+//         }
+//         break;
+//     case 7:
+//         max = pow(node[temp[3][0]].x-place.x,2)+pow(node[temp[3][0]].y-place.y,2);
+//         dele = 0;
+//         for ( i = 0; i < 3; i++)
+//         {
+//             if (max < pow(node[temp[3][i]].x-place.x,2)+pow(node[temp[3][i]].y-place.y,2))
+//             {
+//                 max = pow(node[temp[3][i]].x-place.x,2)+pow(node[temp[3][i]].y-place.y,2);
+//                 dele = i;
+//             }
+//         }
+//         for ( i = 0,j =0; i < 2; i++,j++)
+//         {
+//             if (j==dele)
+//             {
+//                 j++;
+//             }
+//             nearplace[i]=temp[3][j];
+//         }
+//         break;
+//     case 9:
+//         nearplace[0]=4;
+//         nearplace[1]=7;
+//         break;
+//     case 11:
+//         max = pow(node[temp[5][0]].x-place.x,2)+pow(node[temp[5][0]].y-place.y,2);
+//         dele = 0;
+//         for ( i = 0; i < 3; i++)
+//         {
+//             if (max < pow(node[temp[5][i]].x-place.x,2)+pow(node[temp[5][i]].y-place.y,2))
+//             {
+//                 max = pow(node[temp[5][i]].x-place.x,2)+pow(node[temp[5][i]].y-place.y,2);
+//                 dele = i;
+//             }
+//         }
+//         for ( i = 0,j =0; i < 2; i++,j++)
+//         {
+//             if (j==dele)
+//             {
+//                 j++;
+//             }
+//             nearplace[i]=temp[5][j];
+//         }
+//         break;
+//     case 13:
+//         max = pow(node[temp[6][0]].x-place.x,2)+pow(node[temp[6][0]].y-place.y,2);
+//         dele = 0;
+//         for ( i = 0; i < 3; i++)
+//         {
+//             if (max < pow(node[temp[6][i]].x-place.x,2)+pow(node[temp[6][i]].y-place.y,2))
+//             {
+//                 max = pow(node[temp[6][i]].x-place.x,2)+pow(node[temp[6][i]].y-place.y,2);
+//                 dele = i;
+//             }
+//         }
+//         for ( i = 0,j =0; i < 2; i++,j++)
+//         {
+//             if (j==dele)
+//             {
+//                 j++;
+//             }
+//             nearplace[i]=temp[6][j];
+//         }
+//         break;
+//     case 15:
+//         nearplace[0]=3;
+//         nearplace[1]=9;
+//         break;
+//     default:
+//         break;
+//     }
+// }
+//改良寻找结点,寻找当前位置路段两侧的结点(一定要正确，对后面是否找到最短路径有很大影响)
 void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
 {
     int i,j;
-    double max;//存最大距离
+    // double min;//存最大距离
     int temp[AREONUM][3]={
         {0,NOWAY,NOWAY},
         {1,2,3},
@@ -201,68 +334,83 @@ void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
         {2,6,8},
         {3,9,NOWAY}
     };//存路与结点的关系
-    int dele;//舍弃的点
+    int midpoint = 1;//中间的点一定会是其中一个结点1=(0+2)/2
 
     switch (flag)
     {
     case 3://在1号路上
-        max = pow(node[temp[1][0]].x-place.x,2)+pow(node[temp[1][0]].y-place.y,2);
-        dele = 0;
-        for ( i = 0; i < 3; i++)
+        nearplace[0] = temp[1][midpoint];
+        if (place.x - node[temp[1][midpoint]].x < 0)
         {
-            if (max < pow(node[temp[1][i]].x-place.x,2)+pow(node[temp[1][i]].y-place.y,2))
+            if (place.x - node[temp[1][0]].x > 0)
             {
-                max = pow(node[temp[1][i]].x-place.x,2)+pow(node[temp[1][i]].y-place.y,2);
-                dele = i;
+                nearplace[1] = temp[1][0];
             }
+            else
+            {
+                nearplace[1] = temp[1][2];
+            } 
         }
-        for ( i = 0,j =0; i < 2; i++,j++)
+        else
         {
-            if (j==dele)
+            if (place.x - node[temp[1][0]].x < 0)
             {
-                j++;
+                nearplace[1] = temp[1][0];
             }
-            nearplace[i]=temp[1][j];
+            else
+            {
+                nearplace[1] = temp[1][2];
+            } 
         }
         break;
     case 5:
-        max = pow(node[temp[2][0]].x-place.x,2)+pow(node[temp[2][0]].y-place.y,2);
-        dele = 0;
-        for ( i = 0; i < 3; i++)
+        nearplace[0] = temp[2][midpoint];
+        if (place.x - node[temp[2][midpoint]].x < 0)
         {
-            if (max < pow(node[temp[2][i]].x-place.x,2)+pow(node[temp[2][i]].y-place.y,2))
+            if (place.x - node[temp[2][0]].x > 0)
             {
-                max = pow(node[temp[2][i]].x-place.x,2)+pow(node[temp[2][i]].y-place.y,2);
-                dele = i;
+                nearplace[1] = temp[2][0];
             }
+            else
+            {
+                nearplace[1] = temp[2][2];
+            } 
         }
-        for ( i = 0,j =0; i < 2; i++,j++)
+        else
         {
-            if (j==dele)
+            if (place.x - node[temp[2][0]].x < 0)
             {
-                j++;
+                nearplace[1] = temp[2][0];
             }
-            nearplace[i]=temp[2][j];
+            else
+            {
+                nearplace[1] = temp[2][2];
+            } 
         }
         break;
     case 7:
-        max = pow(node[temp[3][0]].x-place.x,2)+pow(node[temp[3][0]].y-place.y,2);
-        dele = 0;
-        for ( i = 0; i < 3; i++)
+        nearplace[0] = temp[3][midpoint];
+        if (place.x - node[temp[3][midpoint]].x < 0)
         {
-            if (max < pow(node[temp[3][i]].x-place.x,2)+pow(node[temp[3][i]].y-place.y,2))
+            if (place.x - node[temp[3][0]].x > 0)
             {
-                max = pow(node[temp[3][i]].x-place.x,2)+pow(node[temp[3][i]].y-place.y,2);
-                dele = i;
+                nearplace[1] = temp[3][0];
             }
+            else
+            {
+                nearplace[1] = temp[3][2];
+            } 
         }
-        for ( i = 0,j =0; i < 2; i++,j++)
+        else
         {
-            if (j==dele)
+            if (place.x - node[temp[3][0]].x < 0)
             {
-                j++;
+                nearplace[1] = temp[3][0];
             }
-            nearplace[i]=temp[3][j];
+            else
+            {
+                nearplace[1] = temp[3][2];
+            } 
         }
         break;
     case 9:
@@ -270,43 +418,53 @@ void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
         nearplace[1]=7;
         break;
     case 11:
-        max = pow(node[temp[5][0]].x-place.x,2)+pow(node[temp[5][0]].y-place.y,2);
-        dele = 0;
-        for ( i = 0; i < 3; i++)
+        nearplace[0] = temp[5][midpoint];
+        if (place.y - node[temp[5][midpoint]].y < 0)
         {
-            if (max < pow(node[temp[5][i]].x-place.x,2)+pow(node[temp[5][i]].y-place.y,2))
+            if (place.y - node[temp[5][0]].y > 0)
             {
-                max = pow(node[temp[5][i]].x-place.x,2)+pow(node[temp[5][i]].y-place.y,2);
-                dele = i;
+                nearplace[1] = temp[5][0];
             }
+            else
+            {
+                nearplace[1] = temp[5][2];
+            } 
         }
-        for ( i = 0,j =0; i < 2; i++,j++)
+        else
         {
-            if (j==dele)
+            if (place.y - node[temp[5][0]].y < 0)
             {
-                j++;
+                nearplace[1] = temp[5][0];
             }
-            nearplace[i]=temp[5][j];
+            else
+            {
+                nearplace[1] = temp[5][2];
+            } 
         }
         break;
     case 13:
-        max = pow(node[temp[6][0]].x-place.x,2)+pow(node[temp[6][0]].y-place.y,2);
-        dele = 0;
-        for ( i = 0; i < 3; i++)
+        nearplace[0] = temp[6][midpoint];
+        if (place.y - node[temp[6][midpoint]].y < 0)
         {
-            if (max < pow(node[temp[6][i]].x-place.x,2)+pow(node[temp[6][i]].y-place.y,2))
+            if (place.y - node[temp[6][0]].y > 0)
             {
-                max = pow(node[temp[6][i]].x-place.x,2)+pow(node[temp[6][i]].y-place.y,2);
-                dele = i;
+                nearplace[1] = temp[6][0];
             }
+            else
+            {
+                nearplace[1] = temp[6][2];
+            } 
         }
-        for ( i = 0,j =0; i < 2; i++,j++)
+        else
         {
-            if (j==dele)
+            if (place.y - node[temp[6][0]].y < 0)
             {
-                j++;
+                nearplace[1] = temp[6][0];
             }
-            nearplace[i]=temp[6][j];
+            else
+            {
+                nearplace[1] = temp[6][2];
+            } 
         }
         break;
     case 15:
@@ -317,6 +475,10 @@ void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
         break;
     }
 }
+
+
+
+
 // //判断终点/起点要去两个结点中的哪一个结点
 // void StartAndEnd(PLACE node[MAXSIZE], PLACE place, int nearplace[2],int *placenum)
 // {
@@ -394,14 +556,14 @@ void StartAndEnd(PLACE node[MAXSIZE],PLACE placenow,PLACE placeto, int nearstart
 
 
 //将寻找的路径转换为动画
-int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y)
+int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y,USEINFOR *infor,int *avoid)
 {
     int i;
     int mx,my,button;
     int sigle=0;//用于接力退出
     for ( i = 0; i < count; i++)
     { 
-        sigle = rentmove(car_position,node[way[i]].x,node[way[i]].y,node[way[i+1]].x,node[way[i+1]].y,x,y,direct[i],energe);
+        sigle = rentmove(car_position,node[way[i]].x,node[way[i]].y,node[way[i+1]].x,node[way[i+1]].y,x,y,direct[i],energe,infor,avoid);
         if (sigle == 1)
         {
             break;
@@ -411,11 +573,13 @@ int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE
     return sigle;
 }
 //寻路
-int find(int *x, int *y, CARRENT *rcar)
+int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
 {
     int mx,my,button;//鼠标点击
     int i;//用于计数
+    int avoid = 0;//避免反复提醒电量过低
     int sigle=0;//用于接力退出
+    int lockflag = 0;//判断能否锁车,值为1时可以锁车，可以还车
     int nowflag = 0;//判断是否在结点，若为偶数则在路口结点，直接跳过findNode()和StartAndEnd()两个函数
     int toflag = 0;
     int start;//起点标号
@@ -443,6 +607,10 @@ int find(int *x, int *y, CARRENT *rcar)
     };
     /*初始化小车*/
 	CAR_CONDITION car_position;
+
+    car_position.xpixel=rcar->rentcar.x;
+    car_position.ypixel=rcar->rentcar.y;
+
     placenow.x=rcar->rentcar.x;
     placenow.y=rcar->rentcar.y;
 
@@ -490,17 +658,26 @@ int find(int *x, int *y, CARRENT *rcar)
             break;
     }
 
-    // car_draw_right1(placenow.x,placenow.y);//写死实验
-
-
     while (1)
     {
         newxy(x,y,&button);
 		mx = *x;
 		my = *y;
+        
+        // judgEnergy(&(rcar->leftenergy), &avoid, x, y,infor);
+        
+        
+        
         if(mx>=798  && mx<=994 && my>=532 && my<=584 && button)//点击锁车，判断是否能锁车
         {
-            break;
+            lockcar(parking,car_position,&lockflag,x,y);
+            if (lockflag == 1)//确认还车
+            {
+
+                break;
+            }
+            
+            
         }
         else if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
         {
@@ -596,15 +773,16 @@ int find(int *x, int *y, CARRENT *rcar)
                     if (startdir != 0)
                     {
                     
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,node[start].x,node[start].y,x,y,startdir,&(rcar->leftenergy));
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,node[start].x,node[start].y,x,y,startdir,&(rcar->leftenergy),infor,&avoid);
                         if(sigle==1)//用于安全报警后的接力退出
 			            {
 				            break;
 			            }
+                        // judgEnergy(&(rcar->leftenergy), &avoid, x, y,infor);
                     }
                     
                     //若终点不在结点上，第一个结点到最后一个结点
-                    sigle = linkCartoon(&car_position,node,way,direct,count,&(rcar->leftenergy),x,y);
+                    sigle = linkCartoon(&car_position,node,way,direct,count,&(rcar->leftenergy),x,y,infor,&avoid);
                     if(sigle==1)//用于安全报警后的接力退出
 			        {
 				        break;
@@ -612,11 +790,12 @@ int find(int *x, int *y, CARRENT *rcar)
                     //最后一个结点到终点
                     if (enddir != 0)
                     {
-                        sigle = rentmove(&car_position,node[end].x,node[end].y,placeto.x,placeto.y,x,y,enddir,&(rcar->leftenergy));
+                        sigle = rentmove(&car_position,node[end].x,node[end].y,placeto.x,placeto.y,x,y,enddir,&(rcar->leftenergy),infor,&avoid);
                         if(sigle==1)//用于安全报警后的接力退出
 			            {
 				            break;
 			            }
+                        // judgEnergy(&(rcar->leftenergy), &avoid, x, y,infor);
                     }
                     
                 }
@@ -624,19 +803,19 @@ int find(int *x, int *y, CARRENT *rcar)
                 {
                     if (placenow.y>placeto.y)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,1,&(rcar->leftenergy));//向上走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,1,&(rcar->leftenergy),infor,&avoid);//向上走
                     }
                     else if (placenow.y<placeto.y)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,2,&(rcar->leftenergy));//向下走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,2,&(rcar->leftenergy),infor,&avoid);//向下走
                     }
                     else if (placenow.x>placeto.x)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,3,&(rcar->leftenergy));//向左走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,3,&(rcar->leftenergy),infor,&avoid);//向左走
                     }
                     else if (placenow.x<placeto.x)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,4,&(rcar->leftenergy));//向右走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,4,&(rcar->leftenergy),infor,&avoid);//向右走
                     }
                     if(sigle==1)//用于安全报警后的接力退出
 			        {
@@ -680,6 +859,8 @@ int find(int *x, int *y, CARRENT *rcar)
             
         }
     }
+    //隐藏小车 
+    put_image(car_position.xpixel-22,car_position.ypixel-22,car_position.xpixel+22,car_position.ypixel+22,car_position.pic);
     /*释放分配的内存空间*/
 	free((car_position).pic);
 
@@ -715,6 +896,227 @@ int mousepress(int mx,int my)
     return value;
     
 
+}
+
+
+//判断电量
+void judgEnergy(int *energy,int *avoid, int *x, int *y, USEINFOR *infor)
+{
+    char menergy[5]="\0";//用于小车电量数字变化
+    if (*energy <= 20 && *avoid==0)
+    {
+            *avoid = 1;
+            mousehide(*x,*y);
+                
+            save_image(512-210,384-140,512+210,384+140,"energy");
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+            fdhz(440,320,2,2,"电量过低",64384);
+            fdhz(340,360,2,2,"请尽快找停车场停车",64384);
+            fdhz(450,420,1,1,"按任意键继续",44373);
+            getch();
+            printf_image(512-210,384-140,512+210,384+140,"energy");
+            reset_mouse(x,y);
+    }
+    if (*energy <= 5 )
+    {
+            mousehide(*x,*y);
+            save_image(512-210,384-140,512+210,384+140,"energy");
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+            fdhz(400,320,2,2,"电量即将耗尽",64384);
+            fdhz(380,360,2,2,"请尽快靠边停车",64384);
+            fdhz(400,420,1,1,"按任意键联系客服进行换电",44373);
+            getch();
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+            fdhz(450,360,2,2,"换电中",64384);
+			fdhz(460,420,1,1,"请耐心等待",44373);
+            delay(3000);
+            bar_round(512,384,416,270,50,1,64384);
+            bar_round(512,384,410,265,48,1,65535);
+            fdhz(440,320,2,2,"换电完成",64384);
+            fdhz(390,360,2,2,"支付费用",64384);
+            outtextxy(550,360,"50",2,2,15,64384);
+            fdhz(600,360,2,2,"元",64384);
+            fdhz(450,420,1,1,"按任意键继续",44373);
+            getch();
+
+            while (1)
+            {
+                if (infor->payway == 1)//支付方式为余额
+                {
+                    if (infor->money>=50)
+                    {
+                        changeMoney(infor,50);
+                        mousehide(*x,*y);
+                        save_image(512-210,384-140,512+210,384+140,"notice");
+                        bar_round(512,384,416,270,50,1,64384);
+                        bar_round(512,384,410,265,48,1,65535);
+                        fdhz(440,360,2,2,"支付完成",64384);
+                        fdhz(450,420,1,1,"按任意键继续",44373);
+                        
+                        getch();
+                        printf_image(512-210,384-140,512+210,384+140,"notice");
+                        reset_mouse(x,y);
+                        *energy = 100;
+                        break;
+                    }
+                
+                    else  //若余额不足
+                    {
+                        mousehide(*x,*y);
+                        save_image(512-210,384-140,512+210,384+140,"notice");
+                        bar_round(512,384,416,270,50,1,64384);
+                        bar_round(512,384,410,265,48,1,65535);
+                        fdhz(440,360,2,2,"余额不足",64384);
+                        fdhz(450,420,1,1,"按任意键充值",44373);
+                        getch();
+                        reset_mouse(x,y);
+                        top_up(x,y,infor);
+                        printf_image(512-210,384-140,512+210,384+140,"notice");
+                        reset_mouse(x,y);
+                    }
+                }
+                else if (infor->payway == 2)//支付方式为微信
+                {
+                    mousehide(*x,*y);
+                    save_image(512-210,384-140,512+210,384+140,"notice");
+                    bar_round(512,384,416,270,50,1,64384);
+                    bar_round(512,384,410,265,48,1,65535);
+                    
+                    bar_round(255-30+160,480-100,70,70,22,1,2016);//微信绿
+                    FillCircle(221+160,480-100,20,65535);
+                    FillCircle(241+160,490-100,15,2016);
+                    FillCircle(241+160,490-100,13,65535);
+                    FillCircle(241-6+160,490-2-100,2,2016);
+                    FillCircle(241+6+160,490-2-100,2,2016);
+                    FillCircle(221-9+160,480-3-100,2,2016);
+                    FillCircle(221+9+160,480-3-100,2,2016);
+
+                    fdhz(440,360,2,2,"支付完成",64384);
+                    fdhz(450,420,1,1,"按任意键继续",44373);
+                    getch();
+                    
+                    printf_image(512-210,384-140,512+210,384+140,"notice");
+                    reset_mouse(x,y);
+                    *energy = 100;
+                    break;
+                }
+                else if (infor->payway == 3)//支付方式为支付宝
+                {
+                    mousehide(*x,*y);
+                    save_image(512-210,384-140,512+210,384+140,"notice");
+                    bar_round(512,384,416,270,50,1,64384);
+                    bar_round(512,384,410,265,48,1,65535);
+                    
+                    //画支付宝
+                    bar_round(510-30-95,480-100,70,70,22,1,1535);//支付宝蓝
+                    fdhz(455-95,450-100,4,4,"支",65535);
+
+                    fdhz(440,360,2,2,"支付完成",64384);
+                    fdhz(450,420,1,1,"按任意键继续",44373);
+                    getch();
+                    
+                    printf_image(512-210,384-140,512+210,384+140,"notice");
+                    reset_mouse(x,y);
+                    *energy = 100;
+                    break;
+                }
+                else      //若未选择支付方式则进入支付方式选择
+                {
+                    mousehide(*x,*y);
+                    save_image(512-210,384-140,512+210,384+140,"notice");
+                    bar_round(512,384,416,270,50,1,64384);
+                    bar_round(512,384,410,265,48,1,65535);
+                    
+                    fdhz(390,360,2,2,"未选择支付方式",64384);
+                    fdhz(450,420,1,1,"按任意键继续",44373);
+                    getch();
+                    reset_mouse(x,y);
+                    pay_way(x,y,infor);   
+                    printf_image(512-210,384-140,512+210,384+140,"notice");
+                    reset_mouse(x,y);
+                }
+            }
+            printf_image(512-210,384-140,512+210,384+140,"energy");
+            reset_mouse(x,y);
+            bar_round(896,468,190,47,8,1,65535);
+			sprintf(menergy,"%d",*energy);
+			outtextxy(885,460,menergy,1,1,10,64384);
+    }
+}
+//判断锁车
+void lockcar(const PARK parking[], CAR_CONDITION car_position, int *lockflag, int *x, int *y)
+{
+    int i;
+    int mx,my,button;
+    double dis;
+    for ( i = 0; i < PARKNUM; i++)
+    {
+        dis = pow(parking[i].x-car_position.xpixel,2)+pow(parking[i].y-car_position.ypixel,2);
+        if (dis < PARKR*PARKR)
+        {
+            *lockflag = 1;
+            break;
+        }
+        
+    }
+    if (*lockflag == 0)
+    {
+        mousehide(*x,*y);
+        save_image(512-210,384-140,512+210,384+140,"lock");
+        bar_round(512,384,416,270,50,1,64384);
+        bar_round(512,384,410,265,48,1,65535);
+        fdhz(380,360,2,2,"附近没有停车场",64384);
+        fdhz(450,420,1,1,"按任意键继续",44373);
+        getch();
+        printf_image(512-210,384-140,512+210,384+140,"lock");
+        reset_mouse(x,y);
+    }
+    else
+    {
+        mousehide(*x,*y);
+        
+        
+        save_image(512-210,384-140,512+210,384+140,"lock");
+        bar_round(512,384,416,270,50,1,64384);
+        bar_round(512,384,410,265,48,1,65535);
+        fdhz(440,360,2,2,"车已上锁",64384);
+        // fdhz(450,420,1,1,"按任意键继续",44373);
+
+
+        bar_round(423,460,130,52,20,1,64384);
+        bar_round(423,460,124,47,18,1,65535);
+        fdhz(385,455,1,1,"确认还车",64384);
+
+        bar_round(601,460,130,52,20,1,64384);
+        bar_round(601,460,124,47,18,1,65535);
+        fdhz(580,455,1,1,"解锁",64384);
+
+        while (1)
+        {
+            newxy(x,y,&button);
+		    mx = *x;
+		    my = *y;
+            if (mx>=358  && mx<=488 && my>=434 && my<=486 && button)//确认还车
+            {
+                
+                break;
+            }
+            else if (mx>=536  && mx<=666 && my>=434 && my<=486 && button)//解锁
+            {
+                *lockflag = 0;
+                break;
+            }
+        
+        }
+
+        printf_image(512-210,384-140,512+210,384+140,"lock");
+        reset_mouse(x,y);
+    }
+    
+ 
 }
 // void main()
 // {

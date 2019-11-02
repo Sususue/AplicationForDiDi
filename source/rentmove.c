@@ -13,14 +13,14 @@
 				   derection==4:右
 		 energy：用于显示电量的参数
 **************************************************************************/
-int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int *y,int direction,int *energy)
+int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int *y,int direction,int *energy, USEINFOR *infor,int* avoid)
 {
 	int i;
 	int j;//用于单位移动循环的变量
 	int descent=1;//每走32个像素点，小车减少1%电量
 	char menergy[5]="\0";//用于小车电量数字变化
 	int sigle=0;
-	
+	// int avoid = 0;//避免反复提醒电量过低
 	/*初始化小车*/
 	// CAR_CONDITION car_position;
 	put_image(x1-22,y1-22,x1+22,y1+22,(*car_position).pic);
@@ -77,10 +77,19 @@ int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int
 	    sigle=rentmove_basic(car_position,x,y);
 		if(i%32==0)
 		{
-			*energy=*energy-descent;
+			if (*energy > 5)
+			{
+				*energy=*energy-descent;
+			}
+			else
+			{
+				*energy=5;
+			}
 			bar_round(896,468,190,47,8,1,65535);
 			sprintf(menergy,"%d",*energy);
 			outtextxy(885,460,menergy,1,1,10,64384);
+
+			judgEnergy(energy,avoid,x,y,infor);
 		}
 		if(sigle==1)
 		{

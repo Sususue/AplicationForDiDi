@@ -13,7 +13,7 @@
 				   derection==4:右
 		 energy：用于显示电量的参数
 **************************************************************************/
-extern int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int *y,int direction,int *energy);
+extern int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int *y,int direction,int *energy, USEINFOR *infor,int *avoid);
 
 /*******************************
 汽车的最小移动单元

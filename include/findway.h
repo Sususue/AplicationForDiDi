@@ -6,7 +6,8 @@
 #define NOWAY -1
 #define DIRECTNUM 4
 #define AREONUM 8 //道路分为八个区，四个横着，四个竖着
-
+#define PARKR 60  //判断停车时与停车场的半径
+#define PARKNUM 6 //停车场数量
 
 /***********************************************
 功能说明:最短路径算法
@@ -86,7 +87,7 @@ void StartAndEnd(PLACE node[MAXSIZE],PLACE placenow,PLACE placeto, int nearstart
         x,y:鼠标
 返回值说明:sigle:用于接力退出
 ****************************************************/
-int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y);
+int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y,USEINFOR *infor,int *avoid);
 
 
 /***********************************************
@@ -99,7 +100,7 @@ int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE
         infor:用户信息结构
 返回值说明:sigle:用于接力退出
 ****************************************************/
-int find(int *x, int *y, CARRENT *rcar);
+int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[]);
 
 /***********************************************
 功能说明:确认鼠标点击区域,判断点击的区域是否在道路上
@@ -108,5 +109,9 @@ int find(int *x, int *y, CARRENT *rcar);
 返回值说明:value:若未点击在道路上则返回0
 ****************************************************/
 int mousepress(int mx,int my);
+
+void judgEnergy(int *energy,int *avoid, int *x, int *y, USEINFOR *infor);
+
+void lockcar(const PARK parking[], CAR_CONDITION car_position, int * lockflag, int *x, int *y);
 
 #endif
