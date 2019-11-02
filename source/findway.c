@@ -1,28 +1,16 @@
 #include "common.h"
 #include "findway.h"
 
-
 // #define MAXSIZE 10
 // #define INF 9999
 // #define NOWAY -1
 // #define DIRECTNUM 4
-// #define AREONUM 8 //é“è·¯åˆ†ä¸ºå…«ä¸ªåŒºï¼Œå››ä¸ªæ¨ªç€ï¼Œå››ä¸ªç«–ç€
+// #define AREONUM 8 //µÀÂ··ÖÎª°Ë¸öÇø£¬ËÄ¸öºá×Å£¬ËÄ¸öÊú×Å
 
-// typedef struct place{
-// 	int x;           //å‡ ä¸ªç‚¹çš„ä½ç½®
-// 	int y;
-// }PLACE;
-
-// typedef struct field{
-//     PLACE edge;
-// }FIELD;
-
-void Dijkstra(int start, int end, int way[], int *count)//ç”±äºæœ€åå­˜å‚¨æ˜¯é€†åºçš„ï¼Œæ‰€ä»¥å®é™…æ‰¾çš„æ˜¯ç»ˆç‚¹åˆ°èµ·ç‚¹çš„æœ€çŸ­è·¯å¾„
+//×î¶ÌÂ·¾¶Ëã·¨£¬ÓÉÓÚ×îºó´æ´¢ÊÇÄæĞòµÄ£¬ËùÒÔÊµ¼ÊÕÒµÄÊÇÖÕµãµ½ÆğµãµÄ×î¶ÌÂ·¾¶
+void Dijkstra(int start, int end, int way[], int *count)
 {
     int i,j;
-    // int count=0;
-    // const int vexnum = 10;
-    // const int arcnum = 12;
     int vexs[MAXSIZE] = {0,1,2,3,4,5,6,7,8,9};
     int arcs[MAXSIZE][MAXSIZE] = {
         INF,243,INF,INF,INF,INF,INF,INF,INF,INF,//0
@@ -36,13 +24,13 @@ void Dijkstra(int start, int end, int way[], int *count)//ç”±äºæœ€åå­˜å‚¨æ˜¯é
         INF,INF,INF,INF,INF,INF,255,423,INF,247,//8
         INF,INF,INF,452,INF,INF,INF,INF,247,INF //9
     };
-    int dis[MAXSIZE];//åˆ°æ¯ä¸ªç‚¹çš„æœ€çŸ­è·¯å¾„
-    int mark[MAXSIZE];//ç­‰äº1å³ä¸ºè¢«æ ‡è®°ï¼Œ0ä¸ºæœªè¢«æ ‡è®°ï¼Œå³æœªåˆ°è¾¾è¿‡
-    int min;//æœ€çŸ­è·¯å¾„é•¿åº¦
-    int next;//ä¸‹ä¸€ä¸ªæ”¾å…¥é›†åˆPçš„ç‚¹
-    int last[MAXSIZE];//è®°å½•ä¸Šä¸€ä¸ªç‚¹æ˜¯å“ªä¸ªç‚¹
-    // int way[MAXSIZE]={NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY};//è®°å½•è·¯å¾„é¡ºåº
-    for ( i = 0; i < MAXSIZE; i++)//åˆå§‹åŒ–mark[]æ ‡è®°æƒ…å†µï¼Œdis[]æœ€çŸ­è·¯å¾„ï¼Œlast[]ä¸Šä¸€èŠ‚ç‚¹
+    int dis[MAXSIZE];//µ½Ã¿¸öµãµÄ×î¶ÌÂ·¾¶
+    int mark[MAXSIZE];//µÈÓÚ1¼´Îª±»±ê¼Ç£¬0ÎªÎ´±»±ê¼Ç£¬¼´Î´µ½´ï¹ı
+    int min;//×î¶ÌÂ·¾¶³¤¶È
+    int next;//ÏÂÒ»¸ö·ÅÈë¼¯ºÏPµÄµã
+    int last[MAXSIZE];//¼ÇÂ¼ÉÏÒ»¸öµãÊÇÄÄ¸öµã
+    // int way[MAXSIZE]={NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY};//¼ÇÂ¼Â·¾¶Ë³Ğò
+    for ( i = 0; i < MAXSIZE; i++)//³õÊ¼»¯mark[]±ê¼ÇÇé¿ö£¬dis[]×î¶ÌÂ·¾¶£¬last[]ÉÏÒ»½Úµã
     {
         mark[i] = 0;
         dis[i] = arcs[start][i];
@@ -55,21 +43,21 @@ void Dijkstra(int start, int end, int way[], int *count)//ç”±äºæœ€åå­˜å‚¨æ˜¯é
             last[i] = start;
         }
     }
-    mark[start] = 1; //æ ‡è®°èµ·ç‚¹
+    mark[start] = 1; //±ê¼ÇÆğµã
     for ( j = 0; j < MAXSIZE; j++)
     {
-        min = INF;//åˆå§‹åŒ–ä¸ºæå¤§å€¼
+        min = INF;//³õÊ¼»¯Îª¼«´óÖµ
 
         for ( i = 0; i < MAXSIZE; i++)
         {
-            if (mark[i] == 0 && min > dis[i])//æœªè¢«éå†ï¼Œä¸”è¢«èµ‹å€¼çš„æœ€çŸ­è·¯å¾„
+            if (mark[i] == 0 && min > dis[i])//Î´±»±éÀú£¬ÇÒ±»¸³ÖµµÄ×î¶ÌÂ·¾¶
             {
-                min = dis[i];//åœ¨å·²çŸ¥èµ‹å€¼æœ€çŸ­è·¯å¾„ä¸­ï¼Œæ‰¾æƒå€¼æœ€å°çš„ç‚¹ä½œä¸ºä¸‹ä¸€æ¬¡éå†çš„èµ·ç‚¹
-                next = i;
+                min = dis[i];//ÔÚÒÑÖª¸³Öµ×î¶ÌÂ·¾¶ÖĞ£¬ÕÒÈ¨Öµ×îĞ¡µÄµã×÷ÎªÏÂÒ»´Î±éÀúµÄÆğµã
+                next = vexs[i];
             }
         }
-        mark[next] = 1; //æ ‡è®°æ‰¾åˆ°çš„ä¸‹ä¸€ä¸ªéå†èµ·ç‚¹
-        //ä¿®æ­£æœ€çŸ­è·¯å¾„
+        mark[next] = 1; //±ê¼ÇÕÒµ½µÄÏÂÒ»¸ö±éÀúÆğµã
+        //ĞŞÕı×î¶ÌÂ·¾¶
         for ( i = 0; i < MAXSIZE; i++)
         {
             if (mark[i] == 0 && dis[i] > dis[next]+arcs[next][i])
@@ -82,29 +70,23 @@ void Dijkstra(int start, int end, int way[], int *count)//ç”±äºæœ€åå­˜å‚¨æ˜¯é
         
     }
     printf("mindistance = %d\n",dis[end]);
-    way[0] = end;           //å°†èŠ‚ç‚¹é€†åºå­˜å…¥æ•°ç»„
+    way[0] = end;           //½«½ÚµãÄæĞò´æÈëÊı×é
     while (end != start)
     {
         *count=*count+1;
         way[*count]=last[end];
         end = last[end];
     }
-    
-    // i=0;
-    // while (i<=*count)
-    // {
-    //     printf("%d\n",way[i]);
-    //     i++;
-    // }
-
+  
 }
 
+// È·ÈÏÕÒµ½µÄ×î¶ÌÂ·¾¶ÖĞÃ¿¸ö½áµãÖ®¼äµÄ·½Ïò
 void direction(int way[], int count, int direct[])
 {
     int i=0,j=0;
     int now;
     int node[MAXSIZE][DIRECTNUM] = { 
-        //ä¸Šï¼Œä¸‹ï¼Œå·¦ï¼Œå³
+        //ÉÏ£¬ÏÂ£¬×ó£¬ÓÒ
         NOWAY,1,NOWAY,NOWAY,//0
         0,5,NOWAY,2,        //1
         NOWAY,6,1,3,        //2
@@ -121,7 +103,7 @@ void direction(int way[], int count, int direct[])
         now = way[j];
         for ( i = 0; i < DIRECTNUM; i++)
         {
-            if (node[now][i] == way[j+1])//æ ¹æ®æ‰€å­˜çš„ä½ç½®åˆ¤æ–­åˆ°ä¸‹ä¸€ä¸ªç»“ç‚¹çš„æ–¹å‘
+            if (node[now][i] == way[j+1])//¸ù¾İËù´æµÄÎ»ÖÃÅĞ¶Ïµ½ÏÂÒ»¸ö½áµãµÄ·½Ïò
             {
                 direct[j]=i+1;
             }
@@ -129,49 +111,37 @@ void direction(int way[], int count, int direct[])
         j++;
     }
 }
-//åˆ¤æ–­é¼ æ ‡ç‚¹å‡»åŒºåŸŸï¼Œåªèƒ½ç‚¹å‡»é“è·¯ä¸”è¦ä¿®æ­£ä¸ºè·¯ä¸­å¤®
-//è¿›å…¥å‡½æ•°çš„æ¡ä»¶æ˜¯é¼ æ ‡åœ¨åœ°å›¾åŒºåŸŸç‚¹å‡»ï¼Œå¹¶ä¸”ç‚¹å‡»çš„ä½ç½®ä¸ºç™½è‰²åˆ©ç”¨int  getpixel(int x,int y)
-//node:è·¯å£ç»“ç‚¹
+//ÅĞ¶ÏÊó±êµã»÷ÇøÓò£¬Ö»ÄÜµã»÷µÀÂ·ÇÒÒªĞŞÕıÎªÂ·ÖĞÑë
+//½øÈëº¯ÊıµÄÌõ¼şÊÇÊó±êÔÚµØÍ¼ÇøÓòµã»÷£¬²¢ÇÒµã»÷µÄÎ»ÖÃÎª°×É«ÀûÓÃint  getpixel(int x,int y) <-´Ë·½·¨Ê§°Ü
+//node:Â·¿Ú½áµã
 void judgeAreo(PLACE node[MAXSIZE],int x, int y, PLACE *placeto, int *flag, int *nodenum)
 {
     
-    int i;//ç”¨äºè®¡æ•°
+    int i;//ÓÃÓÚ¼ÆÊı
     PLACE areo[AREONUM*2]={
-        {2,10},{386,40},//æ¨ª0
-        {257,253},{766,284},//æ¨ª1
-        {2,450},{483,480},//æ¨ª2
-        {30,704},{730,736},//æ¨ª3
-        {30,450},{61,736},//ç«–4
-        {257,10},{287,480},//ç«–5
-        {453,253},{483,766},//ç«–6
-        {700,253},{730,736}//ç«–7
+        {2,10},{386,40},//ºá0
+        {257,253},{766,284},//ºá1
+        {2,450},{483,480},//ºá2
+        {30,704},{730,736},//ºá3
+        {30,450},{61,736},//Êú4
+        {257,10},{287,480},//Êú5
+        {453,253},{483,766},//Êú6
+        {700,253},{730,736}//Êú7
     };
-    //ä¿®æ­£çš„åæ ‡
+    //ĞŞÕıµÄ×ø±ê
     int correct[AREONUM]={
-        25,//æ¨ª0çš„çºµåæ ‡
-        268,//æ¨ª1
-        465,//æ¨ª2
-        720,//æ¨ª3
-        45,//ç«–4çš„æ¨ªåæ ‡
-        272,//ç«–5
-        468,//ç«–6
-        715//ç«–7
+        25,//ºá0µÄ×İ×ø±ê
+        268,//ºá1
+        465,//ºá2
+        720,//ºá3
+        45,//Êú4µÄºá×ø±ê
+        272,//Êú5
+        468,//Êú6
+        715//Êú7
     };
-    // //è·¯å£ç»“ç‚¹çš„åæ ‡
-    // PLACE node[MAXSIZE]={
-    //     {272,25},//0
-    //     {272,268},//1
-    //     {468,268},//2
-    //     {715,268},//3
-    //     {45,465},//4
-    //     {272,465},//5
-    //     {468,465},//6
-    //     {45,720},//7
-    //     {468,720},//8
-    //     {715,720}//9
-    // };
+    
 
-    *flag=0;//ç”¨ä»¥åˆ¤æ–­æ˜¯å¦åœ¨ç»“ç‚¹ä¸Š,ç­‰äº2æ—¶è¡¨ç¤ºå·²ç»åœ¨èŠ‚ç‚¹
+    *flag=0;//ÓÃÒÔÅĞ¶ÏÊÇ·ñÔÚ½áµãÉÏ,µÈÓÚ2Ê±±íÊ¾ÒÑ¾­ÔÚ½Úµã
     placeto->x = x;
     placeto->y = y;
 
@@ -205,7 +175,7 @@ void judgeAreo(PLACE node[MAXSIZE],int x, int y, PLACE *placeto, int *flag, int 
         }
         
     }
-    else if(*flag == 1) //åœ¨ç¬¬ä¸€æ¡è·¯ä¸Šåªæœ‰0å·è·¯å£ç»“ç‚¹
+    else if(*flag == 1) //ÔÚµÚÒ»ÌõÂ·ÉÏÖ»ÓĞ0ºÅÂ·¿Ú½áµã
     {
         *nodenum =0;
     }
@@ -213,13 +183,13 @@ void judgeAreo(PLACE node[MAXSIZE],int x, int y, PLACE *placeto, int *flag, int 
     
 }
 
-//åˆ¤æ–­æœ€è¿‘çš„è·¯å£ä¸¤ä¸ªç»“ç‚¹
-// place1/place2:æš‚å­˜ä¸¤ä¸ªæœ€è¿‘çš„è·¯å£ç»“ç‚¹
+//ÅĞ¶Ï×î½üµÄÂ·¿ÚÁ½¸ö½áµã
+// place1/place2:Ôİ´æÁ½¸ö×î½üµÄÂ·¿Ú½áµã
 void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
 {
     int i,j;
-    // const int maxnum = 3;//è¿™æ¡è·¯ä¸Šæœ€å¤šä¸‰ä¸ªç»“ç‚¹
-    double max;//å­˜æœ€å¤§è·ç¦»
+    // const int maxnum = 3;//ÕâÌõÂ·ÉÏ×î¶àÈı¸ö½áµã
+    double max;//´æ×î´ó¾àÀë
     int temp[AREONUM][3]={
         {0,NOWAY,NOWAY},
         {1,2,3},
@@ -229,12 +199,12 @@ void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
         {0,1,5},
         {2,6,8},
         {3,9,NOWAY}
-    };//å­˜è·¯ä¸ç»“ç‚¹çš„å…³ç³»
-    int dele;//èˆå¼ƒçš„ç‚¹
+    };//´æÂ·Óë½áµãµÄ¹ØÏµ
+    int dele;//ÉáÆúµÄµã
 
     switch (flag)
     {
-    case 3://åœ¨1å·è·¯ä¸Š
+    case 3://ÔÚ1ºÅÂ·ÉÏ
         max = pow(node[temp[1][0]].x-place.x,2)+pow(node[temp[1][0]].y-place.y,2);
         dele = 0;
         for ( i = 0; i < 3; i++)
@@ -346,11 +316,11 @@ void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
         break;
     }
 }
-//åˆ¤æ–­ç»ˆç‚¹/èµ·ç‚¹è¦å»ä¸¤ä¸ªç»“ç‚¹ä¸­çš„å“ªä¸€ä¸ªç»“ç‚¹
+//ÅĞ¶ÏÖÕµã/ÆğµãÒªÈ¥Á½¸ö½áµãÖĞµÄÄÄÒ»¸ö½áµã
 void StartAndEnd(PLACE node[MAXSIZE], PLACE place, int nearplace[2],int *placenum)
 {
     int i;
-    double min;//å‡ è·¯æœ€è¿‘çš„è·ç¦»
+    double min;//¼¸Â·×î½üµÄ¾àÀë
     *placenum = nearplace[0];
     min = pow(place.x-node[nearplace[0]].x,2)+pow(place.y-node[nearplace[0]].y,2);
     if (min > pow(place.x-node[nearplace[1]].x,2)+pow(place.y-node[nearplace[1]].y,2))
@@ -359,39 +329,43 @@ void StartAndEnd(PLACE node[MAXSIZE], PLACE place, int nearplace[2],int *placenu
     }
     
 }
-//å°†å¯»æ‰¾çš„è·¯å¾„è½¬æ¢ä¸ºåŠ¨ç”»
-void linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y)
+//½«Ñ°ÕÒµÄÂ·¾¶×ª»»Îª¶¯»­
+int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y)
 {
     int i;
     int mx,my,button;
+    int sigle=0;//ÓÃÓÚ½ÓÁ¦ÍË³ö
     for ( i = 0; i < count; i++)
     { 
-        rentmove(car_position,node[way[i]].x,node[way[i]].y,node[way[i+1]].x,node[way[i+1]].y,x,y,direct[i],energe);
+        sigle = rentmove(car_position,node[way[i]].x,node[way[i]].y,node[way[i+1]].x,node[way[i+1]].y,x,y,direct[i],energe);
+        if (sigle == 1)
+        {
+            break;
+        }
+        
     }
-    
+    return sigle;
 }
-//å¯»è·¯
-void find(int *x, int *y, int startx,int starty, int *energe)
+//Ñ°Â·
+int find(int *x, int *y, int startx,int starty, int *energe)
 {
-    int mx,my,button;
-
-// char orderpage[50];
-// unsigned int try;
-    int i;
-    int nowflag = 0;//åˆ¤æ–­æ˜¯å¦åœ¨ç»“ç‚¹ï¼Œè‹¥ä¸ºå¶æ•°åˆ™åœ¨è·¯å£ç»“ç‚¹ï¼Œç›´æ¥è·³è¿‡findNode()å’ŒStartAndEnd()ä¸¤ä¸ªå‡½æ•°
+    int mx,my,button;//Êó±êµã»÷
+    int i;//ÓÃÓÚ¼ÆÊı
+    int sigle=0;//ÓÃÓÚ½ÓÁ¦ÍË³ö
+    int nowflag = 0;//ÅĞ¶ÏÊÇ·ñÔÚ½áµã£¬ÈôÎªÅ¼ÊıÔòÔÚÂ·¿Ú½áµã£¬Ö±½ÓÌø¹ıfindNode()ºÍStartAndEnd()Á½¸öº¯Êı
     int toflag = 0;
-    int start;//èµ·ç‚¹æ ‡å·
-    int startdir=0;//èµ·ç‚¹æ–¹å‘
-    int end;//ç»ˆç‚¹æ ‡å·
-    int enddir=0;//ç»ˆç‚¹æ–¹å‘
-    int nearstart[2];//å­˜èµ·ç‚¹ä¸¤ä¾§çš„ç»“ç‚¹
-    int nearend[2];//å­˜ç»ˆç‚¹ä¸¤ä¾§çš„ç»“ç‚¹
-    int count = 0;//è®°å½•æœ‰å‡ ä¸ªèŠ‚ç‚¹ï¼Œæ€»ç»“ç‚¹(åŠ ä¸Šèµ·ç‚¹ä¸ç»ˆç‚¹)ä¸ºcount+1;
-    PLACE placeto;//é¼ æ ‡ç‚¹å‡»ä½ç½®çš„åæ ‡
-    PLACE placenow;//å½“å‰ä½ç½®æ‰€åœ¨çš„åæ ‡
-    int way[MAXSIZE]={NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY};//è®°å½•è·¯å¾„é¡ºåº
-    int direct[MAXSIZE]={0};//è®°å½•æ–¹å‘ï¼Œ1ä¸Š2ä¸‹3å·¦4å³
-    PLACE node[MAXSIZE]={//å„ä¸ªç»“ç‚¹çš„åæ ‡
+    int start;//Æğµã±êºÅ
+    int startdir=0;//Æğµã·½Ïò
+    int end;//ÖÕµã±êºÅ
+    int enddir=0;//ÖÕµã·½Ïò
+    int nearstart[2];//´æÆğµãÁ½²àµÄ½áµã
+    int nearend[2];//´æÖÕµãÁ½²àµÄ½áµã
+    int count = 0;//¼ÇÂ¼ÓĞ¼¸¸ö½Úµã£¬×Ü½áµã(¼ÓÉÏÆğµãÓëÖÕµã)Îªcount+1;
+    PLACE placeto;//Êó±êµã»÷Î»ÖÃµÄ×ø±ê
+    PLACE placenow;//µ±Ç°Î»ÖÃËùÔÚµÄ×ø±ê
+    int way[MAXSIZE]={NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY};//¼ÇÂ¼Â·¾¶Ë³Ğò
+    int direct[MAXSIZE]={0};//¼ÇÂ¼·½Ïò£¬1ÉÏ2ÏÂ3×ó4ÓÒ
+    PLACE node[MAXSIZE]={//¸÷¸ö½áµãµÄ×ø±ê
         {272,25},//0
         {272,268},//1
         {468,268},//2
@@ -403,66 +377,69 @@ void find(int *x, int *y, int startx,int starty, int *energe)
         {468,720},//8
         {715,720}//9
     };
-    /*åˆå§‹åŒ–å°è½¦*/
+    /*³õÊ¼»¯Ğ¡³µ*/
 	CAR_CONDITION car_position;
     placenow.x=startx;
     placenow.y=starty;
 
-    judgeAreo(node,startx,starty,&placenow,&nowflag,&start);//ç¡®è®¤å½“å‰åŒºåŸŸ
+    judgeAreo(node,startx,starty,&placenow,&nowflag,&start);//È·ÈÏµ±Ç°ÇøÓò
 
-    if (nowflag%2 != 0 && nowflag != 1)//è‹¥å½“å‰ä½ç½®ä¸åœ¨è·¯å£ç»“ç‚¹å¤„ï¼Œåˆ¤æ–­æœ€è¿‘ä¸¤ä¸ªç»“ç‚¹æ˜¯å“ªä¸¤ä¸ª
+    if (nowflag%2 != 0 && nowflag != 1)//Èôµ±Ç°Î»ÖÃ²»ÔÚÂ·¿Ú½áµã´¦£¬ÅĞ¶Ï×î½üÁ½¸ö½áµãÊÇÄÄÁ½¸ö
     {
         findNode(node,placenow,nearstart,nowflag);
     }
-    /*åˆ†é…å°è½¦å›¾åƒç©ºé—´*/
+
+    /*·ÖÅäĞ¡³µÍ¼Ïñ¿Õ¼ä*/
 	(car_position).pic = (unsigned int*)malloc(44*44*sizeof(unsigned int));
                 
-    /*æ£€æŸ¥åˆ†é…æ˜¯å¦æˆåŠŸ*/
+    /*¼ì²é·ÖÅäÊÇ·ñ³É¹¦*/
 	if((car_position).pic==NULL)
 	{
-		overflow_box(500,500);//æŠ¥é”™
+		overflow_box(500,500);//±¨´í
 		getch();
 		exit(1);
 	}
-    //å­˜å°è½¦å½“å‰ä½ç½®çš„èƒŒæ™¯
+    //´æĞ¡³µµ±Ç°Î»ÖÃµÄ±³¾°
     get_image(placenow.x-22,placenow.y-22,placenow.x+22,placenow.y+22,(car_position).pic);
-    
-    car_draw_right1(placenow.x,placenow.y);//å†™æ­»å®éªŒ
+    //¸ù¾İĞ¡³µµÄÎ»ÖÃºÍÍ£³µ³¡±àºÅ»­³öÆğÊ¼µÄĞ¡³µ
+    car_draw_right1(placenow.x,placenow.y);//Ğ´ËÀÊµÑé
+
+
     while (1)
     {
         newxy(x,y,&button);
 		mx = *x;
 		my = *y;
-        if(mx>=798  && mx<=994 && my>=532 && my<=584 && button)//ç‚¹å‡»é”è½¦ï¼Œåˆ¤æ–­æ˜¯å¦èƒ½é”è½¦
+        if(mx>=798  && mx<=994 && my>=532 && my<=584 && button)//µã»÷Ëø³µ£¬ÅĞ¶ÏÊÇ·ñÄÜËø³µ
         {
             break;
         }
-        else if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//ç‚¹å‡»Backè¿”å›
+        else if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//µã»÷Back·µ»Ø
         {
             break;
         }
-        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//ç‚¹å‡»å®‰å…¨ï¼Œå¼¹å‡ºä¿¡æ¯æ¡†
+        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//µã»÷°²È«£¬µ¯³öĞÅÏ¢¿ò
         {
             safe_box(x,y);
         }
-        else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//ç‚¹å‡»ESCé€€å‡ºç³»ç»Ÿ
+        else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//µã»÷ESCÍË³öÏµÍ³
         {
             exit(0);
         }
         if (mx >= 1 && mx <= 767 && my >= 1 && my <= 767 && button  )
         {
             
-            if (mousepress(mx,my) != 0)//æ£€æµ‹æ˜¯å¦åœ¨é“è·¯ä¸Š
+            if (mousepress(mx,my) != 0)//¼ì²âÊÇ·ñÔÚµÀÂ·ÉÏ,ÊÇµÄ»°¿ªÊ¼Ñ°Â·
             {
              
             
-                judgeAreo(node,mx,my,&placeto,&toflag,&end);//ç¡®å®šç‚¹å‡»åŒºåŸŸï¼Œå¹¶ä¿®æ­£åæ ‡
+                judgeAreo(node,mx,my,&placeto,&toflag,&end);//È·¶¨µã»÷ÇøÓò£¬²¢ĞŞÕı×ø±ê
                 
                 if (toflag %2 != 0 && toflag != 1)
                 {
                     findNode(node,placeto,nearend,toflag);
                 }
-                if (nowflag %2 != 0 && nowflag != 1)//è‹¥å½“å‰ä½ç½®ä¸åœ¨è·¯å£ç»“ç‚¹å¤„ï¼Œæ ¹æ®ç»ˆç‚¹ä½ç½®åˆ¤æ–­å…ˆå»å“ªä¸ªç»“ç‚¹
+                if (nowflag %2 != 0 && nowflag != 1)//Èôµ±Ç°Î»ÖÃ²»ÔÚÂ·¿Ú½áµã´¦£¬¸ù¾İÖÕµãÎ»ÖÃÅĞ¶ÏÏÈÈ¥ÄÄ¸ö½áµã
                 {
                     StartAndEnd(node,placeto,nearstart,&start);
                 }
@@ -470,11 +447,11 @@ void find(int *x, int *y, int startx,int starty, int *energe)
                 {
                     StartAndEnd(node,placenow,nearend,&end);
                 }
-                //æ‰¾ä¸¤ä¸ªç»“ç‚¹é—´çš„æœ€çŸ­è·¯å¾„
+                //ÕÒÁ½¸ö½áµã¼äµÄ×î¶ÌÂ·¾¶
                 Dijkstra(end,start,way,&count);
-                //ç¡®å®šå„ä¸ªç»“ç‚¹ä¹‹é—´çš„æ–¹å‘
+                //È·¶¨¸÷¸ö½áµãÖ®¼äµÄ·½Ïò
                 direction(way,count,direct);
-                //ç¡®è®¤èµ·ç‚¹åˆ°ç¬¬ä¸€ä¸ªç»“ç‚¹çš„æ–¹å‘
+                //È·ÈÏÆğµãµ½µÚÒ»¸ö½áµãµÄ·½Ïò
                 if (placenow.y > node[start].y)
                 {
                     startdir = 1;
@@ -491,7 +468,7 @@ void find(int *x, int *y, int startx,int starty, int *energe)
                 {
                     startdir = 4;
                 }
-                //ç¡®è®¤ç»“ç‚¹åˆ°æœ€åä¸€ä¸ªç»ˆç‚¹çš„æ–¹å‘
+                //È·ÈÏ½áµãµ½×îºóÒ»¸öÖÕµãµÄ·½Ïò
                 if (placeto.y < node[end].y)
                 {
                     enddir = 1;
@@ -510,46 +487,63 @@ void find(int *x, int *y, int startx,int starty, int *energe)
                 }
                 
                 
-                if (nowflag != toflag)//è‹¥èµ·ç‚¹å’Œç»ˆç‚¹ä¸åœ¨åŒä¸€ä¸ªåŒºåŸŸ
+                if (nowflag != toflag)//ÈôÆğµãºÍÖÕµã²»ÔÚÍ¬Ò»¸öÇøÓò
                 {
-                    //è‹¥èµ·ç‚¹ä¸åœ¨ç»“ç‚¹ï¼Œè®©è½¦ä»èµ·ç‚¹åˆ°ç¬¬ä¸€ä¸ªç»“ç‚¹
+                    //ÈôÆğµã²»ÔÚ½áµã£¬ÈÃ³µ´ÓÆğµãµ½µÚÒ»¸ö½áµã
                     if (startdir != 0)
                     {
                     
-                        rentmove(&car_position,placenow.x,placenow.y,node[start].x,node[start].y,x,y,startdir,energe);
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,node[start].x,node[start].y,x,y,startdir,energe);
+                        if(sigle==1)//ÓÃÓÚ°²È«±¨¾¯ºóµÄ½ÓÁ¦ÍË³ö
+			            {
+				            break;
+			            }
                     }
-                
-                    //è‹¥ç»ˆç‚¹ä¸åœ¨ç»“ç‚¹ä¸Šï¼Œç¬¬ä¸€ä¸ªç»“ç‚¹åˆ°æœ€åä¸€ä¸ªç»“ç‚¹
-                    linkCartoon(&car_position,node,way,direct,count,energe,x,y);
-                    //æœ€åä¸€ä¸ªç»“ç‚¹åˆ°ç»ˆç‚¹
+                    
+                    //ÈôÖÕµã²»ÔÚ½áµãÉÏ£¬µÚÒ»¸ö½áµãµ½×îºóÒ»¸ö½áµã
+                    sigle = linkCartoon(&car_position,node,way,direct,count,energe,x,y);
+                    if(sigle==1)//ÓÃÓÚ°²È«±¨¾¯ºóµÄ½ÓÁ¦ÍË³ö
+			        {
+				        break;
+			        }
+                    //×îºóÒ»¸ö½áµãµ½ÖÕµã
                     if (enddir != 0)
                     {
-                        rentmove(&car_position,node[end].x,node[end].y,placeto.x,placeto.y,x,y,enddir,energe);
+                        sigle = rentmove(&car_position,node[end].x,node[end].y,placeto.x,placeto.y,x,y,enddir,energe);
+                        if(sigle==1)//ÓÃÓÚ°²È«±¨¾¯ºóµÄ½ÓÁ¦ÍË³ö
+			            {
+				            break;
+			            }
                     }
+                    
                 }
-                else//èµ·ç‚¹å’Œç»ˆç‚¹åœ¨åŒä¸€ä¸ªåŒºåŸŸ
+                else//ÆğµãºÍÖÕµãÔÚÍ¬Ò»¸öÇøÓò,Ö±½ÓÈÃ³µ´ÓÆğµã×ßµ½ÖÕµã£¬´ËÊ±²»ÓÃÑ°Â·
                 {
                     if (placenow.y>placeto.y)
                     {
-                        rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,1,energe);//å‘ä¸Šèµ°
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,1,energe);//ÏòÉÏ×ß
                     }
                     else if (placenow.y<placeto.y)
                     {
-                        rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,2,energe);//å‘ä¸‹èµ°
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,2,energe);//ÏòÏÂ×ß
                     }
                     else if (placenow.x>placeto.x)
                     {
-                        rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,3,energe);//å‘å·¦èµ°
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,3,energe);//Ïò×ó×ß
                     }
                     else if (placenow.x<placeto.x)
                     {
-                        rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,4,energe);//å‘å³èµ°
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,4,energe);//ÏòÓÒ×ß
                     }
+                    if(sigle==1)//ÓÃÓÚ°²È«±¨¾¯ºóµÄ½ÓÁ¦ÍË³ö
+			        {
+				        break;
+			        }
                 }
                 
                 
                 
-                //å°†ç»ˆç‚¹çš„ä¿¡æ¯èµ‹ç»™å½“å‰ä½ç½®ï¼Œä½œä¸ºä¸‹ä¸€ä¸ªèµ·ç‚¹
+                //½«ÖÕµãµÄĞÅÏ¢¸³¸øµ±Ç°Î»ÖÃ£¬×÷ÎªÏÂÒ»¸öÆğµã
                 start = end;
                 nowflag = toflag;
                 nearstart[0]=nearend[0];
@@ -558,7 +552,7 @@ void find(int *x, int *y, int startx,int starty, int *energe)
                 placenow.y = placeto.y;
                 startdir=0;
                 enddir=0;
-                //å°†ä¸€äº›å€¼èµ‹ç©ºï¼Œå¦åˆ™å¯èƒ½ä¼šå—å½±å“
+                //½«Ò»Ğ©Öµ¸³¿Õ£¬·ñÔò¿ÉÄÜ»áÊÜÓ°Ïì
                 for ( i = 0; i < count; i++)
                 {
                     way[i]=NOWAY;
@@ -566,29 +560,45 @@ void find(int *x, int *y, int startx,int starty, int *energe)
                 }
                 count = 0;
             }
+            else//ÈôÎ´µã»÷µ½µÀÂ·ÉÏ,½øĞĞÌáÊ¾
+            {
+                mousehide(*x,*y);
+                
+                save_image(512-210,384-140,512+210,384+140,"rentnote");
+                bar_round(512,384,416,270,50,1,64384);
+                bar_round(512,384,410,265,48,1,65535);
+                fdhz(390,360,2,2,"ÇëÔÚµÀÂ·ÉÏĞĞÊ»",64384);
+                fdhz(450,420,1,1,"°´ÈÎÒâ¼ü³äÖµ",44373);
+                getch();
+                
+                printf_image(512-210,384-140,512+210,384+140,"rentnote");
+                reset_mouse(x,y);
+            }
+            
         }
     }
-    /*é‡Šæ”¾åˆ†é…çš„å†…å­˜ç©ºé—´*/
+    /*ÊÍ·Å·ÖÅäµÄÄÚ´æ¿Õ¼ä*/
 	free((car_position).pic);
 
-	/*å°†æŒ‡é’ˆç½®ç©º*/
+	/*½«Ö¸ÕëÖÃ¿Õ*/
 	(car_position).pic = NULL;
     // reset_mouse(x,y);
+    return sigle;
 }
-
+//È·ÈÏÊó±êµã»÷ÇøÓò
 int mousepress(int mx,int my)
 {
     int i;
     int value=0;
     PLACE areo[AREONUM*2]={
-        {2,10},{386,40},//æ¨ª0
-        {257,253},{766,284},//æ¨ª1
-        {2,450},{483,480},//æ¨ª2
-        {30,704},{730,736},//æ¨ª3
-        {30,450},{61,736},//ç«–4
-        {257,10},{287,480},//ç«–5
-        {453,253},{483,766},//ç«–6
-        {700,253},{730,736}//ç«–7
+        {2,10},{386,40},//ºá0
+        {257,253},{766,284},//ºá1
+        {2,450},{483,480},//ºá2
+        {30,704},{730,736},//ºá3
+        {30,450},{61,736},//Êú4
+        {257,10},{287,480},//Êú5
+        {453,253},{483,766},//Êú6
+        {700,253},{730,736}//Êú7
     };
     for ( i = 0; i < AREONUM; i++)
     {
@@ -608,12 +618,12 @@ int mousepress(int mx,int my)
 //     int i;
 //     int nowflag = 0;
 //     int toflag = 0;
-//     int start = 2;//èµ·ç‚¹æ ‡å·
-//     int end = 7;//ç»ˆç‚¹æ ‡å·
-//     int count = 0;//è®°å½•æœ‰å‡ ä¸ªèŠ‚ç‚¹ï¼Œæ€»ç»“ç‚¹(åŠ ä¸Šèµ·ç‚¹ä¸ç»ˆç‚¹)ä¸ºcount+1;
-//     int way[MAXSIZE]={NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY};//è®°å½•è·¯å¾„é¡ºåº
-//     int direct[MAXSIZE]={0};//è®°å½•æ–¹å‘ï¼Œ1ä¸Š2ä¸‹3å·¦4å³
-//     PLACE node[MAXSIZE]={//å„ä¸ªç»“ç‚¹çš„åæ ‡
+//     int start = 2;//Æğµã±êºÅ
+//     int end = 7;//ÖÕµã±êºÅ
+//     int count = 0;//¼ÇÂ¼ÓĞ¼¸¸ö½Úµã£¬×Ü½áµã(¼ÓÉÏÆğµãÓëÖÕµã)Îªcount+1;
+//     int way[MAXSIZE]={NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY};//¼ÇÂ¼Â·¾¶Ë³Ğò
+//     int direct[MAXSIZE]={0};//¼ÇÂ¼·½Ïò£¬1ÉÏ2ÏÂ3×ó4ÓÒ
+//     PLACE node[MAXSIZE]={//¸÷¸ö½áµãµÄ×ø±ê
 //         {272,25},//0
 //         {272,268},//1
 //         {468,268},//2
@@ -625,7 +635,7 @@ int mousepress(int mx,int my)
 //         {468,720},//8
 //         {715,720}//9
 //     };
-//     Dijkstra(end,start,way,&count);//èµ·ç‚¹ç»ˆç‚¹åç€ä¼ é€’
+//     Dijkstra(end,start,way,&count);//ÆğµãÖÕµã·´×Å´«µİ
 //     printf("count = %d\n",count);
 //     direction(way,count,direct);
 //     for ( i = 0; i < count; i++)

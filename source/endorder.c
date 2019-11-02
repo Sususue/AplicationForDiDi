@@ -296,7 +296,10 @@ void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int t
     {
         *price = 19.00;
     }
-    
+    if (infor->payway == 1)//»ÙŒ™”‡∂Ó÷ß∏∂¥Ú9’€
+    {
+        *price=(*price)*0.9;
+    }
     sprintf(chprice,"%.2f",*price);
 
     mousehide(*x,*y);
