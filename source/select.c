@@ -47,8 +47,8 @@ int check(USEINFOR *infor,int *x,int *y)
 					car_take_box(x,y,infor);
 					break;
             case 5:
-					// car_rent_box(x,y,infor);
-                    find(x,y,100,465,&energe);
+					car_rent_box(x,y,infor);
+                    // find(x,y,100,465,&energe);
 					break;
             case 7:			//	点击Back返回登录界面
 					return 0; 

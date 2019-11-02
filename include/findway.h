@@ -15,8 +15,9 @@
         end:结束结点的序号(实际起点的序号)
         way:数组，用于存储找到的路径途经的结点序号(包括起点和终点)
         count:途经的结点数目(不包括起点)
+返回值:最短距离为多长
 ****************************************************/
-void Dijkstra(int start, int end, int way[], int *count);
+int Dijkstra(int start, int end, int way[], int *count);
 
 
 /***********************************************
@@ -59,7 +60,19 @@ void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag);
         nearplace:存找到的最近的两个路口结点
         placenum:放判断后的结点
 ****************************************************/
-void StartAndEnd(PLACE node[MAXSIZE], PLACE place, int nearplace[2],int *placenum);
+// void StartAndEnd(PLACE node[MAXSIZE], PLACE place, int nearplace[2],int *placenum);
+/***********************************************
+功能说明:(加强改良版)判断终点/起点要去两个结点中的哪一个结点(使路径更短)
+注意事项:
+参数说明:node:路口结点的坐标
+        placenow:修正之后的当前坐标
+        placeto:修正之后的终点坐标
+        nearstart:存找到的离当前位置最近的两个路口结点
+        nearend:存找到的离终点最近的两个路口结点
+        start:放判断后的当前要去的第一个结点
+        end:放判断后去终点前的最后一个结点
+****************************************************/
+void StartAndEnd(PLACE node[MAXSIZE],PLACE placenow,PLACE placeto, int nearstart[2],int nearend[2],int *start, int *end);
 
 /***********************************************
 功能说明:将寻找的路径转换为动画
@@ -86,7 +99,7 @@ int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE
         infor:用户信息结构
 返回值说明:sigle:用于接力退出
 ****************************************************/
-int find(int *x, int *y, int startx,int starty, int *energe);
+int find(int *x, int *y, CARRENT *rcar);
 
 /***********************************************
 功能说明:确认鼠标点击区域,判断点击的区域是否在道路上

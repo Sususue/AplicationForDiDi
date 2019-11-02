@@ -8,9 +8,10 @@
 // #define AREONUM 8 //道路分为八个区，四个横着，四个竖着
 
 //最短路径算法，由于最后存储是逆序的，所以实际找的是终点到起点的最短路径
-void Dijkstra(int start, int end, int way[], int *count)
+int Dijkstra(int start, int end, int way[], int *count)
 {
     int i,j;
+    int mindis;
     int vexs[MAXSIZE] = {0,1,2,3,4,5,6,7,8,9};
     int arcs[MAXSIZE][MAXSIZE] = {
         INF,243,INF,INF,INF,INF,INF,INF,INF,INF,//0
@@ -24,7 +25,7 @@ void Dijkstra(int start, int end, int way[], int *count)
         INF,INF,INF,INF,INF,INF,255,423,INF,247,//8
         INF,INF,INF,452,INF,INF,INF,INF,247,INF //9
     };
-    int dis[MAXSIZE];//到每个点的最短路径
+    int dis[MAXSIZE]={0};//到每个点的最短路径
     int mark[MAXSIZE];//等于1即为被标记，0为未被标记，即未到达过
     int min;//最短路径长度
     int next;//下一个放入集合P的点
@@ -70,6 +71,7 @@ void Dijkstra(int start, int end, int way[], int *count)
         
     }
     printf("mindistance = %d\n",dis[end]);
+    mindis=dis[end];//一定要先存下来，否则dis[end]在循环中被改变，返回的不是最短距离
     way[0] = end;           //将节点逆序存入数组
     while (end != start)
     {
@@ -77,7 +79,7 @@ void Dijkstra(int start, int end, int way[], int *count)
         way[*count]=last[end];
         end = last[end];
     }
-  
+    return mindis;
 }
 
 // 确认找到的最短路径中每个结点之间的方向
@@ -188,7 +190,6 @@ void judgeAreo(PLACE node[MAXSIZE],int x, int y, PLACE *placeto, int *flag, int 
 void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
 {
     int i,j;
-    // const int maxnum = 3;//这条路上最多三个结点
     double max;//存最大距离
     int temp[AREONUM][3]={
         {0,NOWAY,NOWAY},
@@ -265,8 +266,8 @@ void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
         }
         break;
     case 9:
-        nearplace[1]=4;
-        nearplace[2]=7;
+        nearplace[0]=4;
+        nearplace[1]=7;
         break;
     case 11:
         max = pow(node[temp[5][0]].x-place.x,2)+pow(node[temp[5][0]].y-place.y,2);
@@ -309,26 +310,89 @@ void findNode(PLACE node[MAXSIZE],PLACE place,int nearplace[2],int flag)
         }
         break;
     case 15:
-        nearplace[1]=3;
-        nearplace[2]=9;
+        nearplace[0]=3;
+        nearplace[1]=9;
         break;
     default:
         break;
     }
 }
-//判断终点/起点要去两个结点中的哪一个结点
-void StartAndEnd(PLACE node[MAXSIZE], PLACE place, int nearplace[2],int *placenum)
+// //判断终点/起点要去两个结点中的哪一个结点
+// void StartAndEnd(PLACE node[MAXSIZE], PLACE place, int nearplace[2],int *placenum)
+// {
+//     int i;
+//     double min;//距离最近的距离
+//     *placenum = nearplace[0];
+//     min = pow(place.x-node[nearplace[0]].x,2)+pow(place.y-node[nearplace[0]].y,2);
+//     if (min > pow(place.x-node[nearplace[1]].x,2)+pow(place.y-node[nearplace[1]].y,2))
+//     {
+//         *placenum = nearplace[1];
+//     }
+    
+// }
+
+//判断终点/起点要去两个结点中的哪一个结点(改良)事先计算距离再选择距离最短的方案
+void StartAndEnd(PLACE node[MAXSIZE],PLACE placenow,PLACE placeto, int nearstart[2],int nearend[2],int *start, int *end)
 {
     int i;
-    double min;//几路最近的距离
-    *placenum = nearplace[0];
-    min = pow(place.x-node[nearplace[0]].x,2)+pow(place.y-node[nearplace[0]].y,2);
-    if (min > pow(place.x-node[nearplace[1]].x,2)+pow(place.y-node[nearplace[1]].y,2))
+    double min;//距离最近的距离
+    int tempway[MAXSIZE]={NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY};
+    int tempcount=0;
+    float distance;
+    *start = nearstart[0];
+    *end = nearend[0];
+    //若4个结点中有相同的结点，则起点与终点选为同一个结点(dijkstra当只有一个结点时，会认为没有路径从而返回最大距离)
+    if (nearstart[0]==nearend[0])
     {
-        *placenum = nearplace[1];
+        *start = nearstart[0];
+        *end = nearend[0];
+    }
+    else if(nearstart[0]==nearend[1])
+    {
+        *start = nearstart[0];
+        *end = nearend[1];
+    }
+    else if(nearstart[1]==nearend[0])
+    {
+        *start = nearstart[1];
+        *end = nearend[0];
+    }
+    else if(nearstart[1]==nearend[1])
+    {
+        *start = nearstart[1];
+        *end = nearend[1];
+    }
+    else //当四个结点都不同时，比较这4中选择方法哪种路径最短
+    {
+        min = Dijkstra(nearend[0],nearstart[0],tempway,&tempcount)+abs(placenow.x-node[nearstart[0]].x+placenow.y-node[nearstart[0]].y)+abs(placeto.x-node[nearend[0]].x+placeto.y-node[nearend[0]].y);
+    //               结点与结点之间的最短路径                           +                           起点到第一个结点的距离                    +                  最后一个结点到终点的距离        
+        distance = Dijkstra(nearend[0],nearstart[1],tempway,&tempcount)+abs(placenow.x-node[nearstart[1]].x+placenow.y-node[nearstart[1]].y)+abs(placeto.x-node[nearend[0]].x+placeto.y-node[nearend[0]].y);
+        
+        if (min > distance)
+        {
+            *start = nearstart[1];
+            min = distance;
+        }
+
+        distance = Dijkstra(nearend[1],nearstart[0],tempway,&tempcount)+abs(placenow.x-node[nearstart[0]].x+placenow.y-node[nearstart[0]].y)+abs(placeto.x-node[nearend[1]].x+placeto.y-node[nearend[1]].y);
+        if (min > distance)
+        {
+            *end = nearend[1];
+            min = distance;
+        }
+
+        distance = Dijkstra(nearend[1],nearstart[1],tempway,&tempcount)+abs(placenow.x-node[nearstart[1]].x+placenow.y-node[nearstart[1]].y)+abs(placeto.x-node[nearend[1]].x+placeto.y-node[nearend[1]].y);
+        
+        if (min > distance)
+        {
+            *start = nearstart[1];
+            *end = nearend[1];
+        }
     }
     
 }
+
+
 //将寻找的路径转换为动画
 int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y)
 {
@@ -347,7 +411,7 @@ int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE
     return sigle;
 }
 //寻路
-int find(int *x, int *y, int startx,int starty, int *energe)
+int find(int *x, int *y, CARRENT *rcar)
 {
     int mx,my,button;//鼠标点击
     int i;//用于计数
@@ -379,10 +443,10 @@ int find(int *x, int *y, int startx,int starty, int *energe)
     };
     /*初始化小车*/
 	CAR_CONDITION car_position;
-    placenow.x=startx;
-    placenow.y=starty;
+    placenow.x=rcar->rentcar.x;
+    placenow.y=rcar->rentcar.y;
 
-    judgeAreo(node,startx,starty,&placenow,&nowflag,&start);//确认当前区域
+    judgeAreo(node,rcar->rentcar.x,rcar->rentcar.y,&placenow,&nowflag,&start);//确认当前区域
 
     if (nowflag%2 != 0 && nowflag != 1)//若当前位置不在路口结点处，判断最近两个结点是哪两个
     {
@@ -402,7 +466,31 @@ int find(int *x, int *y, int startx,int starty, int *energe)
     //存小车当前位置的背景
     get_image(placenow.x-22,placenow.y-22,placenow.x+22,placenow.y+22,(car_position).pic);
     //根据小车的位置和停车场编号画出起始的小车
-    car_draw_right1(placenow.x,placenow.y);//写死实验
+    switch (rcar->parknum)
+    {
+        case 1:
+            car_draw_right1(placenow.x,placenow.y);
+            break;
+        case 2:
+            car_draw_right1(placenow.x,placenow.y);
+            break;
+        case 3:
+            car_draw_left1(placenow.x,placenow.y);
+            break;
+        case 4:
+            car_draw_left1(placenow.x,placenow.y);
+            break;
+        case 5:
+            car_draw_on1(placenow.x,placenow.y);
+            break;
+        case 6:
+            car_draw_right1(placenow.x,placenow.y);
+            break;
+        default:
+            break;
+    }
+
+    // car_draw_right1(placenow.x,placenow.y);//写死实验
 
 
     while (1)
@@ -439,14 +527,29 @@ int find(int *x, int *y, int startx,int starty, int *energe)
                 {
                     findNode(node,placeto,nearend,toflag);
                 }
-                if (nowflag %2 != 0 && nowflag != 1)//若当前位置不在路口结点处，根据终点位置判断先去哪个结点
+                // if (nowflag %2 != 0 && nowflag != 1)//若当前位置不在路口结点处，根据终点位置判断先去哪个结点
+                // {
+                //     StartAndEnd(node,placeto,nearstart,&start);
+                // }
+                // if (toflag %2 != 0 && toflag != 1)
+                // {
+                //     StartAndEnd(node,placenow,nearend,&end);
+                // }
+
+                //改良确认结点的方法，只要路口两端结点寻找正确，最后一定为最短路径
+                if (nowflag %2 == 0 || nowflag == 1)//若当前位置在路口结点处，则给两个暂存结点的数组赋值
                 {
-                    StartAndEnd(node,placeto,nearstart,&start);
+                    nearstart[0] = start;
+                    nearstart[1] = start;
                 }
-                if (toflag %2 != 0 && toflag != 1)
+                if (toflag %2 == 0 || toflag == 1)
                 {
-                    StartAndEnd(node,placenow,nearend,&end);
+                    nearend[0] = end;
+                    nearend[1] = end;
                 }
+                StartAndEnd(node,placenow,placeto,nearstart,nearend,&start,&end);
+
+
                 //找两个结点间的最短路径
                 Dijkstra(end,start,way,&count);
                 //确定各个结点之间的方向
@@ -493,7 +596,7 @@ int find(int *x, int *y, int startx,int starty, int *energe)
                     if (startdir != 0)
                     {
                     
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,node[start].x,node[start].y,x,y,startdir,energe);
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,node[start].x,node[start].y,x,y,startdir,&(rcar->leftenergy));
                         if(sigle==1)//用于安全报警后的接力退出
 			            {
 				            break;
@@ -501,7 +604,7 @@ int find(int *x, int *y, int startx,int starty, int *energe)
                     }
                     
                     //若终点不在结点上，第一个结点到最后一个结点
-                    sigle = linkCartoon(&car_position,node,way,direct,count,energe,x,y);
+                    sigle = linkCartoon(&car_position,node,way,direct,count,&(rcar->leftenergy),x,y);
                     if(sigle==1)//用于安全报警后的接力退出
 			        {
 				        break;
@@ -509,7 +612,7 @@ int find(int *x, int *y, int startx,int starty, int *energe)
                     //最后一个结点到终点
                     if (enddir != 0)
                     {
-                        sigle = rentmove(&car_position,node[end].x,node[end].y,placeto.x,placeto.y,x,y,enddir,energe);
+                        sigle = rentmove(&car_position,node[end].x,node[end].y,placeto.x,placeto.y,x,y,enddir,&(rcar->leftenergy));
                         if(sigle==1)//用于安全报警后的接力退出
 			            {
 				            break;
@@ -521,19 +624,19 @@ int find(int *x, int *y, int startx,int starty, int *energe)
                 {
                     if (placenow.y>placeto.y)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,1,energe);//向上走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,1,&(rcar->leftenergy));//向上走
                     }
                     else if (placenow.y<placeto.y)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,2,energe);//向下走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,2,&(rcar->leftenergy));//向下走
                     }
                     else if (placenow.x>placeto.x)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,3,energe);//向左走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,3,&(rcar->leftenergy));//向左走
                     }
                     else if (placenow.x<placeto.x)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,4,energe);//向右走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,4,&(rcar->leftenergy));//向右走
                     }
                     if(sigle==1)//用于安全报警后的接力退出
 			        {
@@ -542,10 +645,10 @@ int find(int *x, int *y, int startx,int starty, int *energe)
                 }
                 
                 
-                
                 //将终点的信息赋给当前位置，作为下一个起点
                 start = end;
                 nowflag = toflag;
+                
                 nearstart[0]=nearend[0];
                 nearstart[1]=nearend[1];
                 placenow.x = placeto.x;
@@ -553,7 +656,7 @@ int find(int *x, int *y, int startx,int starty, int *energe)
                 startdir=0;
                 enddir=0;
                 //将一些值赋空，否则可能会受影响
-                for ( i = 0; i < count; i++)
+                for ( i = 0; way[i]!=NOWAY; i++)
                 {
                     way[i]=NOWAY;
                     direct[1]=0;
@@ -568,7 +671,7 @@ int find(int *x, int *y, int startx,int starty, int *energe)
                 bar_round(512,384,416,270,50,1,64384);
                 bar_round(512,384,410,265,48,1,65535);
                 fdhz(390,360,2,2,"请在道路上行驶",64384);
-                fdhz(450,420,1,1,"按任意键充值",44373);
+                fdhz(450,420,1,1,"按任意键继续",44373);
                 getch();
                 
                 printf_image(512-210,384-140,512+210,384+140,"rentnote");

@@ -26,16 +26,17 @@ typedef struct carfast{
 
 
 typedef struct park{
-	char parknum;        //该停车场的编号
-    char carnum;   //车的数量
+	int parknum;        //该停车场的编号
+    int carnum;   //车的数量
 	int x;  //停车场位置
 	int y;
 }PARK;
 
 
 typedef struct carrent{
-	char parknum;        //所处停车场的编号
+	int parknum;        //所处停车场的编号
     CARINFOR rentcar;
+	int leftenergy;        //车辆剩余电量
 }CARRENT;          //共享汽车的信息
 
 /************************************
