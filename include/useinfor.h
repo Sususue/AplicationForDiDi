@@ -16,6 +16,11 @@ void leading_bus(int *x,int *y);//公交指南
 
 void order_box(int *x,int *y,USEINFOR *order);
 
+void fastorder(int *x,int *y,USEINFOR *infor);
+void rentorder(int *x,int *y,USEINFOR *infor);
+
 void showorder(ORDER *order);//显示订单内容
+
+void showrentorder(RENTORDER *order);//显示租车订单内容
 #endif
 

@@ -21,6 +21,7 @@ void CreateInforList(USEINFOR *inforhead)
   	/*必要的初始化过程*/
 	inforhead->phone_num[0]='\0';
 	inforhead->num = 0;
+	inforhead->rentnum = 0;
 	inforhead->cnt=0;
 	inforhead->payway=0;
 	inforhead->nowplace=0;
@@ -142,6 +143,7 @@ void AddNewInfor(USEINFOR *head,char *phone)
 	}
 	strcpy((current->next)->phone_num,phone);
 	(current->next)->num = 0; //初始订单数量都为0
+	(current->next)->rentnum = 0;
 	(current->next)->cnt=n;
 	(current->next)->payway=0;
 	(current->next)->money=0.0;
@@ -239,7 +241,7 @@ void addOrder(USEINFOR *infor, ORDER *order)
 
  	fclose(fp);
 
-	sprintf(filename,"order\\%d.txt",infor->cnt);
+	sprintf(filename,"order\\%d_fast.txt",infor->cnt);
 	if((fp_order = fopen(filename,"ab+")) == NULL)
 	// if((fp = fopen(filename,"wb")) == NULL)
 	{
@@ -268,7 +270,7 @@ void findOrder(USEINFOR *infor, ORDER *order, int n)
 	FILE *fp_order;
 	char filename[20];//存名字
 
-	sprintf(filename,"order\\%d.txt",infor->cnt);
+	sprintf(filename,"order\\%d_fast.txt",infor->cnt);
 	if((fp_order = fopen(filename,"rb+")) == NULL)
 	{
 		null_box(500,500);
@@ -277,6 +279,79 @@ void findOrder(USEINFOR *infor, ORDER *order, int n)
 	}
 	fseek(fp_order,sizeof(ORDER)*(n-1),SEEK_SET);
 	fread(order,sizeof(ORDER),1,fp_order);//将订单信息写入订单结构
+
+	fclose(fp_order);
+	
+}
+
+/****************************************************
+Function: addRentOrder
+Description: 传入当前用户信息,并修改对应用户的订单数量(增加1)，与订单结构
+			生成新订单,并以文件的形式保存//形式存订单图
+			以用户结点位置(infor->cnt)加订单数的形式存文件，中间用下划线隔开
+			例如 1_2 :第一个用户的第二个订单
+Attention:
+Return:无
+****************************************************/
+void addRentOrder(USEINFOR *infor, RENTORDER *order)
+{
+	FILE *fp;
+	FILE *fp_order;
+	char filename[20];//存名字
+
+	infor->rentnum=(infor->rentnum)+1;
+	//修改文件中
+	if((fp = fopen("USER\\infor.txt","rb+")) == NULL)
+	{
+		null_box(500,500);
+		getch();
+		exit(1);
+	}
+	/*将文件内部指针移到文件中需要更改的位置*/
+    fseek(fp,sizeof(USEINFOR)*infor->cnt,SEEK_SET);
+
+    fwrite(infor,sizeof(USEINFOR),1,fp);
+
+ 	fclose(fp);
+
+	sprintf(filename,"order\\%d_rent.txt",infor->cnt);
+	if((fp_order = fopen(filename,"ab+")) == NULL)
+	// if((fp = fopen(filename,"wb")) == NULL)
+	{
+		null_box(500,500);
+		getch();
+		exit(1);
+	}
+	fwrite(order,sizeof(RENTORDER),1,fp_order);
+
+	fclose(fp_order);
+	
+}
+
+/****************************************************
+Function: findRentOrder
+Description: 传入当前用户信息infor,与订单结构order
+			打开文件的形式保存//形式存订单图
+			以用户结点位置(infor->cnt)的形式存文件，一个用户的订单都存在一个文件中
+			例如 1:第一个用户的订单
+			n:第几个订单
+Attention:
+Return:无
+****************************************************/
+void findRentOrder(USEINFOR *infor, RENTORDER *order, int n)
+{
+	FILE *fp_order;
+	char filename[20];//存名字
+
+	sprintf(filename,"order\\%d_rent.txt",infor->cnt);
+	if((fp_order = fopen(filename,"rb+")) == NULL)
+	{
+		null_box(500,500);
+		getch();
+		exit(1);
+	}
+	fseek(fp_order,sizeof(RENTORDER)*(n-1),SEEK_SET);
+	fread(order,sizeof(RENTORDER),1,fp_order);//将订单信息写入订单结构
 
 	fclose(fp_order);
 	
@@ -298,6 +373,7 @@ void findInfor(USEINFOR *head,USEINFOR *infor,char *phone)
    		current=current->next;
  	}
 	infor->num=current->num;
+	infor->rentnum=current->rentnum;
 	infor->cnt=current->cnt;
 	infor->payway=current->payway;
 	infor->money=current->money;

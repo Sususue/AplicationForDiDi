@@ -679,15 +679,15 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
         
         time(&rentime2);//获取循环中的系统时间
 		minit_gap=difftime(rentime2,rentime1);
-		if((minit_gap/(10*middtime))>0)
+		if((minit_gap/(2*middtime))>0)
 		{
-			timing+=5;
+			timing+=1;
 			bar(905,265,940,300,65535);//遮住先前的时间
 			bar(905,355,960,390,65535);//遮住先前的价格
 			sprintf(minitgap,"%d",timing);
 			outtextxy(900,280,minitgap,1,1,15,64384);
 			
-			price1=0.68*timing;
+			price1=0.34*minit_gap;
 			sprintf(pri,"%.2f",price1);
 			outtextxy(900,370,pri,1,1,10,64384);
 			
@@ -701,24 +701,25 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
             lockcar(parking,car_position,&lockflag,x,y);
             if (lockflag == 1)//确认还车
             {
-
+                newrentorder(x,y,infor,rcar,timing,&price1);
+                changeMoney(infor,price1);
                 break;
             }
             
             
         }
-        else if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
-        {
-            break;
-        }
+        // else if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
+        // {
+        //     break;
+        // }
         else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
         {
             safe_box(x,y);
         }
-        else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
-        {
-            exit(0);
-        }
+        // else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
+        // {
+        //     exit(0);
+        // }
         if (mx >= 1 && mx <= 767 && my >= 1 && my <= 767 && button  )
         {
             

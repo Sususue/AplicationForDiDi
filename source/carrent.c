@@ -23,14 +23,28 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 	
 	//底色
     bar(771,2,996,612,65523);
+
+	// //初始化停车场的位置
+    // parkplace[2].x=317;
+    // parkplace[2].y=70;//东湖
+    // parkplace[5].x=513;
+    // parkplace[5].y=223;//游泳馆
+    // parkplace[0].x=100;
+    // parkplace[0].y=420;//学校
+    // parkplace[3].x=340;
+    // parkplace[3].y=510;//商场
+    // parkplace[1].x=182;
+    // parkplace[1].y=674;//小区
+	// parkplace[4].x=670;
+    // parkplace[4].y=530;//图书馆
 	
 	//画停车场的位置
-	FillCircle(317,70,30,9284);//东湖
-	FillCircle(513,223,30,9284);//游泳馆
-	FillCircle(100,420,30,9284);//学校
-	FillCircle(340,510,30,9284);//商场
-	FillCircle(182,674,30,9284);//小区
-	FillCircle(670,530,30,9284);//图书馆
+	FillCircle(parking[2].x,parking[2].y,30,9284);//东湖
+	FillCircle(parking[5].x,parking[5].y,30,9284);//游泳馆
+	FillCircle(parking[0].x,parking[0].y,30,9284);//学校
+	FillCircle(parking[3].x,parking[3].y,30,9284);//商场
+	FillCircle(parking[1].x,parking[1].y,30,9284);//小区
+	FillCircle(parking[4].x,parking[4].y,30,9284);//图书馆
 	
 	//画停车场上车的数目
 	sprintf(carnumber[2],"%d",parking[2].carnum);
@@ -96,14 +110,22 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 		
         if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
         {
-            //对地图上原有的停车场进行遮挡
-			FillCircle(317,70,30,57083);//东湖
-			FillCircle(513,223,30,57083);//游泳馆
-			FillCircle(100,420,30,57083);//学校
-			FillCircle(340,510,30,57083);//商场
-			FillCircle(182,674,30,57083);//小区
-			FillCircle(670,530,30,57083);//图书馆
-			
+
+            
+			// FillCircle(317,70,30,57083);//东湖
+			// FillCircle(513,223,30,57083);//游泳馆
+			// FillCircle(100,420,30,57083);//学校
+			// FillCircle(340,510,30,57083);//商场
+			// FillCircle(182,674,30,57083);//小区
+			// FillCircle(670,530,30,57083);//图书馆
+
+			 //对地图上原有的停车场进行遮挡
+			FillCircle(parking[2].x,parking[2].y,30,57083);//东湖
+			FillCircle(parking[5].x,parking[5].y,30,57083);//游泳馆
+			FillCircle(parking[0].x,parking[0].y,30,57083);//学校
+			FillCircle(parking[3].x,parking[3].y,30,57083);//商场
+			FillCircle(parking[1].x,parking[1].y,30,57083);//小区
+			FillCircle(parking[4].x,parking[4].y,30,57083);//图书馆
             break;
         }
 		
@@ -131,21 +153,28 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 			if(flaging!=1)
 			{
 				//对地图上原有的停车场进行遮挡
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				// FillCircle(317,70,30,9284);//东湖
+				// FillCircle(513,223,30,9284);//游泳馆
+				// FillCircle(100,420,30,9284);//学校
+				// FillCircle(340,510,30,9284);//商场
+				// FillCircle(182,674,30,9284);//小区
+				// FillCircle(670,530,30,9284);//图书馆
+
+				FillCircle(parking[2].x,parking[2].y,30,9284);//东湖
+				FillCircle(parking[5].x,parking[5].y,30,9284);//游泳馆
+				FillCircle(parking[0].x,parking[0].y,30,9284);//学校
+				FillCircle(parking[3].x,parking[3].y,30,9284);//商场
+				FillCircle(parking[1].x,parking[1].y,30,9284);//小区
+				FillCircle(parking[4].x,parking[4].y,30,9284);//图书馆
 			
 				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				//画停车场的位置
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				// FillCircle(parking[2].x,parking[2].y,30,9284);//东湖
+				// FillCircle(parking[5].x,parking[5].y,30,9284);//游泳馆
+				// FillCircle(parking[0].x,parking[0].y,30,9284);//学校
+				// FillCircle(parking[3].x,parking[3].y,30,9284);//商场
+				// FillCircle(parking[1].x,parking[1].y,30,9284);//小区
+				// FillCircle(parking[4].x,parking[4].y,30,9284);//图书馆
 				//画停车场上车的数目
 				sprintf(carnumber[2],"%d",parking[2].carnum);
 				outtextxy(299,54,carnumber[2],2,2,1,65535);//东湖
@@ -176,21 +205,21 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 			if(flaging!=1)
 			{
 				//对地图上原有的停车场进行遮挡
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
-				
+				FillCircle(parking[2].x,parking[2].y,30,9284);//东湖
+				FillCircle(parking[5].x,parking[5].y,30,9284);//游泳馆
+				FillCircle(parking[0].x,parking[0].y,30,9284);//学校
+				FillCircle(parking[3].x,parking[3].y,30,9284);//商场
+				FillCircle(parking[1].x,parking[1].y,30,9284);//小区
+				FillCircle(parking[4].x,parking[4].y,30,9284);//图书馆
+			
 				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				//画停车场的位置
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				// FillCircle(317,70,30,9284);//东湖
+				// FillCircle(513,223,30,9284);//游泳馆
+				// FillCircle(100,420,30,9284);//学校
+				// FillCircle(340,510,30,9284);//商场
+				// FillCircle(182,674,30,9284);//小区
+				// FillCircle(670,530,30,9284);//图书馆
 				//画停车场上车的数目
 				sprintf(carnumber[2],"%d",parking[2].carnum);
 				outtextxy(299,54,carnumber[2],2,2,1,65535);//东湖
@@ -221,22 +250,23 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 			if(flaging!=1)
 			{
 				//对地图上原有的停车场进行遮挡
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				FillCircle(parking[2].x,parking[2].y,30,9284);//东湖
+				FillCircle(parking[5].x,parking[5].y,30,9284);//游泳馆
+				FillCircle(parking[0].x,parking[0].y,30,9284);//学校
+				FillCircle(parking[3].x,parking[3].y,30,9284);//商场
+				FillCircle(parking[1].x,parking[1].y,30,9284);//小区
+				FillCircle(parking[4].x,parking[4].y,30,9284);//图书馆
+			
 				
 				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				
 				//画停车场的位置
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				// FillCircle(317,70,30,9284);//东湖
+				// FillCircle(513,223,30,9284);//游泳馆
+				// FillCircle(100,420,30,9284);//学校
+				// FillCircle(340,510,30,9284);//商场
+				// FillCircle(182,674,30,9284);//小区
+				// FillCircle(670,530,30,9284);//图书馆
 				//画停车场上车的数目
 				sprintf(carnumber[2],"%d",parking[2].carnum);
 				outtextxy(299,54,carnumber[2],2,2,1,65535);//东湖
@@ -267,22 +297,23 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 			if(flaging!=1)
 			{
 				//对地图上原有的停车场进行遮挡
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				FillCircle(parking[2].x,parking[2].y,30,9284);//东湖
+				FillCircle(parking[5].x,parking[5].y,30,9284);//游泳馆
+				FillCircle(parking[0].x,parking[0].y,30,9284);//学校
+				FillCircle(parking[3].x,parking[3].y,30,9284);//商场
+				FillCircle(parking[1].x,parking[1].y,30,9284);//小区
+				FillCircle(parking[4].x,parking[4].y,30,9284);//图书馆
+			
 				
 				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				
 				//画停车场的位置
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				// FillCircle(317,70,30,9284);//东湖
+				// FillCircle(513,223,30,9284);//游泳馆
+				// FillCircle(100,420,30,9284);//学校
+				// FillCircle(340,510,30,9284);//商场
+				// FillCircle(182,674,30,9284);//小区
+				// FillCircle(670,530,30,9284);//图书馆
 				//画停车场上车的数目
 				sprintf(carnumber[2],"%d",parking[2].carnum);
 				outtextxy(299,54,carnumber[2],2,2,1,65535);//东湖
@@ -313,22 +344,23 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 			if(flaging!=1)
 			{
 				//对地图上原有的停车场进行遮挡
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				FillCircle(parking[2].x,parking[2].y,30,9284);//东湖
+				FillCircle(parking[5].x,parking[5].y,30,9284);//游泳馆
+				FillCircle(parking[0].x,parking[0].y,30,9284);//学校
+				FillCircle(parking[3].x,parking[3].y,30,9284);//商场
+				FillCircle(parking[1].x,parking[1].y,30,9284);//小区
+				FillCircle(parking[4].x,parking[4].y,30,9284);//图书馆
+			
 				
 				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				
 				//画停车场的位置
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				// FillCircle(317,70,30,9284);//东湖
+				// FillCircle(513,223,30,9284);//游泳馆
+				// FillCircle(100,420,30,9284);//学校
+				// FillCircle(340,510,30,9284);//商场
+				// FillCircle(182,674,30,9284);//小区
+				// FillCircle(670,530,30,9284);//图书馆
 				//画停车场上车的数目
 				sprintf(carnumber[2],"%d",parking[2].carnum);
 				outtextxy(299,54,carnumber[2],2,2,1,65535);//东湖
@@ -359,22 +391,23 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 			if(flaging!=1)
 			{
 				//对地图上原有的停车场进行遮挡
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				FillCircle(parking[2].x,parking[2].y,30,9284);//东湖
+				FillCircle(parking[5].x,parking[5].y,30,9284);//游泳馆
+				FillCircle(parking[0].x,parking[0].y,30,9284);//学校
+				FillCircle(parking[3].x,parking[3].y,30,9284);//商场
+				FillCircle(parking[1].x,parking[1].y,30,9284);//小区
+				FillCircle(parking[4].x,parking[4].y,30,9284);//图书馆
+			
 				
 				rentprocess_box(x,y,parking,rent,&carflag,infor);
 				
 				//画停车场的位置
-				FillCircle(317,70,30,9284);//东湖
-				FillCircle(513,223,30,9284);//游泳馆
-				FillCircle(100,420,30,9284);//学校
-				FillCircle(340,510,30,9284);//商场
-				FillCircle(182,674,30,9284);//小区
-				FillCircle(670,530,30,9284);//图书馆
+				// FillCircle(317,70,30,9284);//东湖
+				// FillCircle(513,223,30,9284);//游泳馆
+				// FillCircle(100,420,30,9284);//学校
+				// FillCircle(340,510,30,9284);//商场
+				// FillCircle(182,674,30,9284);//小区
+				// FillCircle(670,530,30,9284);//图书馆
 				//画停车场上车的数目
 				sprintf(carnumber[2],"%d",parking[2].carnum);
 				outtextxy(299,54,carnumber[2],2,2,1,65535);//东湖
@@ -755,33 +788,22 @@ void rentprocess_box(int *x, int *y,const PARK parking[],const CARRENT rent[],in
     fdhz(865,550,1,1,"锁",64384);
     fdhz(905,550,1,1,"车",64384);
 
+	//对BACK键进行遮挡
+    bar_round(976,664,76,44,15,1,65523);
+
 	reset_mouse(x,y);
 
+
 	sigle = find(x,y,&rent[*carflag2],infor,parking);
-	//  while (1)
-    // {
-    //     newxy(x,y,&button);
-	// 	mx = *x;
-	// 	my = *y;
 	
-	// 	if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
-    //     {
-    //         break;
-    //     }
-	// 	else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
-    //     {
-    //         exit(0);
-    //     }
-	// 	else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-    //     {
-    //         safe_box(x,y);
-    //     }
-	
-	// }
 	
 	//显示背景
     mousehide(*x,*y); 
     printf_image(771,2,996,612,"rentpro");
+	//重画返回键
+    bar_round(976,664,76,44,15,1,64384);
+    bar_round(976,664,70,39,13,1,65535);
+    outtextxy(938,645,"Back",2,2,15,64384);
 	
 	//显示鼠标
     reset_mouse(x,y);

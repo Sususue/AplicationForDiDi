@@ -104,16 +104,16 @@ int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int
 
 		time(renttime2);//获取循环中的系统时间
 		minite_gap=difftime(*renttime2,renttime1);
-		if(minite_gap/(10*(*midtime))>0)
+		if(minite_gap/(2*(*midtime))>0)
 		{
-			*tim+=5;
+			*tim+=1;
 			bar(905,265,940,300,65535);//遮住先前的时间
 			bar(905,355,960,390,65535);//遮住先前的价格
 
 			sprintf(minigap,"%d",*tim);
 			outtextxy(900,280,minigap,1,1,15,64384);
 			
-			price2=0.68*(*tim);
+			price2=0.34*minite_gap;
 			sprintf(pric,"%.2f",price2);
 			outtextxy(900,370,pric,1,1,10,64384);
 			

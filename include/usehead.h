@@ -55,7 +55,8 @@ money:用户钱包的余额
  *************/
 typedef struct useinfor{
 	int cnt;  //记录是链表中的第几个结点(不含头结点)
-    int num;     //订单的数量
+    int num;     //快车订单的数量
+	int rentnum;//租车的订单数量
 	int payway; //支付方式:1为余额支付，2为微信支付，3为支付宝支付 默认为0-未设置
 	int nowplace;    //存位置对应的号码  刚开始默认为在学校
 	float money;//金额
@@ -67,19 +68,27 @@ typedef struct order{
 	char name[3];//司机名字
 	char carname[6];//车牌
 	char type[7];  //车的型号
-	char startname[7];    //起点
+	char startname[7];//起点
 	char endname[7];//终点
 	char money[8];//金额
 	char orderstime[11];//日期
 }ORDER; //用于存储订单的信息
 
 
+typedef struct rentorder{
+	char carname[7];//车牌
+	char type[7];  //车的型号
+	char during[5];//持续时间
+	char money[8];//金额
+	char orderstime[11];//日期
+}RENTORDER; //用于存储租车订单的信息
 
 typedef struct users{
 	char phone_num[12];
 	char code[11];
     struct users *next;
 }USER;       //存储用户的账号和密码
+
 
 /*********************************************************
 Function: CreateOrderList
@@ -90,6 +99,9 @@ Return:无返回值
 ***********************************************************/
 extern void CreateInforList(USEINFOR *head);
 
+
+
+
 /************************************
 Function: AddNewOrder
 Description: 创建新的用户订单
@@ -97,6 +109,8 @@ Attention:s1指代用户串
 Return:
 *************************************/
 extern void AddNewInfor(USEINFOR *head,char *phone);
+
+
 
 /****************************************************
 Function: SearchOrder
@@ -113,6 +127,8 @@ Return:若有则返回对应的订单数量，若没有则返回0
 // Return:无
 // ****************************************************/
 // extern void changeOrder(USEINFOR *infor);
+
+
 /****************************************************
 Function: changeOrder
 Description: 传入指定电话号码,与订单结构，并修改对应用户的订单数量(增加1)
@@ -120,6 +136,8 @@ Attention:
 Return:无
 ****************************************************/
 extern void addOrder(USEINFOR *infor, ORDER *order);
+
+
 
 /****************************************************
 Function: findOrder
@@ -132,14 +150,47 @@ Attention:
 Return:无
 ****************************************************/
 void findOrder(USEINFOR *infor, ORDER *order, int n);
+
+
+
+/****************************************************
+Function: addRentOrder
+Description: 传入当前用户信息,并修改对应用户的订单数量(增加1)，与订单结构
+			生成新订单,并以文件的形式保存//形式存订单图
+			以用户结点位置(infor->cnt)加订单数的形式存文件，中间用下划线隔开
+			例如 1_2 :第一个用户的第二个订单
+Attention:
+Return:无
+****************************************************/
+void addRentOrder(USEINFOR *infor, RENTORDER *order);
+
+
+
+
+/****************************************************
+Function: findRentOrder
+Description: 传入当前用户信息infor,与订单结构order
+			打开文件的形式保存//形式存订单图
+			以用户结点位置(infor->cnt)的形式存文件，一个用户的订单都存在一个文件中
+			例如 1:第一个用户的订单
+			n:第几个订单
+Attention:
+Return:无
+****************************************************/
+void findRentOrder(USEINFOR *infor, RENTORDER *order, int n);
+
+
+
 /****************************************************
 Function: findInfor
 Description: 传入指定电话号码,在链表中找到对应用户的订单
 Attention:phone为电话号码
 Return:无
 ****************************************************/
-
 void findInfor(USEINFOR *head, USEINFOR *infor, char *phone);
+
+
+
 /***********************************************
 Function: freeOrderlist
 Description:释放链表的内存空间并将头指针置为NULL
@@ -147,6 +198,8 @@ Attention:文件必须按要求格式化书写
 Return:
 ************************************************/
 extern void freeInforlist(USEINFOR **head);
+
+
 
 /****************************************************
 Function: changePay
@@ -159,6 +212,8 @@ Return:无
 ****************************************************/
 void changePay(USEINFOR *infor, int mode,int value);
 
+
+
 /****************************************************
 Function: changeNowplace
 Description: 传入当前用户信息，修改当前位置
@@ -169,6 +224,8 @@ Return:无
 ****************************************************/
 void changeNowplace(USEINFOR *infor, int aimplace);
 
+
+
 /****************************************************
 Function: changeMoney
 Description: 传入当前用户信息，修改当前位置
@@ -178,5 +235,6 @@ Return:无
 ****************************************************/
 void changeMoney(USEINFOR *infor, float price);
 
-#endif
 
+
+#endif

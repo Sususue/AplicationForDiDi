@@ -59,6 +59,7 @@ extern void countprice(float *pointprice,int nowplace,int *aimplace,int timegap,
 ******************************************************/
 void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int timegap, int *x, int *y, int waitime);
 
-
+//生成新的租车订单
+void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,float *price);
 
 #endif

@@ -458,17 +458,15 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
                 waitime=0;
                 break;
             }
-            
-            
         }
         else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
         {
             safe_box(x,y);
         }
-        else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
-        {
-            exit(0);
-        }
+        // else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
+        // {
+        //     exit(0);
+        // }
 		else if (mx>=798  && mx<=994 && my>=416 && my<=520 && button)//点击立刻/等待上车显示车行动画
 		{	
             mousehide(*x,*y);
