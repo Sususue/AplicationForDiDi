@@ -31,6 +31,8 @@ void pay_box(int* x, int* y,USEINFOR *infor)
     fdhz(200,423,2,2,"充值",44373);
     fdhz(200,565,2,2,"支付方式",44373);
 
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
     
     reset_mouse(x,y);
     while (1)
@@ -53,6 +55,10 @@ void pay_box(int* x, int* y,USEINFOR *infor)
         else if(mx>=88 && mx<=678 && my>=511 && my<=657 && button)//支付方式
         {
             pay_way(x,y,infor);
+        }
+        else if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//点击红叉返回
+        {
+            break;
         }
         
     }
@@ -131,6 +137,9 @@ void top_up(int *x,int *y,USEINFOR *infor)
     bar_round(383,600,190,47,18,1,65535);
     fdhz(337,586,2,2,"确",44373);
     fdhz(397,586,2,2,"定",44373);
+
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
     //显示鼠标
     reset_mouse(x,y);
 
@@ -146,6 +155,10 @@ void top_up(int *x,int *y,USEINFOR *infor)
         else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
         {
             exit(0);
+        }
+        else if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//点击红叉返回
+        {
+            break;
         }
         else if (mx>=135  && mx<=269 && my>=298 && my<=384 && button)//点击20元
         {
@@ -331,6 +344,10 @@ void pay_way(int *x,int *y, USEINFOR *infor)
     fdhz(400,333,1,1,"可享九折优惠",64384);
     fdhz(135,460,1,1,"微信支付",44373);
     fdhz(135,587,1,1,"支付宝支付",44373);
+
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
+
     if (infor->payway == 1)
     {
         // bar(125,290,170,350,65535);
@@ -370,6 +387,10 @@ void pay_way(int *x,int *y, USEINFOR *infor)
         else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
         {
             exit(0);
+        }
+        else if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//点击红叉返回
+        {
+            break;
         }
         else if (mx>=88 && mx<=678 && my>=270 && my<=397 && button)//选余额
         {

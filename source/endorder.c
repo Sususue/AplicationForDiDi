@@ -82,6 +82,9 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFAST car[], const char **p
     outtextxy(175,590,":",1,1,10,44373);
     fdhz(190,590,1,1,car[mincar].fastcar.type,44373);
 
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//»­ºì²æ
+
     reset_mouse(x,y);
     strcpy(ordernew->name,car[mincar].name);
     strcpy(ordernew->carname,car[mincar].fastcar.carname);
@@ -98,6 +101,10 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFAST car[], const char **p
 		mx = *x;
 		my = *y;
         if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//µã»÷Back·µ»Ø
+        {
+            break;
+        }
+        else if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//µã»÷ºì²æ·µ»Ø
         {
             break;
         }

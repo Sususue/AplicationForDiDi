@@ -87,7 +87,7 @@ void StartAndEnd(PLACE node[MAXSIZE],PLACE placenow,PLACE placeto, int nearstart
         x,y:鼠标
 返回值说明:sigle:用于接力退出
 ****************************************************/
-int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y,USEINFOR *infor,int *avoid);
+int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y,USEINFOR *infor,int *avoid,time_t rentime1,time_t *rentime2,int *mid,int *timi);
 
 
 /***********************************************

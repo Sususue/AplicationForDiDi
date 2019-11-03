@@ -12,8 +12,10 @@
 				   derection==3:左
 				   derection==4:右
 		 energy：用于显示电量的参数
+时间换算：2s=1min
+		  每5s更新一次当前用车时间，相当于5min
 **************************************************************************/
-int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int *y,int direction,int *energy, USEINFOR *infor,int* avoid)
+int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int *y,int direction,int *energy, USEINFOR *infor,int* avoid,time_t renttime1,time_t *renttime2,int *midtime,int *tim)
 {
 	int i;
 	int j;//用于单位移动循环的变量
@@ -21,6 +23,10 @@ int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int
 	char menergy[5]="\0";//用于小车电量数字变化
 	int sigle=0;
 	// int avoid = 0;//避免反复提醒电量过低
+	int minite_gap;//用于判断当前租车时间,实际单位为sec，1s=1min
+	char minigap[5];//用于当前用车时间的数据类型转换
+	float price2;//用于价格计算
+	char pric[8];//用于价格的数据类型转换
 	/*初始化小车*/
 	// CAR_CONDITION car_position;
 	put_image(x1-22,y1-22,x1+22,y1+22,(*car_position).pic);
@@ -85,9 +91,9 @@ int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int
 			{
 				*energy=5;
 			}
-			bar_round(896,468,190,47,8,1,65535);
+			bar_round(896,468,40,47,8,1,65535);
 			sprintf(menergy,"%d",*energy);
-			outtextxy(885,460,menergy,1,1,10,64384);
+			outtextxy(877,459,menergy,1,1,10,64384);
 
 			judgEnergy(energy,avoid,x,y,infor);
 		}
@@ -95,6 +101,25 @@ int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int
 		{
 			return sigle;
 		}
+
+		time(renttime2);//获取循环中的系统时间
+		minite_gap=difftime(*renttime2,renttime1);
+		if(minite_gap/(10*(*midtime))>0)
+		{
+			*tim+=5;
+			bar(905,265,940,300,65535);//遮住先前的时间
+			bar(905,355,960,390,65535);//遮住先前的价格
+
+			sprintf(minigap,"%d",*tim);
+			outtextxy(900,280,minigap,1,1,15,64384);
+			
+			price2=0.68*(*tim);
+			sprintf(pric,"%.2f",price2);
+			outtextxy(900,370,pric,1,1,10,64384);
+			
+			(*midtime)++;
+		}
+		
 	}
 	get_image(x2-22,y2-22,x2+22,y2+22,(*car_position).pic);
 	//判断方向并画出小车

@@ -556,14 +556,14 @@ void StartAndEnd(PLACE node[MAXSIZE],PLACE placenow,PLACE placeto, int nearstart
 
 
 //将寻找的路径转换为动画
-int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y,USEINFOR *infor,int *avoid)
+int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y,USEINFOR *infor,int *avoid,time_t rentime1,time_t *rentime2,int *mid,int *timi)
 {
     int i;
     int mx,my,button;
     int sigle=0;//用于接力退出
     for ( i = 0; i < count; i++)
     { 
-        sigle = rentmove(car_position,node[way[i]].x,node[way[i]].y,node[way[i+1]].x,node[way[i+1]].y,x,y,direct[i],energe,infor,avoid);
+        sigle = rentmove(car_position,node[way[i]].x,node[way[i]].y,node[way[i+1]].x,node[way[i+1]].y,x,y,direct[i],energe,infor,avoid,rentime1,rentime2,mid,timi);
         if (sigle == 1)
         {
             break;
@@ -593,6 +593,15 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
     PLACE placenow;//当前位置所在的坐标
     int way[MAXSIZE]={NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY,NOWAY};//记录路径顺序
     int direct[MAXSIZE]={0};//记录方向，1上2下3左4右
+    time_t rentime1;//用于获取进入find函数的系统时间
+	time_t rentime2;//用于获取循环过程中的时间
+	int minit_gap;//用于时间间隔的判断
+	char minitgap[5];//用于时间间隔的数据类型转换
+	int middtime=1;//用于与时间间隔进行比较的中间变量
+	int timing=0;//用于时间的显示
+	float price1;//用于价格计算
+	char pri[8];//用于价格的数据类型转换
+	
     PLACE node[MAXSIZE]={//各个结点的坐标
         {272,25},//0
         {272,268},//1
@@ -613,6 +622,8 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
 
     placenow.x=rcar->rentcar.x;
     placenow.y=rcar->rentcar.y;
+
+    time(&rentime1);//获取GMT时间
 
     judgeAreo(node,rcar->rentcar.x,rcar->rentcar.y,&placenow,&nowflag,&start);//确认当前区域
 
@@ -666,6 +677,23 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
         
         // judgEnergy(&(rcar->leftenergy), &avoid, x, y,infor);
         
+        time(&rentime2);//获取循环中的系统时间
+		minit_gap=difftime(rentime2,rentime1);
+		if((minit_gap/(10*middtime))>0)
+		{
+			timing+=5;
+			bar(905,265,940,300,65535);//遮住先前的时间
+			bar(905,355,960,390,65535);//遮住先前的价格
+			sprintf(minitgap,"%d",timing);
+			outtextxy(900,280,minitgap,1,1,15,64384);
+			
+			price1=0.68*timing;
+			sprintf(pri,"%.2f",price1);
+			outtextxy(900,370,pri,1,1,10,64384);
+			
+			middtime++;
+			
+		}
         
         
         if(mx>=798  && mx<=994 && my>=532 && my<=584 && button)//点击锁车，判断是否能锁车
@@ -773,7 +801,7 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
                     if (startdir != 0)
                     {
                     
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,node[start].x,node[start].y,x,y,startdir,&(rcar->leftenergy),infor,&avoid);
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,node[start].x,node[start].y,x,y,startdir,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);
                         if(sigle==1)//用于安全报警后的接力退出
 			            {
 				            break;
@@ -782,7 +810,7 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
                     }
                     
                     //若终点不在结点上，第一个结点到最后一个结点
-                    sigle = linkCartoon(&car_position,node,way,direct,count,&(rcar->leftenergy),x,y,infor,&avoid);
+                    sigle = linkCartoon(&car_position,node,way,direct,count,&(rcar->leftenergy),x,y,infor,&avoid,rentime1,&rentime2,&middtime,&timing);
                     if(sigle==1)//用于安全报警后的接力退出
 			        {
 				        break;
@@ -790,7 +818,7 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
                     //最后一个结点到终点
                     if (enddir != 0)
                     {
-                        sigle = rentmove(&car_position,node[end].x,node[end].y,placeto.x,placeto.y,x,y,enddir,&(rcar->leftenergy),infor,&avoid);
+                        sigle = rentmove(&car_position,node[end].x,node[end].y,placeto.x,placeto.y,x,y,enddir,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);
                         if(sigle==1)//用于安全报警后的接力退出
 			            {
 				            break;
@@ -803,19 +831,19 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
                 {
                     if (placenow.y>placeto.y)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,1,&(rcar->leftenergy),infor,&avoid);//向上走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,1,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向上走
                     }
                     else if (placenow.y<placeto.y)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,2,&(rcar->leftenergy),infor,&avoid);//向下走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,2,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向下走
                     }
                     else if (placenow.x>placeto.x)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,3,&(rcar->leftenergy),infor,&avoid);//向左走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,3,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向左走
                     }
                     else if (placenow.x<placeto.x)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,4,&(rcar->leftenergy),infor,&avoid);//向右走
+                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,4,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向右走
                     }
                     if(sigle==1)//用于安全报警后的接力退出
 			        {
@@ -1041,9 +1069,9 @@ void judgEnergy(int *energy,int *avoid, int *x, int *y, USEINFOR *infor)
             }
             printf_image(512-210,384-140,512+210,384+140,"energy");
             reset_mouse(x,y);
-            bar_round(896,468,190,47,8,1,65535);
+            bar_round(896,468,40,47,8,1,65535);
 			sprintf(menergy,"%d",*energy);
-			outtextxy(885,460,menergy,1,1,10,64384);
+			outtextxy(877,459,menergy,1,1,10,64384);
     }
 }
 //判断锁车

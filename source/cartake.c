@@ -606,8 +606,8 @@ int pre_appoint(int *x,int *y)
 	outtextxy(150,565,"90",2,2,30,44373);
     fdhz(230,565,2,2,"·ÖÖÓºó",44373);
 
-    lean_line_thick(608,133,30,45,3,64384);
-	lean_line_thick(608,133+20,30,-45,3,64384);//»­ºì²æ
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//»­ºì²æ
     
     reset_mouse(x,y);
     while (1)
@@ -685,7 +685,7 @@ int pre_appoint(int *x,int *y)
         {
             break;
         }
-        if(mx>=608  && mx<=628 && my>=133 && my<=153 && button)//µã»÷ºì²æ·µ»Ø
+        else if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//µã»÷ºì²æ·µ»Ø
         {
             break;
         }

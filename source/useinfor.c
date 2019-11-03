@@ -123,6 +123,9 @@ void leading_box(int *x,int *y)
     fdhz(200,423,2,2,"小桔租车",44373);
     fdhz(200,565,2,2,"公交",44373);
 
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
+
     //显示鼠标
     reset_mouse(x,y);
 
@@ -138,6 +141,10 @@ void leading_box(int *x,int *y)
         else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
         {
             exit(0);
+        }
+        else if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//点击红叉返回
+        {
+            break;
         }
         
         else if(mx>=88 && mx<=678 && my>=231 && my<=367 && button)//快车指南
@@ -233,6 +240,9 @@ void leading_fast(int *x,int *y)
     outtextxy(490,590,"19.00",1,1,10,44373);
     fdhz(550,590,1,1,"元",44373);
 
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
+
     //显示鼠标
     reset_mouse(x,y);
 
@@ -242,6 +252,10 @@ void leading_fast(int *x,int *y)
 		mx = *x;
 		my = *y;
         if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
+        {
+            break;
+        }
+        else if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//点击红叉返回
         {
             break;
         }
@@ -282,6 +296,9 @@ void leading_rent(int *x,int *y)
 
     fdhz(140,375,1,1,"租金按分钟计时收费",44373);
 
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
+
     //显示鼠标
     reset_mouse(x,y);
 
@@ -291,6 +308,10 @@ void leading_rent(int *x,int *y)
 		mx = *x;
 		my = *y;
         if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)
+        {
+            break;
+        }
+        else if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//点击红叉返回
         {
             break;
         }
@@ -339,6 +360,8 @@ void leading_bus(int *x,int *y)
     fdhz(510,415,1,1,"从而选择更合",44373);
     fdhz(140,445,1,1,"适的公交出行方案",44373);
 
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
 
     //显示鼠标
     reset_mouse(x,y);
@@ -349,6 +372,10 @@ void leading_bus(int *x,int *y)
 		mx = *x;
 		my = *y;
         if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)
+        {
+            break;
+        }
+        else if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//点击红叉返回
         {
             break;
         }
@@ -677,6 +704,8 @@ void order_box(int *x,int *y,USEINFOR *infor)//读取文件形式显示订单
     // bar(390,265,430,290,0);//测试遮盖位置
     // outtextxy(395,265,"12",1,1,10,44373);
 
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
 
     // 实验给图
     
@@ -749,6 +778,10 @@ void order_box(int *x,int *y,USEINFOR *infor)//读取文件形式显示订单
         else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//  点击ESC退出系统
         {
             exit(0);
+        }
+        else if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//点击红叉返回
+        {
+            break;
         }
         //顺序显示订单
         // else if (page>0 && page<infor->num && mx>=630  && mx<=660 && my>=610 && my<=640 && button)//点击>查看下一页订单
