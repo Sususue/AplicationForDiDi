@@ -209,7 +209,9 @@ void filllake(int x0,int y0,int radius,int color,int bias)
 			y--;
 		}
 	}
-	bar(x0,y0,x0+1+radius/2,y0-bias+radius/1.41,color);//增加4上的填充部分
+	                                // 此处bar传入浮点型有崩的危险
+	// bar(x0,y0,x0+1+radius/2,y0-bias+radius/1.41,color);//增加4上的填充部分
+	bar(x0,y0,x0+1+radius/2,y0-bias+radius-72,color);//增加4上的填充部分
 	bar(x0+radius/2,y0,x0+radius,y0-bias+radius,65535);//遮挡右边多余部分
 }
 

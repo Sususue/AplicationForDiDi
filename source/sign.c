@@ -277,13 +277,13 @@ int register_in_phone_num(char *phone_num, int *mx, int *my)
 		}
 
 		/*if(点击注册完成区域)返回4表示注册完成并发送登录请求 */
-		if (*mx >= 450 && *mx <= 550 && *my >= 675 && *my <= 725 && buttons)
+		if (*mx >= 400 && *mx <= 600 && *my >= 570 && *my <= 670 && buttons)
 		{
 			return 4;
 		}
 
 		/*if(点击back区域)返回5表示返回登陆界面*/
-		if (*mx >= 95 && *mx <= 145 && *my >= 95 && *my <= 145 && buttons)
+		if (*mx >= 875 && *mx <= 925 && *my >= 95 && *my <= 145 && buttons)
 		{
 			return 5;
 		}
@@ -323,8 +323,8 @@ int register_in_phone_num(char *phone_num, int *mx, int *my)
 			}
 			if((ch>=65&&ch<=90)||(ch>=97&&ch<=122))
 			{
-				bar(210,550,700,580,65523);
-			   	fdhz(210,550,1,1,"请勿包含字母",0);	
+				bar(210,530,700,560,65523);
+			   	fdhz(210,530,1,1,"请勿包含字母",0);	
 			}
 
 		}
@@ -396,7 +396,7 @@ int register_in_code(char *code, int *mx, int *my)
 
 		
 		/*if(点击注册完成区域) 返回4表示注册完成并登陆*/
-		if (*mx >= 450 && *mx <= 550 && *my >= 675 && *my <= 725 && buttons)
+		if (*mx >= 400 && *mx <= 600 && *my >= 570 && *my <= 670 && buttons)
 		{
 
 			return 4;
@@ -404,7 +404,7 @@ int register_in_code(char *code, int *mx, int *my)
 
 		
 		/*if(点击已有账号区域) 返回5表示返回登陆界面*/
-		if (*mx >= 95 && *mx <= 145 && *my >= 95 && *my <= 145 && buttons)
+		if (*mx >= 875 && *mx <= 925 && *my >= 95 && *my <= 145 && buttons)
 		{
 
 			return 5;
@@ -505,14 +505,14 @@ int register_in_code_2(char *code2, int *mx, int *my)
 		}
 
 		/*if(按了一次enter键或点击登陆区域)返回4表示注册完成并登陆*/
-		if (*mx >= 450 && *mx <= 550 && *my >= 675 && *my <= 725 && buttons || key == 0x1c0d)
+		if (*mx >= 400 && *mx <= 600 && *my >= 570 && *my <= 670 && buttons || key == 0x1c0d)
 		{
 
 			return 4;
 		}
 
 		/*if(点击已有账号区域)返回5表示返回登陆界面*/
-		if (*mx >= 95 && *mx <= 145 && *my >= 95 && *my <= 145 && buttons)
+		if (*mx >= 875 && *mx <= 925 && *my >= 95 && *my <= 145 && buttons)
 		{
 			return 5;
 		}
@@ -597,12 +597,12 @@ int UserRegist(USER *head,char *phone_num,char *code,USEINFOR *orderhead,int *x,
 		}
 		
 		//返回键
-		if(*x>=95&&*x<=145&&*y>=95&&*y<=145&&*buttons)
+		if(*x>=875&&*x<=925&&*y>=95&&*y<=145&&*buttons)
 		{
 			return 5;
 		}
 		//注册并登录
-		if(*x>=450&&*x<=550&&*y>=675&&*y<=725&&*buttons)
+		if(*x >= 400 && *x <= 600 && *y >= 570 && *y <= 670&&*buttons)
 		{
 			judge = 4;
 			//验证
@@ -636,15 +636,15 @@ int UserRegist(USER *head,char *phone_num,char *code,USEINFOR *orderhead,int *x,
 				/*画红色的叉并提示该账号已被注册&flag1=0*/
 				bar(800,210,900,290,65523);
 				red_cross(800,240);
-				bar(210,550,700,580,65523);
-				fdhz(210,550,1,1,"该账号已被注册或您还未输入账号",0);
+				bar(210,530,700,560,65523);
+				fdhz(210,530,1,1,"该账号已被注册或您还未输入账号",0);
 				flag1 = 0;
 			}
 			else if(strlen(phone_num)!=11)
 			{
 				/*提示电话号码位数不正确*/
-				bar(210,550,700,580,65523);
-				fdhz(210,550,1,1,"请输入正确位数的号码",0);
+				bar(210,530,700,560,65523);
+				fdhz(210,530,1,1,"请输入正确位数的号码",0);
 			}
 			
 		    else
@@ -664,15 +664,15 @@ int UserRegist(USER *head,char *phone_num,char *code,USEINFOR *orderhead,int *x,
 
                 bar(800,325,900,395,65523);
                 red_cross(800,345);
-				bar(210,550,700,580,65523);
-				fdhz(210,550,1, 1, "密码不得少于六位",  0);
+				bar(210,530,700,560,65523);
+				fdhz(210,530,1, 1, "密码不得少于六位",  0);
 				flag2 = 0;
 			}
 			else
 			{
 				/*画一个绿色的勾&flag2=1*/
 
-                bar(210,550,900,580,65523);
+                bar(210,530,900,560,65523);
                 bar(800,325,900,395,65523);
                 green_tick(800,345);
 				flag2 = 1;
@@ -689,15 +689,15 @@ int UserRegist(USER *head,char *phone_num,char *code,USEINFOR *orderhead,int *x,
 			
                 bar(800,415,900,495,65523);
                 red_cross(800,445);
-				bar(210,550,700,580,65523);
-				fdhz(210,550, 1, 1, "两次输入的密码不同", 0);
+				bar(210,530,700,560,65523);
+				fdhz(210,530, 1, 1, "两次输入的密码不同", 0);
 				flag3 = 0;
 			}
 			else
 			{
 				/*画一个绿色的勾&flag3=1*/
 				
-                bar(210,550,900,580,65523);
+                bar(210,530,900,560,65523);
                 bar(800,425,900,495,65523);
                 green_tick(800,445);
 
@@ -710,10 +710,10 @@ int UserRegist(USER *head,char *phone_num,char *code,USEINFOR *orderhead,int *x,
 			if (flag1 == 1 && flag2 == 1 && flag3 == 1)
 			{
 				mousehide(*x,*y);
-				fdhz(464,686,2,2,"注",64384);
-				fdhz(508,686,2,2,"册",64384);
+				fdhz(436,596,3,3,"注",64384);
+				fdhz(520,596,3,3,"册",64384);
 				reset_mouse(x,y);
-				delay(20);
+				delay(100);
 				AddNewUser(head, phone_num, code);
 				AddNewInfor(orderhead,phone_num);//订单链表中加入结点
 				return 1;

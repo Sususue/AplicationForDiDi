@@ -35,10 +35,10 @@ void load_page(void)
 	bar_round(300,640,200,120,20,1,65535);
 	bar_round(700,640,206,126,20,1,64384);
 	bar_round(700,640,200,120,20,1,65535);//µÇÂ¼×¢²á¿ò
-    fdhz(240,615,3,3,"µÇ",0);
-	fdhz(320,615,3,3,"Â¼",0);
-	fdhz(640,615,3,3,"×¢",0);
-	fdhz(720,615,3,3,"²á",0);
+    fdhz(240,615,3,3,"µÇ",44373);
+	fdhz(320,615,3,3,"Â¼",44373);
+	fdhz(640,615,3,3,"×¢",44373);
+	fdhz(720,615,3,3,"²á",44373);
 	
 }
 
@@ -50,13 +50,13 @@ void register_page(void)
 	fdhz(600,80,3,3,"²á",0);
 	fdhz(371,81,3,3,"×¢",64384);
 	fdhz(601,81,3,3,"²á",64384);
-	bar_round(120,120,56,56,3,1,64384);
-	bar_round_with_shadow(120,120,50,50,3,1,65535,64384);//back
+	bar_round(900,120,56,56,3,1,64384);
+	bar_round_with_shadow(900,120,50,50,3,1,65535,64384);//back
 	bar_round_with_shadow(500,250,220,30,5,1,65535,64384);//ÕËºÅ
     bar_round_with_shadow(500,350,220,30,5,1,65535,64384);//ÃÜÂë
     bar_round_with_shadow(500,450,220,30,5,1,65535,64384);//È·ÈÏÃÜÂë
-	bar_round(500,700,106,56,5,1,64384);
-	bar_round(500,700,100,50,5,1,65535);//×¢²á
+	bar_round(500,620,206,106,20,1,64384);
+	bar_round(500,620,200,100,20,1,65535);//×¢²á
 	fdhz(290,240,2,2,"ÕË",0);
 	fdhz(320,240,2,2,"ºÅ",0);
 	fdhz(291,241,2,2,"ÕË",64384);
@@ -78,9 +78,10 @@ void register_page(void)
 	fdhz(281,441,2,2,"ÈÏ",64384);
 
 
-	fdhz(463,685,2,2,"×¢",0);
-	fdhz(507,685,2,2,"²á",0);
-	outtextxy(98,111,"back",1,1,10,0);
+	fdhz(435,595,3,3,"×¢",44373);
+	fdhz(519,595,3,3,"²á",44373);
+
+	outtextxy(878,111,"back",1,1,10,44373);
 }
 
 
@@ -160,9 +161,8 @@ int enterpage(USER *user,USEINFOR *infor,int *x,int *y)
 			fdhz(241,616,3,3,"µÇ",64384);
 			fdhz(321,616,3,3,"Â¼",64384);
 			reset_mouse(x,y);
-			delay0(20);
+			delay0(50);
 			judge = sign_in_check(head,user->phone_num,user->code);
-			
 		}
 		
 
@@ -174,7 +174,7 @@ int enterpage(USER *user,USEINFOR *infor,int *x,int *y)
 			fdhz(641,616,3,3,"×¢",64384);
 			fdhz(721,616,3,3,"²á",64384);
 			reset_mouse(x,y);
-			delay0(20);
+			delay0(50);
 			judge = UserRegist(head,user->phone_num,user->code,inforhead,x,y,&button);
 		}
 		
@@ -210,9 +210,9 @@ int enterpage(USER *user,USEINFOR *infor,int *x,int *y)
 		if(judge==5)
 		{
 			mousehide(*x,*y);
-			outtextxy(99,112,"back",1,1,10,64384);
+			outtextxy(879,112,"back",1,1,10,64384);
 			reset_mouse(x,y);
-			delay(200);
+			delay(100);
 			return 0;//·µ»Ø0¼ÌÐøµÇÂ¼
 		}
 

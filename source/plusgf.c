@@ -8,21 +8,8 @@
 /*填充右半圆*/
 void fill_hemicircle_right(int x,int y,int r,int color)//(x,y)为半圆的圆心坐标
 {
-	int tx=0,ty=r,i;
-	double sx;
-	while(tx<ty)
-	{
-		sx=sqrt(r*r-tx*tx);
-		for(i=x;i<=x+sx;i++)
-		{
-			Putpixel64k(i,y-tx,color);
-		}
-		for(i=x;i<=x+sx;i++)
-		{
-			Putpixel64k(i,y+tx,color);
-		}
-		tx++;
-	}
+	fill_right_up(x,y,r,color);
+	fill_right_down(x,y,r,color);
 }
 
 
@@ -287,18 +274,36 @@ void bar_round_with_shadow(int x,int y,int length,int height,int r,int thick,int
 {
 	bar(x-length/2+r,y-height/2,x+length/2-r,y+height/2,color);
 	bar(x-length/2,y-height/2+r,x+length/2,y+height/2-r,color);
+	fill_right_down(x+length/2-r,y+height/2-r,r,color2);
+	fill_right_up(x+length/2-r,y-height/2+r,r,color2);
 	fill_left_up(x-length/2+r,y-height/2+r,r,color);
 	fill_left_down(x-length/2+r,y+height/2-r,r,color);
-	fill_right_up(x+length/2-r,y-height/2+r,r,color);
-	fill_right_down(x+length/2-r,y+height/2-r,r,color);
+	
+	
 	linelevel(x-length/2+r,y-height/2,x+length/2-r,y-height/2,thick,65535);
 	linelevel(x-length/2+r,y+height/2,x+length/2-r,y+height/2,thick*3,color2);
 	linever(x-length/2,y-height/2+r,x-length/2,y+height/2-r,thick,65535);
 	linever(x+length/2,y-height/2+r,x+length/2,y+height/2-r,thick*2,color2);
-    right_up(x+length/2-r,y-height/2+r,r,color2);
-	left_up(x-length/2+r,y-height/2+r,r,65535);
-	left_down(x-length/2+r,y+height/2-r,r,65535);
-	right_down(x+length/2-r,y+height/2-r,r,color2);
+
+	fill_right_up(x+length/2-r,y-height/2+r,r-1,color);
+	fill_left_up(x-length/2+r,y-height/2+r,r,65535);
+	fill_left_down(x-length/2+r,y+height/2-r,r,65535);
+	fill_right_down(x+length/2-r,y+height/2-r,r-1,color);
+
+	// bar(x-length/2+r,y-height/2,x+length/2-r,y+height/2,color);
+	// bar(x-length/2,y-height/2+r,x+length/2,y+height/2-r,color);
+	// fill_left_up(x-length/2+r,y-height/2+r,r,color);
+	// fill_left_down(x-length/2+r,y+height/2-r,r,color);
+	// fill_right_up(x+length/2-r,y-height/2+r,r,color);
+	// fill_right_down(x+length/2-r,y+height/2-r,r,color);
+	// linelevel(x-length/2+r,y-height/2,x+length/2-r,y-height/2,thick,65535);
+	// linelevel(x-length/2+r,y+height/2,x+length/2-r,y+height/2,thick*3,color2);
+	// linever(x-length/2,y-height/2+r,x-length/2,y+height/2-r,thick,65535);
+	// linever(x+length/2,y-height/2+r,x+length/2,y+height/2-r,thick*2,color2);
+    // right_up(x+length/2-r,y-height/2+r,r,color2);
+	// left_up(x-length/2+r,y-height/2+r,r,65535);
+	// left_down(x-length/2+r,y+height/2-r,r,65535);
+	// right_down(x+length/2-r,y+height/2-r,r,color2);
 }
 
 
