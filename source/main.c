@@ -22,6 +22,7 @@ void main()
 	
 	srand((int)time(0));
 	
+	newfast();
 	outwelcome();
 	getch();
 	

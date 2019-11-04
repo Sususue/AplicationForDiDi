@@ -1,7 +1,7 @@
 #ifndef  _JUDGFAST_H_
 #define  _JUDGFAST_H_
 
-
+#define FASTNUM 5
 /*********************************************
 功能说明:确定哪辆车进行接送
 参数说明:nowplace:起点的号码(不是坐标)
@@ -9,7 +9,7 @@
         location:传入初始化后的几个地点坐标
 返回值:mincar:最近的快车编号
 **********************************************/
-int desidecar(int nowplace, CARFAST *car, PLACE *location);
+int desidecar(int nowplace, PLACE fastplace[FASTNUM], PLACE *location);
 
 /*********************************************
 功能说明:确定哪辆车的动画

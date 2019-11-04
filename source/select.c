@@ -128,7 +128,7 @@ void safe_box(int* x, int* y, int *sigle)
     // return sigle;
 
 }
-void catchBox(int *x,int *y)
+int catchBox(int *x,int *y)
 {
     int button=0;
     int mx=0;
@@ -198,7 +198,7 @@ void catchBox(int *x,int *y)
         // }
         if(mx>=88 && mx<=678 && my>=230 && my<=290 && button)//第一个
         {
-            flag = 1;     
+            flag = 2;     
             mousehide(*x,*y);
             FillCircle(500,270,12,64384);
             FillCircle(500,340,12,65535);         
@@ -209,7 +209,7 @@ void catchBox(int *x,int *y)
         }
         else if(mx>=88 && mx<=678 && my>=290 && my<=360 && button)
         {
-            flag = 1;
+            flag = 3;
             mousehide(*x,*y);
             FillCircle(500,270,12,65535);
             FillCircle(500,340,12,64384);          
@@ -220,7 +220,7 @@ void catchBox(int *x,int *y)
         }
         else if(mx>=88 && mx<=678 && my>=360 && my<=430 && button)
         {
-            flag = 1;
+            flag = 4;
             mousehide(*x,*y);
             FillCircle(500,270,12,65535);
             FillCircle(500,340,12,65535);          
@@ -231,7 +231,7 @@ void catchBox(int *x,int *y)
         }
         else if(mx>=88 && mx<=678 && my>=430 && my<=500 && button)
         {
-            flag = 1;
+            flag = 5;
             mousehide(*x,*y);
             FillCircle(500,270,12,65535);
             FillCircle(500,340,12,65535);          
@@ -242,7 +242,7 @@ void catchBox(int *x,int *y)
         }
         else if(mx>=88 && mx<=678 && my>=500 && my<=570 && button)
         {
-            flag = 1;
+            flag = 6;
             mousehide(*x,*y);
             FillCircle(500,270,12,65535);
             FillCircle(500,340,12,65535);
@@ -297,5 +297,6 @@ void catchBox(int *x,int *y)
     mousehide(*x,*y);  //隐藏鼠标
     printf_image(83,109,683,659,"catch");
     reset_mouse(x,y);   //避免留下鼠标所在位置的背景 
+    return flag;
 }
 

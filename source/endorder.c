@@ -5,7 +5,7 @@
 
 
 // 打车完成后生成订单
-void neworder(int *x,int *y,USEINFOR *infor, const CARFAST car[], const char **placename, int *aimplace, int mincar, char *ordertime,float price)
+void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **placename, int *aimplace, int mincar, char *ordertime,float price)
 {
     int button=0;
     int mx=0;
@@ -69,26 +69,26 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFAST car[], const char **p
 
     fdhz(135,510,1,1,"司机",44373);
     outtextxy(175,510,":",1,1,10,44373);
-    fdhz(190,510,1,1,car[mincar].name,44373);
+    fdhz(190,510,1,1,car->name,44373);
     fdhz(210,510,1,1,"师傅",44373);
 
     fdhz(135,550,1,1,"车牌",44373);
     outtextxy(175,550,":",1,1,10,44373);
     fdhz(190,550,1,1,"鄂",44373);
     outtextxy(205,550,"A",1,1,10,44373);
-    outtextxy(220,550,car[mincar].fastcar.carname,1,1,10,44373);
+    outtextxy(220,550,car->fastcar.carname,1,1,10,44373);
 
     fdhz(135,590,1,1,"车型",44373);
     outtextxy(175,590,":",1,1,10,44373);
-    fdhz(190,590,1,1,car[mincar].fastcar.type,44373);
+    fdhz(190,590,1,1,car->fastcar.type,44373);
 
     lean_line_thick(608,143,30,45,3,64384);
 	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
 
     reset_mouse(x,y);
-    strcpy(ordernew->name,car[mincar].name);
-    strcpy(ordernew->carname,car[mincar].fastcar.carname);
-    strcpy(ordernew->type,car[mincar].fastcar.type);
+    strcpy(ordernew->name,car->name);
+    strcpy(ordernew->carname,car->fastcar.carname);
+    strcpy(ordernew->type,car->fastcar.type);
     strcpy(ordernew->startname,placename[infor->nowplace]);
     strcpy(ordernew->endname,placename[*aimplace]);
     strcpy(ordernew->money,chprice);
@@ -572,4 +572,152 @@ void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,floa
     // bar_round(976,664,76,44,15,1,65523);
     reset_mouse(x,y);
 
+}
+//评价
+void evaluate(int *x, int *y,CARFA *car)
+{
+
+    int button=0;
+    int mx=0;
+    int my=0;
+    int flag = 1;
+    mousehide(*x,*y);
+    //保存背景
+    save_image(83,109,683,659,"praise");
+    //画图
+    bar_round(383,384,596,546,50,1,64384);
+    bar_round(383,384,590,542,48,1,65535);
+    fdhz(210,145,2,2,"请评价一下本次行程",44373);
+    bar(88,200,678,230,63422);
+    linelevel(88,330,678,330,5,63422);
+    linelevel(88,450,678,450,5,63422);
+	linelevel(88,570,678,570,5,63422);
+
+    fdhz(180,270,2,2,"好评",44373);
+    fdhz(180,380,2,2,"差评",44373);
+    fdhz(180,500,2,2,"暂不评价",44373);
+
+    bar_round(383,620,196,52,20,1,44373);
+    bar_round(383,620,190,47,18,1,65535);
+    fdhz(337,606,2,2,"确",44373);
+    fdhz(397,606,2,2,"定",44373);
+
+	FillCircle(500,290,14,44373);
+    FillCircle(500,290,12,65535);
+    FillCircle(500,390,14,44373);
+    FillCircle(500,390,12,65535);
+    FillCircle(500,510,14,44373);
+    FillCircle(500,510,12,65535);
+
+    lean_line_thick(608,143,30,45,3,64384);
+	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
+
+    reset_mouse(x,y);
+    while (1)
+    {
+        newxy(x,y,&button);
+		mx = *x;
+		my = *y;
+        
+        if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//点击红叉返回
+        {
+            break;
+        }
+        if(mx>=88 && mx<=678 && my>=230 && my<=330 && button)//第一个
+        {
+            flag = 1;     
+            mousehide(*x,*y);
+        
+            FillCircle(500,290,12,64384);
+            FillCircle(500,390,12,65535);
+            FillCircle(500,510,12,65535);
+
+        
+            reset_mouse(x,y);
+        }
+        else if(mx>=88 && mx<=678 && my>=330 && my<=450 && button)
+        {
+            flag = 2;
+            mousehide(*x,*y);
+            FillCircle(500,290,12,65535);
+            FillCircle(500,390,12,64384);
+            FillCircle(500,510,12,65535);
+            reset_mouse(x,y);
+        }
+        else if(mx>=88 && mx<=678 && my>=450 && my<=570 && button)
+        {
+            flag = 3;
+            mousehide(*x,*y);
+            FillCircle(500,290,12,65535);
+            FillCircle(500,390,12,65535);
+            FillCircle(500,510,12,64384);
+            reset_mouse(x,y);
+        }
+        
+        else if (mx>=285  && mx<=481 && my>=593 && my<=647 && button)//点击确定
+        {
+            
+                mousehide(*x,*y);
+                
+                bar_round(383,620,196,52,20,1,64384);
+                bar_round(383,620,190,47,18,1,65535);
+                fdhz(337,606,2,2,"确",64384);
+                fdhz(397,606,2,2,"定",64384);
+                delay(50);
+                reset_mouse(x,y);
+                if (flag!=3)
+                {
+                    changepraise(car,flag);
+                }
+                
+                break;
+            
+        }
+        
+    }
+
+    
+    //显示背景
+    mousehide(*x,*y);   
+    printf_image(83,109,683,659,"praise");
+    reset_mouse(x,y);
+
+}
+void changepraise(CARFA *car,int flag)
+{
+    FILE *fp = NULL;
+    if (flag == 1)
+    {
+        car->praise++;
+    }
+    else
+    {
+        car->praise--;
+    }
+    if ((fp = fopen("driver\\usecar.txt", "rb+")) == NULL)
+  	{
+	  	null_box(500,500);
+	  	getch();
+	  	exit(1);
+  	} 
+    // 修改状态
+    fseek(fp,sizeof(CARFA)*car->order,SEEK_SET);
+    fwrite(car,sizeof(CARFA),1,fp);
+   
+    fclose(fp);
+
+    if ((fp = fopen("driver\\fastcar.txt", "rb+")) == NULL)
+  	{
+	  	null_box(500,500);
+	  	getch();
+	  	exit(1);
+  	} 
+    // 修改状态
+    fseek(fp,sizeof(CARFA)*car->number,SEEK_SET);
+    fwrite(car,sizeof(CARFA),1,fp);
+   
+    fclose(fp);
+
+    
+    
 }

@@ -19,10 +19,26 @@ typedef struct carinfor{
 }CARINFOR;
 
 
-typedef struct carfast{
+// typedef struct carfast{
+// 	char name[3];        //车主名字对应的号码
+//     CARINFOR fastcar;
+// }CARFAST;     //存储快车车辆的信息的
+
+
+
+
+typedef struct carfa{
 	char name[3];        //车主名字对应的号码
-    CARINFOR fastcar;
-}CARFAST;     //存储快车车辆的信息的
+    
+	int call;//报警情况 0:未启用 1:正常接单 2:被报警 -1:被踢 
+	int praise;//评价 初始化为5
+	int number;//存储位置的编号        //在资源池文件中用编号寻找位置进行替换，在正在使用的文件中可以用对比车牌号的方式寻找并替换
+	int order;//在usecar文件里的顺序
+	CARINFOR fastcar;
+}CARFA;     //重新写的存储快车车辆的信息的结构
+
+
+
 
 
 typedef struct park{

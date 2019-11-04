@@ -23,6 +23,7 @@
 
 
 #include"usehead.h"//各种结构还有订单链表的初始化
+#include"newcar.h"//初始化快车车辆
 
 #include"welcome.h"//欢迎界面和登录注册
 #include"frame.h"

@@ -16,7 +16,7 @@
         mincar:接送快车的号码
 返回值:无
 **********************************************/
-void neworder(int *x,int *y,USEINFOR *infor, const CARFAST car[], const char **placename, int *aimplace, int mincar, char *ordertime,float price);
+void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **placename, int *aimplace, int mincar, char *ordertime,float price);
 
 
 
@@ -61,5 +61,10 @@ void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int t
 
 //生成新的租车订单
 void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,float *price);
+
+//评价
+void evaluate(int *x, int *y,CARFA *car);
+//更改文件里的信息
+void changepraise(CARFA *car, int flag);
 
 #endif

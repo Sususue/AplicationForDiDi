@@ -15,10 +15,26 @@ void car_take_box(int* x, int* y, USEINFOR *infor)
     int waitime=0;//用于判断预约时间
     int mincar=0;//用于记录最近的那辆车
     int aimplace=UNCHOOSE;//记录目标位置
-    CARFAST car[FASTNUM];//车辆群数组
+    // CARFAST car[FASTNUM];//车辆群数组
+    PLACE fastplace[FASTNUM];//几个车的位置
+    // CARFA car[FASTNUM];//车辆群数组
+    CARFA car;
+    
+
     PLACE location[PLACENUM];//几个地点
     char *placename[PLACENUM]={NULL};//几个地点对应的名字
 
+    //初始化车辆位置
+    fastplace[0].x=240;
+    fastplace[0].y=465;
+    fastplace[1].x=130;
+    fastplace[1].y=25;
+    fastplace[2].x=310;
+    fastplace[2].y=719;
+    fastplace[3].x=590;
+    fastplace[3].y=269;
+    fastplace[4].x=715;
+    fastplace[4].y=680;
     //初始化几个地点
     location[0].x=130;//大学
     location[0].y=440;
@@ -41,7 +57,7 @@ void car_take_box(int* x, int* y, USEINFOR *infor)
     placename[4]="图书馆"; 
     placename[5]="游泳馆";
 
-    newfastcar(car);//初始化车辆
+    // newfastcar(car);//初始化车辆
 
     mousehide(*x,*y);
     //保存背景
@@ -106,11 +122,16 @@ void car_take_box(int* x, int* y, USEINFOR *infor)
     fdhz(945,550,1,1,"车",64384);
 	
 	//小车初始位置
-	car_draw_right1(car[0].fastcar.x,car [0].fastcar.y);//学校和商场之间
-	car_draw_right1(car[1].fastcar.x,car [1].fastcar.y);//东湖
-	car_draw_left1(car[2].fastcar.x,car [2].fastcar.y);//小区
-	car_draw_left1(car[3].fastcar.x,car [3].fastcar.y);//游泳馆
-	car_draw_on1(car[4].fastcar.x,car [4].fastcar.y);//图书馆
+	// car_draw_right1(car[0].fastcar.x,car [0].fastcar.y);//学校和商场之间
+	// car_draw_right1(car[1].fastcar.x,car [1].fastcar.y);//东湖
+	// car_draw_left1(car[2].fastcar.x,car [2].fastcar.y);//小区
+	// car_draw_left1(car[3].fastcar.x,car [3].fastcar.y);//游泳馆
+	// car_draw_on1(car[4].fastcar.x,car [4].fastcar.y);//图书馆
+    car_draw_right1(fastplace[0].x,fastplace[0].y);//学校和商场之间
+	car_draw_right1(fastplace[1].x,fastplace[1].y);//东湖
+	car_draw_left1(fastplace[2].x,fastplace[2].y);//小区
+	car_draw_left1(fastplace[3].x,fastplace[3].y);//游泳馆
+	car_draw_on1(fastplace[4].x,fastplace[4].y);//图书馆
 	
     //存图
     save_image(1,1,1023,767,"drivinfo");
@@ -130,11 +151,16 @@ void car_take_box(int* x, int* y, USEINFOR *infor)
             }
             
             //对地图上原有的小车进行遮挡
-            bar_round(car[0].fastcar.x,car [0].fastcar.y,42,22,2,1,65535);
-            bar_round(car[1].fastcar.x,car [1].fastcar.y,42,22,2,1,65535);
-            bar_round(car[2].fastcar.x,car [2].fastcar.y,42,22,2,1,65535);
-            bar_round(car[3].fastcar.x,car [3].fastcar.y,42,22,2,1,65535);
-            bar_round(car[4].fastcar.x,car [4].fastcar.y,22,42,2,1,65535);
+            // bar_round(car[0].fastcar.x,car [0].fastcar.y,42,22,2,1,65535);
+            // bar_round(car[1].fastcar.x,car [1].fastcar.y,42,22,2,1,65535);
+            // bar_round(car[2].fastcar.x,car [2].fastcar.y,42,22,2,1,65535);
+            // bar_round(car[3].fastcar.x,car [3].fastcar.y,42,22,2,1,65535);
+            // bar_round(car[4].fastcar.x,car [4].fastcar.y,22,42,2,1,65535);
+            bar_round(fastplace[0].x,fastplace[0].y,42,22,2,1,65535);
+            bar_round(fastplace[1].x,fastplace[1].y,42,22,2,1,65535);
+            bar_round(fastplace[2].x,fastplace[2].y,42,22,2,1,65535);
+            bar_round(fastplace[3].x,fastplace[3].y,42,22,2,1,65535);
+            bar_round(fastplace[4].x,fastplace[4].y,22,42,2,1,65535);
             break;
         }
         // else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
@@ -143,12 +169,13 @@ void car_take_box(int* x, int* y, USEINFOR *infor)
         // }
 		else if (mx>=798  && mx<=994 && my>=265 && my<=311 && button)//点击选择目的地，进入目的地选择进程
         {
-            bar_round(car[0].fastcar.x,car [0].fastcar.y,42,22,2,1,65535);
-	        bar_round(car[1].fastcar.x,car [1].fastcar.y,42,22,2,1,65535);
-	        bar_round(car[2].fastcar.x,car [2].fastcar.y,42,22,2,1,65535);
-	        bar_round(car[3].fastcar.x,car [3].fastcar.y,42,22,2,1,65535);
-	        bar_round(car[4].fastcar.x,car [4].fastcar.y,22,42,2,1,65535);
+            bar_round(fastplace[0].x,fastplace[0].y,42,22,2,1,65535);
+            bar_round(fastplace[1].x,fastplace[1].y,42,22,2,1,65535);
+            bar_round(fastplace[2].x,fastplace[2].y,42,22,2,1,65535);
+            bar_round(fastplace[3].x,fastplace[3].y,42,22,2,1,65535);
+            bar_round(fastplace[4].x,fastplace[4].y,22,42,2,1,65535);
             choose_aimplace(x,y,&aimplace,location,infor,placename);
+            changecar(&car,fastplace[aimplace].x,fastplace[aimplace].y);
         }
 		else if (mx>=798  && mx<=994 && my>=532 && my<=584 && button)//点击呼叫快车，弹出司机信息框
         {
@@ -168,8 +195,8 @@ void car_take_box(int* x, int* y, USEINFOR *infor)
             }
             else
             {
-                mincar=desidecar(infor->nowplace,car,location);//判断哪辆车来接送
-			    driver_info(x,y,infor,car,location,placename,&aimplace,mincar,waitime);
+                mincar=desidecar(infor->nowplace,fastplace,location);//判断哪辆车来接送
+			    driver_info(x,y,infor,&car,location,placename,&aimplace,mincar,waitime);
             }
 		}
 		else if (mx>=900  && mx<=990 && my>=442 && my<=494 && button)//点击预约，弹出预约选择弹框
@@ -211,14 +238,16 @@ void car_take_box(int* x, int* y, USEINFOR *infor)
 /***************************
 点击呼叫快车，产生司机信息框
 ****************************/
-void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLACE *location, const char **placename, int *aimplace, int mincar,int waitime)
+void driver_info(int *x,int *y, USEINFOR *infor, CARFA *car, const PLACE *location, const char **placename, int *aimplace, int mincar,int waitime)
 {
 	int button=0;
     int mx=0;
     int my=0;
     int flag=1;//判断退出
     int sigle=0;//用于接力退出的判断
+    // int place;//暂存
     float price;
+    int callstyle;
     struct tm *info;//用于点击立即上车时的时间
 	char buffer[80];//格式化输出时间字符串的数组
 	time_t rawtime1;//用于获取进入呼叫快车进程的时间
@@ -270,7 +299,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
 	//司机的姓
 	bar_round(896,90,196,96,25,1,64384);
     bar_round(896,90,190,91,23,1,65535);
-    fdhz(817,67,3,3,car[mincar].name,64384);
+    fdhz(817,67,3,3,car->name,64384);
     fdhz(877,67,3,3,"师",64384);
 	fdhz(937,67,3,3,"傅",64384);
 	
@@ -282,7 +311,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
     fdhz(862,190,1,1,"鄂",64384);
     outtextxy(878,190,"A-",1,1,15,64384);
 
-    outtextxy(910,190,car[mincar].fastcar.carname,1,1,15,64384);
+    outtextxy(910,190,car->fastcar.carname,1,1,15,64384);
    
     //车型
 	bar_round(896,288,196,52,10,1,64384);
@@ -290,7 +319,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
 	fdhz(810,280,1,1,"车型",64384);
     outtextxy(847,278,":",1,1,40,64384);
     // outtextxy(862,278,car[0].fastcar.type,1,1,40,64384);
-    fdhz(870,280,1,1,car[mincar].fastcar.type,64384);
+    fdhz(870,280,1,1,car->fastcar.type,64384);
    
 	//取消订单
 	bar_round(896,378,196,52,10,1,64384);
@@ -461,6 +490,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
 			flag=cancelorder(x,y,infor);
             if (flag==0)
             {
+                // changecar(&car[*aimplace]);
                 *aimplace = UNCHOOSE;
                 waitime=0;
                 break;
@@ -493,8 +523,11 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
             reset_mouse(x,y);
             //确定动画
             sigle=starttoend(infor->nowplace,*aimplace,x,y);
-            if(sigle==1)//用于安全报警后的接力退出
+            if(sigle!=0)//用于安全报警后的接力退出
 			{
+                callstyle= catchBox(x,y);
+                changecall(&car[*aimplace],callstyle);
+                // changecar(&car[*aimplace]);
                 *aimplace = UNCHOOSE;
                 waitime=0;
 				break;
@@ -508,7 +541,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
                 
                 //生成订单并截图保存
                 neworder(x,y,infor,car,placename,aimplace,mincar,buffer,price);
-
+                evaluate(x,y,car);
                 //若成功到达目的地的，则修改当前位置
                 changeNowplace(infor,*aimplace);
                 *aimplace = UNCHOOSE; 
@@ -881,72 +914,117 @@ void car_draw_down1(int x,int y)
 
 
 //初始化快车车辆信息
-void newfastcar(CARFAST *car)
-{
-    int i;//用于计数
-    int n;//用于记录随机数
-    PLACE fastplace[FASTNUM];
-    char carcard[10][6];//车牌号集
-    char driver[10][3];//司机的姓
-    char cartpye[6][7];//车辆类型
-    //初始化车的位置
-    fastplace[0].x=240;
-    fastplace[0].y=465;
-    fastplace[1].x=130;
-    fastplace[1].y=25;
-    fastplace[2].x=310;
-    fastplace[2].y=719;
-    fastplace[3].x=590;
-    fastplace[3].y=269;
-    fastplace[4].x=715;
-    fastplace[4].y=680;
+// void newfastcar(CARFAST *car)
+// void newfastcar(CARFA *car)
+// {
+//     int i;//用于计数
+//     int n;//用于记录随机数
+//     PLACE fastplace[FASTNUM];
+//     FILE *fp = NULL;
+//     // char carcard[10][6];//车牌号集
+//     // char driver[10][3];//司机的姓
+//     // char cartpye[6][7];//车辆类型
+//     //初始化车的位置
+//     fastplace[0].x=240;
+//     fastplace[0].y=465;
+//     fastplace[1].x=130;
+//     fastplace[1].y=25;
+//     fastplace[2].x=310;
+//     fastplace[2].y=719;
+//     fastplace[3].x=590;
+//     fastplace[3].y=269;
+//     fastplace[4].x=715;
+//     fastplace[4].y=680;
 
-    //初始化车牌号集
     
-    strcpy(carcard[0],"7A128");
-    strcpy(carcard[1],"S116W");
-    strcpy(carcard[2],"0D789");
-    strcpy(carcard[3],"3D816");
-    strcpy(carcard[4],"QE722");
-    strcpy(carcard[5],"E289Q");
-    strcpy(carcard[6],"U0207");
-    strcpy(carcard[7],"02151");
-    strcpy(carcard[8],"L8553");
-    strcpy(carcard[9],"7L27D");
-
-    //初始化司机
-    strcpy(driver[0],"张");
-    strcpy(driver[1],"李");
-    strcpy(driver[2],"赵");
-    strcpy(driver[3],"王");
-    strcpy(driver[4],"孙");
-    strcpy(driver[5],"唐");
-    strcpy(driver[6],"马");
-    strcpy(driver[7],"刘");
-    strcpy(driver[8],"周");
-    strcpy(driver[9],"杨");
-
-    //初始化车辆类型
-    strcpy(cartpye[0],"朗逸");
-    strcpy(cartpye[1],"轩逸");
-    strcpy(cartpye[2],"卡罗拉");
-    strcpy(cartpye[3],"景逸");
-    strcpy(cartpye[4],"众泰");
-    strcpy(cartpye[5],"丰田");
 
 
+//     srand((unsigned int)time(NULL));
+
+//     if ((fp = fopen("driver\\usecar.txt", "rb+")) == NULL)
+//   	{
+// 	  	null_box(500,500);
+// 	  	getch();
+// 	  	exit(1);
+//   	} 
+
+//     for ( i = 0; i < FASTNUM; i++, car++)
+//     {
+//         n=rand()%10;
+//         fseek(fp,sizeof(CARFA)*n,SEEK_SET);
+//         fread(car,sizeof(CARFA),1,fp);
+//         if (car->call == 1)
+//         {
+//             car->fastcar.x=fastplace[i].x;
+//             car->fastcar.y=fastplace[i].y;
+//             i++;
+//             car++;
+//         }
+//     }
+//     fclose(fp);
+    
+// }
+// 更改司机
+void changecar(CARFA *thiscar,int x, int y)
+{
+    
+    int n;
+    FILE *fp;
+
+    if ((fp = fopen("driver\\usecar.txt", "rb+")) == NULL)
+  	{
+	  	null_box(500,500);
+	  	getch();
+	  	exit(1);
+  	} 
     srand((unsigned int)time(NULL));
-
-
-    for ( i = 0; i < FASTNUM; i++, car++)
+    while (1)
     {
         n=rand()%10;
-        strcpy(car->name,driver[n]);
-        car->fastcar.x=fastplace[i].x;
-        car->fastcar.y=fastplace[i].y;
-        strcpy(car->fastcar.type,cartpye[n%6]);
-        strcpy(car->fastcar.carname,carcard[n]);
+        fseek(fp,sizeof(CARFA)*n,SEEK_SET);
+        fread(thiscar,sizeof(CARFA),1,fp);
+        if (thiscar->call==1)
+        {
+            thiscar->fastcar.x = x;
+            thiscar->fastcar.y = y;
+            break;
+        }
+        
     }
+    fclose(fp);
+}
+// 更改司机状态为不能接单
+void changecall(CARFA *thiscar , int callstyle)
+{
+ 
+    FILE *fp;
+
+    if ((fp = fopen("driver\\usecar.txt", "rb+")) == NULL)
+  	{
+	  	null_box(500,500);
+	  	getch();
+	  	exit(1);
+  	} 
+    
+    // 修改状态
+    thiscar->call = callstyle;
+    fseek(fp,sizeof(CARFA)*thiscar->order,SEEK_SET);
+    fwrite(thiscar,sizeof(CARFA),1,fp);
+   
+    fclose(fp);
+
+    if ((fp = fopen("driver\\fastcar.txt", "rb+")) == NULL)//更改资源库的信息
+  	{
+	  	null_box(500,500);
+	  	getch();
+	  	exit(1);
+  	} 
+
+    fseek(fp,sizeof(CARFA)*thiscar->number,SEEK_SET);
+    fwrite(thiscar,sizeof(CARFA),1,fp);
+
+    fclose(fp);
+    
 }
 
 int cancelorder(int *x, int *y, USEINFOR *infor)
@@ -998,5 +1076,75 @@ int cancelorder(int *x, int *y, USEINFOR *infor)
 
     return flag;
 }
+
+// //初始化快车车辆信息
+// void newfastcar(CARFAST *car)
+// {
+//     int i;//用于计数
+//     int n;//用于记录随机数
+//     PLACE fastplace[FASTNUM];
+//     char carcard[10][6];//车牌号集
+//     char driver[10][3];//司机的姓
+//     char cartpye[6][7];//车辆类型
+//     //初始化车的位置
+//     fastplace[0].x=240;
+//     fastplace[0].y=465;
+//     fastplace[1].x=130;
+//     fastplace[1].y=25;
+//     fastplace[2].x=310;
+//     fastplace[2].y=719;
+//     fastplace[3].x=590;
+//     fastplace[3].y=269;
+//     fastplace[4].x=715;
+//     fastplace[4].y=680;
+
+//     //初始化车牌号集
+    
+//     strcpy(carcard[0],"7A128");
+//     strcpy(carcard[1],"S116W");
+//     strcpy(carcard[2],"0D789");
+//     strcpy(carcard[3],"3D816");
+//     strcpy(carcard[4],"QE722");
+//     strcpy(carcard[5],"E289Q");
+//     strcpy(carcard[6],"U0207");
+//     strcpy(carcard[7],"02151");
+//     strcpy(carcard[8],"L8553");
+//     strcpy(carcard[9],"7L27D");
+
+//     //初始化司机
+//     strcpy(driver[0],"张");
+//     strcpy(driver[1],"李");
+//     strcpy(driver[2],"赵");
+//     strcpy(driver[3],"王");
+//     strcpy(driver[4],"孙");
+//     strcpy(driver[5],"唐");
+//     strcpy(driver[6],"马");
+//     strcpy(driver[7],"刘");
+//     strcpy(driver[8],"周");
+//     strcpy(driver[9],"杨");
+
+//     //初始化车辆类型
+//     strcpy(cartpye[0],"朗逸");
+//     strcpy(cartpye[1],"轩逸");
+//     strcpy(cartpye[2],"卡罗拉");
+//     strcpy(cartpye[3],"景逸");
+//     strcpy(cartpye[4],"众泰");
+//     strcpy(cartpye[5],"丰田");
+
+
+//     srand((unsigned int)time(NULL));
+
+
+//     for ( i = 0; i < FASTNUM; i++, car++)
+//     {
+//         n=rand()%10;
+//         strcpy(car->name,driver[n]);
+//         car->fastcar.x=fastplace[i].x;
+//         car->fastcar.y=fastplace[i].y;
+//         strcpy(car->fastcar.type,cartpye[n%6]);
+//         strcpy(car->fastcar.carname,carcard[n]);
+//     }
+// }
+
 
 // void initialize()

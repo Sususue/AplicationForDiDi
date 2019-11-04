@@ -22,7 +22,7 @@ extern void car_take_box(int *x, int *y,USEINFOR *infor);
         aimplace:目标地点对应的编号(不是坐标)
 返回值:无
 *****************************/
-extern void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLACE *location, const char **placename, int *aimplace, int mincar,int waitime);
+extern void driver_info(int *x,int *y, USEINFOR *infor, CARFA *car, const PLACE *location, const char **placename, int *aimplace, int mincar,int waitime);
 
 
 /**************************
@@ -73,8 +73,17 @@ extern void car_draw_down1(int x,int y);
 功能说明:传入车辆数组，初始化其信息
 参数说明:car:快车的结构数组
 *********************************************/
-void newfastcar(CARFAST *car);
+// void newfastcar(CARFAST *car);
+void newfastcar(CARFA *car);
 
+/*********************************************
+功能说明:传入车辆数组，退出后，更改司机
+参数说明:car:快车的结构数组
+*********************************************/
+void changecar(CARFA *thiscar, int x,int y);
+
+// 更改司机状态为不能接单
+void changecall(CARFA *thiscar, int callstyle);
 /*********************************************
 功能说明:取消订单
 参数说明:x,y:鼠标

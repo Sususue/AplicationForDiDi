@@ -2902,7 +2902,7 @@ int carmove_on(int x1,int y1, int x2, int y2,int *x,int *y, int flag,float *prog
 			if((abs(police_position1.ypixel-car_position.ypixel)<44)||(abs(police_position2.ypixel-car_position.ypixel)<45))
 			{
 				delay(80);
-				catchBox(x,y);
+				// catchBox(x,y);
 				break;
 			}
 
@@ -3033,7 +3033,7 @@ int carmove_down(int x1,int y1, int x2, int y2,int *x,int *y, int flag,float *pr
 			if((abs(police_position1.ypixel-car_position.ypixel)<44)||(abs(police_position2.ypixel-car_position.ypixel)<45))
 			{
 				delay(80);
-				catchBox(x,y);
+				// catchBox(x,y);
 				break;
 			}
 			
@@ -3182,7 +3182,7 @@ int carmove_left(int x1,int y1, int x2, int y2,int *x,int *y, int flag,float *pr
 			if((abs(police_position1.xpixel-car_position.xpixel)<44)||(abs(police_position2.xpixel-car_position.xpixel)<45))
 			{
 				delay(80);
-				catchBox(x,y);
+				// catchBox(x,y);
 				break;
 			}
 
@@ -3332,7 +3332,7 @@ int carmove_right(int x1,int y1, int x2, int y2,int *x,int *y, int flag,float *p
 			if((abs(police_position1.xpixel-car_position.xpixel)<44)||(abs(police_position2.xpixel-car_position.xpixel)<45))
 			{
 				delay(80);
-				catchBox(x,y);
+				// catchBox(x,y);
 				break;
 			}
 
