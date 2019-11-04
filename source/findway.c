@@ -556,29 +556,29 @@ void StartAndEnd(PLACE node[MAXSIZE],PLACE placenow,PLACE placeto, int nearstart
 
 
 //将寻找的路径转换为动画
-int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y,USEINFOR *infor,int *avoid,time_t rentime1,time_t *rentime2,int *mid,int *timi)
+void linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y,USEINFOR *infor,int *avoid,time_t rentime1,time_t *rentime2,int *mid,int *timi)
 {
     int i;
     int mx,my,button;
-    int sigle=0;//用于接力退出
+    // int sigle=0;//用于接力退出
     for ( i = 0; i < count; i++)
     { 
-        sigle = rentmove(car_position,node[way[i]].x,node[way[i]].y,node[way[i+1]].x,node[way[i+1]].y,x,y,direct[i],energe,infor,avoid,rentime1,rentime2,mid,timi);
-        if (sigle == 1)
-        {
-            break;
-        }
+        rentmove(car_position,node[way[i]].x,node[way[i]].y,node[way[i+1]].x,node[way[i+1]].y,x,y,direct[i],energe,infor,avoid,rentime1,rentime2,mid,timi);
+        // if (sigle == 1)
+        // {
+        //     break;
+        // }
         
     }
-    return sigle;
+    // return sigle;
 }
 //寻路
-int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
+void find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
 {
     int mx,my,button;//鼠标点击
     int i;//用于计数
     int avoid = 0;//避免反复提醒电量过低
-    int sigle=0;//用于接力退出
+    // int sigle=0;//用于接力退出
     int lockflag = 0;//判断能否锁车,值为1时可以锁车，可以还车
     int nowflag = 0;//判断是否在结点，若为偶数则在路口结点，直接跳过findNode()和StartAndEnd()两个函数
     int toflag = 0;
@@ -712,10 +712,10 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
         // {
         //     break;
         // }
-        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-        {
-            safe_box(x,y);
-        }
+        // else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        // {
+        //     safe_box(x,y);
+        // }
         // else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
         // {
         //     exit(0);
@@ -802,28 +802,28 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
                     if (startdir != 0)
                     {
                     
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,node[start].x,node[start].y,x,y,startdir,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);
-                        if(sigle==1)//用于安全报警后的接力退出
-			            {
-				            break;
-			            }
+                        rentmove(&car_position,placenow.x,placenow.y,node[start].x,node[start].y,x,y,startdir,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);
+                        // if(sigle==1)//用于安全报警后的接力退出
+			            // {
+				        //     break;
+			            // }
                         // judgEnergy(&(rcar->leftenergy), &avoid, x, y,infor);
                     }
                     
                     //若终点不在结点上，第一个结点到最后一个结点
-                    sigle = linkCartoon(&car_position,node,way,direct,count,&(rcar->leftenergy),x,y,infor,&avoid,rentime1,&rentime2,&middtime,&timing);
-                    if(sigle==1)//用于安全报警后的接力退出
-			        {
-				        break;
-			        }
+                    linkCartoon(&car_position,node,way,direct,count,&(rcar->leftenergy),x,y,infor,&avoid,rentime1,&rentime2,&middtime,&timing);
+                    // if(sigle==1)//用于安全报警后的接力退出
+			        // {
+				    //     break;
+			        // }
                     //最后一个结点到终点
                     if (enddir != 0)
                     {
-                        sigle = rentmove(&car_position,node[end].x,node[end].y,placeto.x,placeto.y,x,y,enddir,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);
-                        if(sigle==1)//用于安全报警后的接力退出
-			            {
-				            break;
-			            }
+                        rentmove(&car_position,node[end].x,node[end].y,placeto.x,placeto.y,x,y,enddir,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);
+                        // if(sigle==1)//用于安全报警后的接力退出
+			            // {
+				        //     break;
+			            // }
                         // judgEnergy(&(rcar->leftenergy), &avoid, x, y,infor);
                     }
                     
@@ -832,24 +832,24 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
                 {
                     if (placenow.y>placeto.y)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,1,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向上走
+                        rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,1,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向上走
                     }
                     else if (placenow.y<placeto.y)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,2,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向下走
+                        rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,2,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向下走
                     }
                     else if (placenow.x>placeto.x)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,3,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向左走
+                        rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,3,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向左走
                     }
                     else if (placenow.x<placeto.x)
                     {
-                        sigle = rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,4,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向右走
+                        rentmove(&car_position,placenow.x,placenow.y,placeto.x,placeto.y,x,y,4,&(rcar->leftenergy),infor,&avoid,rentime1,&rentime2,&middtime,&timing);//向右走
                     }
-                    if(sigle==1)//用于安全报警后的接力退出
-			        {
-				        break;
-			        }
+                    // if(sigle==1)//用于安全报警后的接力退出
+			        // {
+				    //     break;
+			        // }
                 }
                 
                 
@@ -896,7 +896,7 @@ int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
 	/*将指针置空*/
 	(car_position).pic = NULL;
     // reset_mouse(x,y);
-    return sigle;
+    // return sigle;
 }
 //确认鼠标点击区域
 int mousepress(int mx,int my)

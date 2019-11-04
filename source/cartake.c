@@ -137,10 +137,10 @@ void car_take_box(int* x, int* y, USEINFOR *infor)
             bar_round(car[4].fastcar.x,car [4].fastcar.y,22,42,2,1,65535);
             break;
         }
-        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-        {
-            safe_box(x,y);
-        }
+        // else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        // {
+        //     safe_box(x,y);
+        // }
 		else if (mx>=798  && mx<=994 && my>=265 && my<=311 && button)//点击选择目的地，进入目的地选择进程
         {
             bar_round(car[0].fastcar.x,car [0].fastcar.y,42,22,2,1,65535);
@@ -243,6 +243,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
     
     mousehide(*x,*y);
 	
+    
 	//保存背景
     // save_image(771,2,996,612,"drivinfo");
     // save_image(1,1,1023,767,"drivinfo");
@@ -425,6 +426,12 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
         fdhz(865,460,1,1,"刻",44373);
         fdhz(905,460,1,1,"上",44373);
         fdhz(945,460,1,1,"车",44373);
+
+        // 安全
+        bar_round(862,693,120,92,25,1,64384);
+        bar_round(862,693,114,85,23,1,65535);
+        fdhz(815,668,3,3,"安",64384);
+        fdhz(860,668,3,3,"全",64384);
         reset_mouse(x,y);
     }
     
@@ -459,10 +466,10 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
                 break;
             }
         }
-        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-        {
-            safe_box(x,y);
-        }
+        // else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        // {
+        //     safe_box(x,y);
+        // }
         // else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
         // {
         //     exit(0);
@@ -488,6 +495,8 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
             sigle=starttoend(infor->nowplace,*aimplace,x,y);
             if(sigle==1)//用于安全报警后的接力退出
 			{
+                *aimplace = UNCHOOSE;
+                waitime=0;
 				break;
 			}
             else
@@ -503,6 +512,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, const CARFAST car[], const PLAC
                 //若成功到达目的地的，则修改当前位置
                 changeNowplace(infor,*aimplace);
                 *aimplace = UNCHOOSE; 
+                waitime=0;
                 break;
             }
 		}
@@ -743,6 +753,7 @@ void immediate(int *x,int *y)
 /***************************
 四个方向的小车画图函数
 ****************************/
+
 void car_draw_right(CAR_CONDITION car_position)
 {
 	bar_round(car_position.xpixel,car_position.ypixel,42,22,2,1,1);
@@ -783,6 +794,49 @@ void car_draw_down(CAR_CONDITION car_position)
 	bar_round(car_position.xpixel+8,car_position.ypixel-6,1,18,0,1,1);
 }
 
+/***************************
+四个方向的警车画图函数
+****************************/
+
+void police_draw_right(CAR_CONDITION car_position)
+{
+	bar_round(car_position.xpixel,car_position.ypixel,42,22,2,1,1);
+	bar_round(car_position.xpixel,car_position.ypixel,38,18,2,1,65535);
+	bar_round(car_position.xpixel+6,car_position.ypixel,6,15,1,1,63488);
+	bar_round(car_position.xpixel-16,car_position.ypixel,3,15,1,1,63488);
+	bar_round(car_position.xpixel-6,car_position.ypixel-8,18,1,0,1,63488);
+	bar_round(car_position.xpixel-6,car_position.ypixel+8,18,1,0,1,63488);
+}	
+
+void police_draw_left(CAR_CONDITION car_position)
+{
+	bar_round(car_position.xpixel,car_position.ypixel,42,22,2,1,1);
+	bar_round(car_position.xpixel,car_position.ypixel,38,18,2,1,65535);
+	bar_round(car_position.xpixel-6,car_position.ypixel,6,15,1,1,63488);
+	bar_round(car_position.xpixel+16,car_position.ypixel,3,15,1,1,63488);
+	bar_round(car_position.xpixel+6,car_position.ypixel-8,18,1,0,1,63488);
+	bar_round(car_position.xpixel+6,car_position.ypixel+8,18,1,0,1,63488);
+}
+
+void police_draw_on(CAR_CONDITION car_position)
+{
+	bar_round(car_position.xpixel,car_position.ypixel,22,42,2,1,1);
+	bar_round(car_position.xpixel,car_position.ypixel,18,38,2,1,65535);
+	bar_round(car_position.xpixel,car_position.ypixel-6,15,6,1,1,63488);
+	bar_round(car_position.xpixel,car_position.ypixel+16,15,3,1,1,63488);
+	bar_round(car_position.xpixel-8,car_position.ypixel+6,1,18,0,1,63488);
+	bar_round(car_position.xpixel+8,car_position.ypixel+6,1,18,0,1,63488);
+}
+
+void police_draw_down(CAR_CONDITION car_position)
+{
+	bar_round(car_position.xpixel,car_position.ypixel,22,42,2,1,1);
+	bar_round(car_position.xpixel,car_position.ypixel,18,38,2,1,65535);
+	bar_round(car_position.xpixel,car_position.ypixel+6,15,6,1,1,63488);
+	bar_round(car_position.xpixel,car_position.ypixel-16,15,3,1,1,63488);
+	bar_round(car_position.xpixel-8,car_position.ypixel-6,1,18,0,1,63488);
+	bar_round(car_position.xpixel+8,car_position.ypixel-6,1,18,0,1,63488);
+}
 
 
 void car_draw_right1(int x,int y)

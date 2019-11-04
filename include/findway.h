@@ -87,7 +87,7 @@ void StartAndEnd(PLACE node[MAXSIZE],PLACE placenow,PLACE placeto, int nearstart
         x,y:鼠标
 返回值说明:sigle:用于接力退出
 ****************************************************/
-int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y,USEINFOR *infor,int *avoid,time_t rentime1,time_t *rentime2,int *mid,int *timi);
+void linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE], int direct[MAXSIZE], int count, int *energe, int *x,int *y,USEINFOR *infor,int *avoid,time_t rentime1,time_t *rentime2,int *mid,int *timi);
 
 
 /***********************************************
@@ -100,7 +100,7 @@ int linkCartoon(CAR_CONDITION *car_position,PLACE node[MAXSIZE], int way[MAXSIZE
         infor:用户信息结构
 返回值说明:sigle:用于接力退出
 ****************************************************/
-int find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[]);
+void find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[]);
 
 /***********************************************
 功能说明:确认鼠标点击区域,判断点击的区域是否在道路上

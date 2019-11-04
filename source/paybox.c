@@ -293,10 +293,7 @@ void top_up(int *x,int *y,USEINFOR *infor)
                 getch();
                 printf_image(383-210,384-140,383+210,384+140,"notchose");
                 reset_mouse(x,y);
-            }
-            
-            
-            
+            } 
         }
         
     }

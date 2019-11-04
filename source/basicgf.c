@@ -224,7 +224,7 @@ void bar(int x0, int y0, int x1, int y1, int color)
       参数说明：x,y为圆心
      无返回值
 **************************************************************************/
- void FillCircle(/*int x, int y, int r, int color*/int xc, int yc, int radius, int color)
+ void FillCircle(int xc, int yc, int radius, int color)
 {
 	/*画圆圈的定位变量和决策变量*/
 	int x = 0,

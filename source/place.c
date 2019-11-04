@@ -242,10 +242,10 @@ void choose_aimplace(int *x, int *y, int *aimplace, PLACE *location, USEINFOR *i
             reset_mouse(x,y);
             break;
         }
-        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-        {
-            safe_box(x,y);
-        }
+        // else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        // {
+        //     safe_box(x,y);
+        // }
         else if(mx>=938  && mx<=1014 && my>=642 && my<=684 && button)//点击Back返回
         {
             mousehide(*x,*y);

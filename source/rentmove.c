@@ -15,13 +15,13 @@
 时间换算：2s=1min
 		  每5s更新一次当前用车时间，相当于5min
 **************************************************************************/
-int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int *y,int direction,int *energy, USEINFOR *infor,int* avoid,time_t renttime1,time_t *renttime2,int *midtime,int *tim)
+void rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int *y,int direction,int *energy, USEINFOR *infor,int* avoid,time_t renttime1,time_t *renttime2,int *midtime,int *tim)
 {
 	int i;
 	int j;//用于单位移动循环的变量
 	int descent=1;//每走32个像素点，小车减少1%电量
 	char menergy[5]="\0";//用于小车电量数字变化
-	int sigle=0;
+	// int sigle=0;
 	// int avoid = 0;//避免反复提醒电量过低
 	int minite_gap;//用于判断当前租车时间,实际单位为sec，1s=1min
 	char minigap[5];//用于当前用车时间的数据类型转换
@@ -80,7 +80,7 @@ int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int
 	/*开始动画绘制*/
 	for(i=0;i<j;i++)
 	{
-	    sigle=rentmove_basic(car_position,x,y);
+	    rentmove_basic(car_position,x,y);
 		if(i%32==0)
 		{
 			if (*energy > 5)
@@ -97,10 +97,10 @@ int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int
 
 			judgEnergy(energy,avoid,x,y,infor);
 		}
-		if(sigle==1)
-		{
-			return sigle;
-		}
+		// if(sigle==1)
+		// {
+		// 	return sigle;
+		// }
 
 		time(renttime2);//获取循环中的系统时间
 		minite_gap=difftime(*renttime2,renttime1);
@@ -156,15 +156,15 @@ int rentmove(CAR_CONDITION *car_position, int x1,int y1,int x2,int y2,int *x,int
 	// /*将指针置空*/
 	// (car_position).pic = NULL;
 	
-	return sigle;
+	// return sigle;
 }
 
 
 /*汽车的最小移动单元*/
-int rentmove_basic(CAR_CONDITION *car_position,int *x,int *y)
+void rentmove_basic(CAR_CONDITION *car_position,int *x,int *y)
 {
 	int button=0;
-	int sigle=0;
+	// int sigle=0;
 	int mx=0;
     int my=0;
 	int x0 = (*car_position).xpixel,y0 = (*car_position).ypixel;
@@ -219,15 +219,15 @@ int rentmove_basic(CAR_CONDITION *car_position,int *x,int *y)
 			mx = *x;
 			my = *y;
        
-			if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-			{
-				sigle=safe_box(x,y);
+			// if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+			// {
+			// 	sigle=safe_box(x,y);
 				
-				if(sigle==1)
-				{
-					return sigle;
-				}
-			}
+			// 	if(sigle==1)
+			// 	{
+			// 		return sigle;
+			// 	}
+			// }
 			break;
 			
 		//上和下
@@ -246,16 +246,16 @@ int rentmove_basic(CAR_CONDITION *car_position,int *x,int *y)
 			mx = *x;
 			my = *y;
        
-			if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-			{
-				sigle=safe_box(x,y);
+			// if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+			// {
+			// 	sigle=safe_box(x,y);
 				
-				if(sigle==1)
-				{
-					return sigle;
-				}
-			}	
+			// 	if(sigle==1)
+			// 	{
+			// 		return sigle;
+			// 	}
+			// }	
 			break;
 	}
-	return sigle;
+	// return sigle;
 }

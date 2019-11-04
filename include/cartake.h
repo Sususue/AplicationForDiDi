@@ -50,6 +50,15 @@ extern void car_draw_on(CAR_CONDITION car_position);
 extern void car_draw_down(CAR_CONDITION car_position);
 
 
+extern void police_draw_right(CAR_CONDITION car_position);
+
+extern void police_draw_left(CAR_CONDITION car_position);
+
+extern void police_draw_on(CAR_CONDITION car_position);
+
+extern void police_draw_down(CAR_CONDITION car_position);
+
+
 extern void car_draw_right1(int x,int y);
 
 extern void car_draw_left1(int x,int y);

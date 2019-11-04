@@ -69,10 +69,10 @@ void infor_box(int *x,int *y, USEINFOR *infor)
 
             break;
         }
-        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-        {
-            safe_box(x,y);
-        }
+        // else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        // {
+        //     safe_box(x,y);
+        // }
         else if (mx>=802  && mx<=994 && my>=172 && my<=224 && button)//点击钱包，弹出支付框
         {
             pay_box(x,y,infor);

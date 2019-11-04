@@ -429,10 +429,10 @@ void car_rent_box(int* x, int* y, USEINFOR *infor)
 			}
 		}
 		
-        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-        {
-            safe_box(x,y);
-        }
+        // else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        // {
+        //     safe_box(x,y);
+        // }
 		
 		 else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
         {
@@ -794,7 +794,7 @@ void rentprocess_box(int *x, int *y,const PARK parking[],const CARRENT rent[],in
 	reset_mouse(x,y);
 
 
-	sigle = find(x,y,&rent[*carflag2],infor,parking);
+	find(x,y,&rent[*carflag2],infor,parking);
 	
 	
 	//显示背景

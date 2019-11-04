@@ -14,7 +14,8 @@ typedef struct{
 汽车的最小移动单元
 flag:1:车到出发点，不用遮掉线路; 2:起点到终点，需要遮掉绿色的线
 ****************************/
-extern int carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag);
+// extern int carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag);
+extern void carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag,int *sig);
 //extern void carmove_basic(CAR_CONDITION *car_position);
 
 /*********************************

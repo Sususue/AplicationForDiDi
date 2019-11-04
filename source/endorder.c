@@ -108,10 +108,10 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFAST car[], const char **p
         {
             break;
         }
-        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-        {
-            safe_box(x,y);
-        }
+        // else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        // {
+        //     safe_box(x,y);
+        // }
         else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
         {
             exit(0);
@@ -556,10 +556,10 @@ void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,floa
         {
             break;
         }
-        else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
-        {
-            safe_box(x,y);
-        }
+        // else if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
+        // {
+        //     safe_box(x,y);
+        // }
         else if (mx>=946  && mx<=1006 && my>=688 && my<=732 && button)//点击ESC退出系统
         {
             exit(0);
