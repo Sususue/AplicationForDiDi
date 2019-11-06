@@ -12,7 +12,7 @@ void gethz(char incode[],char  *bytes)
 	unsigned char qh, wh;
 	unsigned long offset;
  FILE * fhzk_p;                                                      /*定义文件指针*/
- fhzk_p = fopen("C:\\DiDA\\HZK\\HZK16S", "rb");
+ fhzk_p = fopen("HZK\\HZK16S", "rb");
  
  if (fhzk_p == NULL)
  {

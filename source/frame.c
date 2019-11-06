@@ -6,9 +6,7 @@ void outwelcome(void)
 {
 	background();
 	words();
-	ball();
-	
-	  
+	ball();	  
 }
 
 
@@ -43,6 +41,7 @@ void load_page(void)
 	fdhz(640,615,3,3,"注",44373);
 	fdhz(720,615,3,3,"册",44373);
 	
+	fdhz(820,730,2,2,"管理员登录",44373);
 }
 
 /*注册界面*/
@@ -104,6 +103,7 @@ judge=1:登录成功，值传递给main函数
 judge=2:输入用户名，调用<sign.h>中的input_phone_num函数
 judge=3:输入密码，调用<sign.h>中的input_code函数
 judge=5:值传递给main返回登录界面
+judge=6:值传递给main进入管理员界面
 *************************************************************/
 //int enterpage(void)
 int enterpage(USER *user,USEINFOR *infor,int *x,int *y)
@@ -190,6 +190,15 @@ int enterpage(USER *user,USEINFOR *infor,int *x,int *y)
 			judge = UserRegist(head,user->phone_num,user->code,inforhead,x,y,&button);
 		}
 		
+		/*管理员登录*/
+		if(*x>=815&&*x<=1024&&*y>=730&&*y<=768&&button)
+		{
+			mousehide(*x,*y);
+			fdhz(820,730,2,2,"管理员登录",64384);
+			reset_mouse(x,y);
+			delay0(50);
+			judge = manage_in(x,y);//进入管理员登录函数
+		}
 
 		if(*x>=300&&*x<=700&&*y>=275&&*y<=325&&button)
 		{
@@ -217,14 +226,22 @@ int enterpage(USER *user,USEINFOR *infor,int *x,int *y)
 			freeInforlist(&inforhead);
 			return 1;
 		}
+		if(judge==6)//管理员登陆成功
+		{
+			return 6;
+		}
+		if(judge==7)
+		{
+			judge = manage_in(x,y);//进入管理员登录函数
+		}
 		
 		//返回登陆界面
 		if(judge==5)
 		{
-			mousehide(*x,*y);
-			outtextxy(879,112,"back",1,1,10,64384);
-			reset_mouse(x,y);
-			delay(100);
+			// mousehide(*x,*y);
+			// outtextxy(879,112,"back",1,1,10,64384);
+			// reset_mouse(x,y);
+			// delay(100);
 			return 0;//返回0继续登录
 		}
 

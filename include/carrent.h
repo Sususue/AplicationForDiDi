@@ -5,7 +5,7 @@
 
 extern void car_rent_box(int* x, int* y, USEINFOR *infor);
 
-extern int show_parkinfo(int *x,int *y,const PARK parking[],CARRENT rent[],int nuber,int *carflag1,int *flaging1);
+extern void show_parkinfo(int *x,int *y,const PARK parking[],CARRENT rent[],int nuber,int *carflag1,int *flaging1);
 
 extern void rentprocess_box(int *x, int *y,const PARK parking[],const CARRENT rent[],int *carflag2, USEINFOR *infor);
 

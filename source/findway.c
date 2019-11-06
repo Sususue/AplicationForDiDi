@@ -1144,9 +1144,8 @@ void lockcar(const PARK parking[], CAR_CONDITION car_position, int *lockflag, in
         printf_image(512-210,384-140,512+210,384+140,"lock");
         reset_mouse(x,y);
     }
-    
- 
 }
+
 // void main()
 // {
 //     int i;

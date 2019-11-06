@@ -71,7 +71,7 @@ extern void car_draw_down1(int x,int y);
 
 /*********************************************
 功能说明:传入车辆数组，初始化其信息
-参数说明:car:快车的结构数组
+参数说明:car:快车结构变量，当前的快车信息
 *********************************************/
 // void newfastcar(CARFAST *car);
 void newfastcar(CARFA *car);

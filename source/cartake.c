@@ -526,7 +526,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, CARFA *car, const PLACE *locati
             if(sigle!=0)//用于安全报警后的接力退出
 			{
                 callstyle= catchBox(x,y);
-                changecall(&car[*aimplace],callstyle);
+                changecall(car,callstyle);
                 // changecar(&car[*aimplace]);
                 *aimplace = UNCHOOSE;
                 waitime=0;
@@ -540,7 +540,7 @@ void driver_info(int *x,int *y, USEINFOR *infor, CARFA *car, const PLACE *locati
                 costmoney(&price,infor,aimplace,nowtime_hour,time_gap1,x,y,waitime);
                 
                 //生成订单并截图保存
-                neworder(x,y,infor,car,placename,aimplace,mincar,buffer,price);
+                neworder(x,y,infor,car,placename,aimplace,/* mincar, */buffer,price);
                 evaluate(x,y,car);
                 //若成功到达目的地的，则修改当前位置
                 changeNowplace(infor,*aimplace);
@@ -997,8 +997,10 @@ void changecar(CARFA *thiscar,int x, int y)
 void changecall(CARFA *thiscar , int callstyle)
 {
  
-    FILE *fp;
+    FILE *fp = NULL;
 
+    // 修改状态
+    thiscar->call = callstyle;
     if ((fp = fopen("driver\\usecar.txt", "rb+")) == NULL)
   	{
 	  	null_box(500,500);
@@ -1006,8 +1008,7 @@ void changecall(CARFA *thiscar , int callstyle)
 	  	exit(1);
   	} 
     
-    // 修改状态
-    thiscar->call = callstyle;
+    
     fseek(fp,sizeof(CARFA)*thiscar->order,SEEK_SET);
     fwrite(thiscar,sizeof(CARFA),1,fp);
    
@@ -1023,7 +1024,11 @@ void changecall(CARFA *thiscar , int callstyle)
     fseek(fp,sizeof(CARFA)*thiscar->number,SEEK_SET);
     fwrite(thiscar,sizeof(CARFA),1,fp);
 
+
+    // fseek(fp,0L,SEEK_SET);
+    // fread(thiscar,sizeof(CARFA),1,fp);
     fclose(fp);
+
     
 }
 

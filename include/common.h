@@ -27,6 +27,7 @@
 
 #include"welcome.h"//欢迎界面和登录注册
 #include"frame.h"
+#include"admload.h"
 #include"module.h"
 #include"filefun.h"
 #include"sign.h"
@@ -50,6 +51,7 @@
 #include "carrent.h"//租车
 
 #include "select.h"  //主进程
+#include "admin.h"//管理员主进程
  
 
 

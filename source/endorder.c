@@ -1,11 +1,8 @@
 #include "common.h"
 #include "endorder.h"
 
-
-
-
 // 打车完成后生成订单
-void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **placename, int *aimplace, int mincar, char *ordertime,float price)
+void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **placename, int *aimplace,/*  int mincar, */ char *ordertime,float price)
 {
     int button=0;
     int mx=0;
@@ -35,10 +32,7 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **plac
     fdhz(340,135,3,3,"订单",44373);
     bar(88,200,678,230,63422);
 
-
-
     //订单要截取的内容，最后一行传值
-
     linelevel(128,310,335,270,3,63422);
     linelevel(431,310,638,270,3,63422);
     fdhz(345,305,1,1,"订单详情",44373);
@@ -117,16 +111,12 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **plac
             exit(0);
         }
     }
-    
     mousehide(*x,*y);
     printf_image(83,109,683,659,"orderadd");
     //对BACK键进行遮挡
     bar_round(976,664,76,44,15,1,65523);
     reset_mouse(x,y);
-
 }
-
-
 /*******************************
  基础里程：3km
  基础时长：9min
@@ -168,8 +158,6 @@ void countprice(float *pointprice,int nowplace,int *aimplace,int timegap,int tim
 	pointlength[12]=760;//商场和图书馆之间
 	pointlength[13]=313;//商场和游泳馆之间
 	pointlength[14]=557;//图书馆和游泳馆之间
-	
-	
 	
 	if((nowplace==0&&*aimplace==1)||(nowplace==1&&*aimplace==0))
 	{
@@ -244,7 +232,6 @@ void countprice(float *pointprice,int nowplace,int *aimplace,int timegap,int tim
 	{
 		minite=0;
 	}
-	
 	switch(timecase)
 	{
 		case 0:
@@ -278,7 +265,6 @@ void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int t
     int mx=0;
     int my=0;
     int button=0;
-
     //根据时间段计费
     if (nowtime_hour >= 0 && nowtime_hour <= 8)
     {
@@ -308,7 +294,6 @@ void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int t
         *price=(*price)*0.9;
     }
     sprintf(chprice,"%.2f",*price);
-
     mousehide(*x,*y);
     save_image(512-210,384-140,512+210,384+140,"notice");
     //显示金额
@@ -331,8 +316,6 @@ void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int t
         {
             break;
         }
-        
-
     }
     mousehide(*x,*y);
     printf_image(512-210,384-140,512+210,384+140,"notice");
@@ -459,8 +442,6 @@ void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,floa
     sprintf(chprice,"%.2f",*price);
     sprintf(chduring,"%d",timegap);
 
-    
-
     time(&ordertime);//获取进入租车订单GMT时间
     info = localtime(&ordertime);
     sprintf(chtime,"%d.%02d.%02d",(info->tm_year+1900),(info->tm_mon+1),info->tm_mday);
@@ -469,20 +450,12 @@ void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,floa
 
     mousehide(*x,*y);
     // 画图
-    // //返回键
-    // bar_round(976,664,76,44,15,1,64384);
-    // bar_round(976,664,70,39,13,1,65535);
-    // outtextxy(938,645,"Back",2,2,15,64384);
-
     bar_round(383,384,596,546,50,1,64384);
     bar_round(383,384,590,542,48,1,65535);
     fdhz(340,135,3,3,"订单",44373);
     bar(88,200,678,230,63422);
 
-
-
     //订单要截取的内容，最后一行传值
-
     linelevel(128,310,335,270,3,63422);
     linelevel(431,310,638,270,3,63422);
     fdhz(345,305,1,1,"订单详情",44373);
@@ -496,26 +469,18 @@ void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,floa
 	outtextxy(210,390,chduring,1,1,10,44373);
 	fdhz(250,390,1,1,"分钟",44373);
 
-
-
 	fdhz(135,430,1,1,"费用",44373);
     outtextxy(175,430,":",1,1,10,44373);
     outtextxy(190,430,chprice,1,1,10,44373);
 	fdhz(250,430,1,1,"元",44373);
 
-	
-
 	fdhz(135,470,1,1,"日期",44373);
     outtextxy(175,470,":",1,1,10,44373);
     outtextxy(190,470,chtime,1,1,10,44373);
 
-	
-
 	linelevel(128,510,335,510,3,63422);
     linelevel(431,510,638,510,3,63422);
     fdhz(345,505,1,1,"车辆信息",44373);
-
-
 
     fdhz(135,550,1,1,"车牌",44373);
     outtextxy(175,550,":",1,1,10,44373);
@@ -523,13 +488,9 @@ void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,floa
     outtextxy(205,550,"AD",1,1,10,44373);
     outtextxy(230,550,rcar->rentcar.carname,1,1,10,44373);
 
-
-
     fdhz(135,590,1,1,"车型",44373);
     outtextxy(175,590,":",1,1,10,44373);
     fdhz(190,590,1,1,"东风",44373);
-
-
 
     lean_line_thick(608,143,30,45,3,64384);
 	lean_line_thick(608,143+20,30,-45,3,64384);//画红叉
@@ -541,7 +502,7 @@ void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,floa
     strcpy(ordernew->money,chprice);
     strcpy(ordernew->during,chduring);
     strcpy(ordernew->orderstime,chtime);
-    // changeOrder(infor);//更改文件中的订单数量，以及生成本次订单的图片并保存
+
     addRentOrder(infor,ordernew);//将订单信息存进文件
     while (1)
     {
@@ -565,18 +526,14 @@ void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,floa
             exit(0);
         }
     }
-    
     mousehide(*x,*y);
     printf_image(83,109,683,659,"orderadd");
-    // //对BACK键进行遮挡
-    // bar_round(976,664,76,44,15,1,65523);
     reset_mouse(x,y);
 
 }
 //评价
 void evaluate(int *x, int *y,CARFA *car)
 {
-
     int button=0;
     int mx=0;
     int my=0;
@@ -618,7 +575,6 @@ void evaluate(int *x, int *y,CARFA *car)
         newxy(x,y,&button);
 		mx = *x;
 		my = *y;
-        
         if(mx>=608  && mx<=628 && my>=143 && my<=163 && button)//点击红叉返回
         {
             break;
@@ -632,7 +588,6 @@ void evaluate(int *x, int *y,CARFA *car)
             FillCircle(500,390,12,65535);
             FillCircle(500,510,12,65535);
 
-        
             reset_mouse(x,y);
         }
         else if(mx>=88 && mx<=678 && my>=330 && my<=450 && button)
@@ -653,7 +608,6 @@ void evaluate(int *x, int *y,CARFA *car)
             FillCircle(500,510,12,64384);
             reset_mouse(x,y);
         }
-        
         else if (mx>=285  && mx<=481 && my>=593 && my<=647 && button)//点击确定
         {
             
@@ -669,14 +623,9 @@ void evaluate(int *x, int *y,CARFA *car)
                 {
                     changepraise(car,flag);
                 }
-                
                 break;
-            
         }
-        
     }
-
-    
     //显示背景
     mousehide(*x,*y);   
     printf_image(83,109,683,659,"praise");
@@ -717,7 +666,4 @@ void changepraise(CARFA *car,int flag)
     fwrite(car,sizeof(CARFA),1,fp);
    
     fclose(fp);
-
-    
-    
 }

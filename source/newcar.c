@@ -14,8 +14,6 @@ void newfast()
     CARFA *pfast = fast;
     CARFA *p;
 
-
-
     strcpy(fast[0].fastcar.carname,"B7351");
     strcpy(fast[1].fastcar.carname,"92857");
     strcpy(fast[2].fastcar.carname,"A6103");
@@ -132,4 +130,81 @@ void newfast()
     p = NULL;
     fclose(fp);
     fclose(fp2);
+}
+//替换司机
+void managecar(int *x,int *y,CARFA *car)
+{
+   FILE *fp = NULL;
+   CARFA anothercar;
+   int note = 0; //若文件找完都找不到符合要求的，报错退出
+//    在车辆资源池中找到还未启用的车辆
+   
+
+    if ((fp = fopen("driver\\fastcar.txt", "rb+")) == NULL)//更改资源库的信息
+  	{
+	  	null_box(500,500);
+	  	getch();
+	  	exit(1);
+  	} 
+
+    do
+    {
+        fread(&anothercar,sizeof(CARFA),1,fp);
+        if (feof(fp)!=0)
+        {
+            note = 1;
+        }
+        
+    } while (anothercar.call != 0);
+    
+    anothercar.call = 1 ;
+    fseek(fp,-1L*sizeof(CARFA),SEEK_CUR);
+    fwrite(&anothercar,sizeof(CARFA),1,fp);
+    fclose(fp);
+
+    if (note == 0)
+    {
+        if ((fp = fopen("driver\\usecar.txt", "rb+")) == NULL)
+        {
+            null_box(500,500);
+            getch();
+            exit(1);
+        } 
+        
+        anothercar.order = car->order;
+        fseek(fp,sizeof(CARFA)*car->order,SEEK_SET);
+        fwrite(&anothercar,sizeof(CARFA),1,fp);
+    
+        
+        // fseek(fp,0L,SEEK_SET);
+        // fread(thiscar,sizeof(CARFA),1,fp);
+        fclose(fp);
+
+        mousehide(*x,*y);
+        save_image(483-210,384-140,483+210,384+140,"note");
+        bar_round(483,384,416,270,50,1,64384);
+        bar_round(483,384,410,265,48,1,65535);
+        fdhz(411,340,2,2,"替换成功",64384);
+        fdhz(431,430,1,1,"按任意键继续",44373);
+        getch();
+        printf_image(483-210,384-140,483+210,384+140,"note");
+        reset_mouse(x,y);
+    }
+    else
+    {
+        mousehide(*x,*y);
+        save_image(483-210,384-140,483+210,384+140,"note");
+        bar_round(483,384,416,270,50,1,64384);
+        bar_round(483,384,410,265,48,1,65535);
+        fdhz(341,340,2,2,"没有可替换司机",64384);
+        fdhz(431,430,1,1,"按任意键继续",44373);
+        getch();
+        printf_image(483-210,384-140,483+210,384+140,"note");
+        reset_mouse(x,y);
+    }
+    
+    
+    
+
+    
 }

@@ -292,11 +292,9 @@ int catchBox(int *x,int *y)
         }
         
     }
-
-    
+ 
     mousehide(*x,*y);  //隐藏鼠标
     printf_image(83,109,683,659,"catch");
     reset_mouse(x,y);   //避免留下鼠标所在位置的背景 
     return flag;
 }
-

@@ -464,7 +464,7 @@ typedef struct carrent{
 	int leftenergy;        //车辆剩余电量
 }CARRENT;          //共享汽车的信息*/
 
-int show_parkinfo(int *x,int *y,const PARK parking[],CARRENT rent[],int nuber,int *carflag1,int *flaging1)//用于显示停车场信息的函数
+void show_parkinfo(int *x,int *y,const PARK parking[],CARRENT rent[],int nuber,int *carflag1,int *flaging1)//用于显示停车场信息的函数
 {
 	int button=0;
     int mx=0;
@@ -727,11 +727,11 @@ void rentprocess_box(int *x, int *y,const PARK parking[],const CARRENT rent[],in
 	//int nowtime_min;
 	//int nowtime_sec;
 	
-	int button=0;
-    int mx=0;
-    int my=0;
+	// int button=0;
+    // int mx=0;
+    // int my=0;
 	char lefenergy[5];//用于剩余电量的数据类型转换
-	int sigle=0;//用于接力退出报警
+	// int sigle=0;//用于接力退出报警
 	
 	mousehide(*x,*y);
 	//保存背景

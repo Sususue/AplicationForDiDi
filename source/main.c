@@ -2,10 +2,8 @@
 #include "main.h"
 
 
-
 void main()
 {
-	
 	unsigned int a;
 	int enterjudge=0;//判断进入登录页面还是进入主界面
 	//int finish=0;
@@ -16,8 +14,6 @@ void main()
 	USEINFOR *p_order= &order;
 
 	SetSVGA64k();
-	
-	
 	a = GetSVGA();
 	
 	srand((int)time(0));
@@ -38,23 +34,15 @@ void main()
 			case 1:
 					enterjudge = check(p_order,&x,&y);
 					// enterjudge = check(p_user,&x,&y);
+					break;
+			case 6:
+			        enterjudge = admin(&x,&y);
+					break;
+			// case 7:
+			// 		enterjudge = manage_in(&x,&y);
+			// 		break;
 			default:
 					break;
 		}
-	}
-	
-	
-	/*
-	while(enterjudge!=1)
-	{
-		enterjudge = enterpage(p_user);
-	}
-	
-	 while(finish!=1)
-    {
-		//finish = check();
-		check(p_user);
 	} 
-	*/
-    
 }

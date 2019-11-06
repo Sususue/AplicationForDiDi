@@ -30,7 +30,6 @@ void CreateInforList(USEINFOR *inforhead)
 
 	current = inforhead;
 
-
   	if ((fp = fopen("user\\infor.txt", "rb+")) == NULL)
   	{
 	  	null_box(500,500);
@@ -62,7 +61,7 @@ void CreateInforList(USEINFOR *inforhead)
 		current->next=NULL;	
 		fgetc(fp);/*判断指针是否已到达文件尾部*/
 	}
-	// }	
+	//}
   	fclose(fp);
 }  
 
@@ -118,7 +117,7 @@ void CreateInforList(USEINFOR *inforhead)
 
 /************************************
 Function: AddNewInfor
-Description: 创建新的用户订单
+Description:创建新的用户订单
 Attention:phone指代用户电话串
 Return:
 *************************************/
@@ -212,7 +211,7 @@ Return:无
 
 /****************************************************
 Function: addOrder
-Description: 传入当前用户信息,并修改对应用户的订单数量(增加1)，与订单结构
+Description:传入当前用户信息,并修改对应用户的订单数量(增加1)，与订单结构
 			生成新订单,并以文件的形式保存//形式存订单图
 			以用户结点位置(infor->cnt)加订单数的形式存文件，中间用下划线隔开
 			例如 1_2 :第一个用户的第二个订单
@@ -257,7 +256,7 @@ void addOrder(USEINFOR *infor, ORDER *order)
 
 /****************************************************
 Function: findOrder
-Description: 传入当前用户信息infor,与订单结构order
+Description:传入当前用户信息infor,与订单结构order
 			打开文件的形式保存//形式存订单图
 			以用户结点位置(infor->cnt)的形式存文件，一个用户的订单都存在一个文件中
 			例如 1:第一个用户的订单
@@ -286,7 +285,7 @@ void findOrder(USEINFOR *infor, ORDER *order, int n)
 
 /****************************************************
 Function: addRentOrder
-Description: 传入当前用户信息,并修改对应用户的订单数量(增加1)，与订单结构
+Description:传入当前用户信息,并修改对应用户的订单数量(增加1)，与订单结构
 			生成新订单,并以文件的形式保存//形式存订单图
 			以用户结点位置(infor->cnt)加订单数的形式存文件，中间用下划线隔开
 			例如 1_2 :第一个用户的第二个订单
@@ -330,7 +329,7 @@ void addRentOrder(USEINFOR *infor, RENTORDER *order)
 
 /****************************************************
 Function: findRentOrder
-Description: 传入当前用户信息infor,与订单结构order
+Description:传入当前用户信息infor,与订单结构order
 			打开文件的形式保存//形式存订单图
 			以用户结点位置(infor->cnt)的形式存文件，一个用户的订单都存在一个文件中
 			例如 1:第一个用户的订单
@@ -359,7 +358,7 @@ void findRentOrder(USEINFOR *infor, RENTORDER *order, int n)
 
 /****************************************************
 Function: findInfor
-Description: 传入指定电话号码,在链表中找到对应用户的订单
+Description:传入指定电话号码,在链表中找到对应用户的订单
 Attention:
 Return:无
 ****************************************************/
@@ -410,7 +409,7 @@ void freeInforlist(USEINFOR **head)
 
 /****************************************************
 Function: changePay
-Description: 传入当前用户信息,并修改对应用户的支付方式与金额(增加1)
+Description:传入当前用户信息,并修改对应用户的支付方式与金额(增加1)
 			根据传入mode的值确定修改什么
 			mode:1.修改余额 2.修改支付方式
 			value为修改的值
@@ -447,8 +446,7 @@ void changePay(USEINFOR *infor, int mode,int value)
 }
 /****************************************************
 Function: changeNowplace
-Description: 传入当前用户信息，修改当前位置
-		
+Description:传入当前用户信息，修改当前位置
 			aimplace:之前的终点(目的地)号码
 Attention:
 Return:无
@@ -476,7 +474,7 @@ void changeNowplace(USEINFOR *infor, int aimplace)
 }
 /****************************************************
 Function: changeMoney
-Description: 传入当前用户信息，修改当前位置
+Description:传入当前用户信息，修改当前位置
 			price:订单金额
 Attention:
 Return:无
@@ -484,7 +482,6 @@ Return:无
 void changeMoney(USEINFOR *infor, float price)
 {
 	FILE *fp;
-
 
 	infor->money-=price;
 	//修改文件中
@@ -501,15 +498,3 @@ void changeMoney(USEINFOR *infor, float price)
 
  	fclose(fp);
 }
-		
-		
-
-	
-	
-	
-	
-	
-	
-	
-
-

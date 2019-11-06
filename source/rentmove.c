@@ -165,8 +165,8 @@ void rentmove_basic(CAR_CONDITION *car_position,int *x,int *y)
 {
 	int button=0;
 	// int sigle=0;
-	int mx=0;
-    int my=0;
+	// int mx=0;
+    // int my=0;
 	int x0 = (*car_position).xpixel,y0 = (*car_position).ypixel;
 
 
@@ -216,8 +216,8 @@ void rentmove_basic(CAR_CONDITION *car_position,int *x,int *y)
 	        get_image((*car_position).xpixel-22,(*car_position).ypixel-22,(*car_position).xpixel+22,(*car_position).ypixel+22,(*car_position).pic);
 			
 			
-			mx = *x;
-			my = *y;
+			// mx = *x;
+			// my = *y;
        
 			// if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
 			// {
@@ -243,8 +243,8 @@ void rentmove_basic(CAR_CONDITION *car_position,int *x,int *y)
 	        get_image((*car_position).xpixel-22,(*car_position).ypixel-22,(*car_position).xpixel+22,(*car_position).ypixel+22,(*car_position).pic);
 			
 			
-			mx = *x;
-			my = *y;
+			// mx = *x;
+			// my = *y;
        
 			// if (mx>=802  && mx<=922 && my>=647 && my<=739 && button)//点击安全，弹出信息框
 			// {

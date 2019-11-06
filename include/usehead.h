@@ -18,14 +18,10 @@ typedef struct carinfor{
     char carname[6];       //车牌号码，默认鄂A开头
 }CARINFOR;
 
-
 // typedef struct carfast{
 // 	char name[3];        //车主名字对应的号码
 //     CARINFOR fastcar;
 // }CARFAST;     //存储快车车辆的信息的
-
-
-
 
 typedef struct carfa{
 	char name[3];        //车主名字对应的号码
@@ -36,10 +32,6 @@ typedef struct carfa{
 	int order;//在usecar文件里的顺序
 	CARINFOR fastcar;
 }CARFA;     //重新写的存储快车车辆的信息的结构
-
-
-
-
 
 typedef struct park{
 	int parknum;        //该停车场的编号
@@ -117,7 +109,6 @@ extern void CreateInforList(USEINFOR *head);
 
 
 
-
 /************************************
 Function: AddNewOrder
 Description: 创建新的用户订单
@@ -125,7 +116,6 @@ Attention:s1指代用户串
 Return:
 *************************************/
 extern void AddNewInfor(USEINFOR *head,char *phone);
-
 
 
 /****************************************************
@@ -250,7 +240,6 @@ Attention:
 Return:无
 ****************************************************/
 void changeMoney(USEINFOR *infor, float price);
-
 
 
 #endif

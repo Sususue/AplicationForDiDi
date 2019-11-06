@@ -15,7 +15,7 @@ int desidecar(int nowplace, PLACE fastplace[FASTNUM], PLACE *location)
     {
         if (distance > pow((location[nowplace].x-fastplace[i].x),2)+pow((location[nowplace].y-fastplace[i].y),2))
         {
-            distance = pow((location[nowplace].x-fastplace[i].x),2)+pow((location[nowplace].y-fastplace[i].x),2);
+            distance = pow((location[nowplace].x-fastplace[i].x),2)+pow((location[nowplace].y-fastplace[i].y),2);
             mincar = i;
         }
     }

@@ -16,7 +16,7 @@
         mincar:接送快车的号码
 返回值:无
 **********************************************/
-void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **placename, int *aimplace, int mincar, char *ordertime,float price);
+void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **placename, int *aimplace, /* int mincar, */ char *ordertime,float price);
 
 
 
@@ -48,7 +48,7 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **plac
 extern void countprice(float *pointprice,int nowplace,int *aimplace,int timegap,int timecase);
 
 /******************************************************
- 功能说明：算价格并扣费
+功能说明：算价格并扣费
 参数说明：price:价格
         infor:用户信息结构
         aimplace:目的地
@@ -59,12 +59,30 @@ extern void countprice(float *pointprice,int nowplace,int *aimplace,int timegap,
 ******************************************************/
 void costmoney(float *price,USEINFOR *infor,int *aimplace,int nowtime_hour,int timegap, int *x, int *y, int waitime);
 
-//生成新的租车订单
+
+/******************************************************
+功能说明:生成新的租车订单
+参数说明:x、y:鼠标
+		infor:用户信息结构
+		rcar:当前的快车
+		price:价格
+		timegap:从呼叫快车开始到快车结束的时间间隔(s)
+******************************************************/
 void newrentorder(int *x,int *y,USEINFOR *infor, CARRENT *rcar, int timegap,float *price);
 
-//评价
+
+/******************************************************
+功能说明:评价司机
+参数说明:x、y:鼠标
+		rcar:当前的快车
+******************************************************/
 void evaluate(int *x, int *y,CARFA *car);
-//更改文件里的信息
+
+/******************************************************
+功能说明:更改文件里的评价信息
+参数说明:rcar:当前的快车
+		flag:评价标志: 1:好评; 2:差评
+******************************************************/
 void changepraise(CARFA *car, int flag);
 
 #endif
