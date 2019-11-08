@@ -4,7 +4,7 @@
 #define CARNUMBER 24
 #define USINGNUM 10
 
-void newfast()
+void newfast(void)
 {
     int i;
     CARFA fast[25];//资源池快车数组

@@ -715,7 +715,7 @@ void show_parkinfo(int *x,int *y,const PARK parking[],CARRENT rent[],int nuber,i
 
 }
 
-void rentprocess_box(int *x, int *y,const PARK parking[],const CARRENT rent[],int *carflag2, USEINFOR *infor)
+void rentprocess_box(int *x, int *y,const PARK parking[],/* const  */CARRENT rent[],int *carflag2, USEINFOR *infor)
 {
 	//time_t nowtime1;
 	//time_t nowtime2;//用于获取当前时间

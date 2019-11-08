@@ -36,14 +36,18 @@
 #include "basicmap.h"  //主界面地图
 #include "map.h"
 
+
+#include "safe.h"//安全相关
 #include "useinfor.h" //用户个人信息
 #include "paybox.h"//钱包
 #include "carmove.h"//快车动画
+#include "drawcar.h"//画车
 
 
 #include "endorder.h"//快车完成后生成订单，以及计算价格
 #include "place.h"//快车选择目的地
 #include "judgfast.h"//判断那辆快车，哪个动画
+#include "appoint.h"
 #include "cartake.h"//快车
 
 #include "rentmove.h"//租车动画

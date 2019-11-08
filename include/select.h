@@ -3,9 +3,9 @@
 
 int check(USEINFOR *infor,int *x,int *y);
 // int check(USER *user,int *x,int *y);
-void safe_box(int* x, int* y, int *sigle); //安全窗口弹出
+// void safe_box(int* x, int* y, int *sigle); //安全窗口弹出
 
-int catchBox(int *x,int *y);//被警车追到后
+// int catchBox(int *x,int *y);//被警车追到后
 // void infor_box(int *x,int *y,USER *user); //个人信息
 
 // void pay_box(int *x,int *y,USER *user); //钱包

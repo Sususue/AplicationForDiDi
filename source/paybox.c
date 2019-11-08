@@ -51,6 +51,10 @@ void pay_box(int* x, int* y,USEINFOR *infor)
         else if(mx>=88 && mx<=678 && my>=369 && my<=509 && button)//充值
         {
             top_up (x,y,infor);
+            // 、更新余额
+            bar(300,280,650,320,65535);
+            sprintf(ch,"%.2f",infor->money);
+            outtextxy(360,285,ch,2,2,20,44373);
         }
         else if(mx>=88 && mx<=678 && my>=511 && my<=657 && button)//支付方式
         {
@@ -80,7 +84,7 @@ void top_up(int *x,int *y,USEINFOR *infor)
     int topmoney = 0;//充入的金额
     char flag1 = NOT;//判断是否选择金额
     char flag2 = NOT;//判断是否选择充值方式
-    char ch[15];//暂时存金额
+    // char ch[15];//暂时存金额
     mousehide(*x,*y);
 
     //保存背景
@@ -302,10 +306,10 @@ void top_up(int *x,int *y,USEINFOR *infor)
     mousehide(*x,*y);   
     printf_image(83,109,683,659,"topup");
 
-    bar(300,280,650,320,65535);
+    // bar(300,280,650,320,65535);
 
-    sprintf(ch,"%.2f",infor->money);
-    outtextxy(360,285,ch,2,2,20,44373);
+    // sprintf(ch,"%.2f",infor->money);
+    // outtextxy(360,285,ch,2,2,20,44373);
     reset_mouse(x,y);
 }
 //支付方式

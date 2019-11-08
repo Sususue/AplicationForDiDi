@@ -72,7 +72,7 @@ int Dijkstra(int start, int end, int way[], int *count)
         }
         
     }
-    printf("mindistance = %d\n",dis[end]);
+    // printf("mindistance = %d\n",dis[end]);
     mindis=dis[end];//一定要先存下来，否则dis[end]在循环中被改变，返回的不是最短距离
     way[0] = end;           //将节点逆序存入数组
     while (end != start)
@@ -696,7 +696,7 @@ void find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
 		}
         
         
-        if(mx>=798  && mx<=994 && my>=532 && my<=584 && button)//点击锁车，判断是否能锁车
+if(((mx>=798  && mx<=994 && my>=532 && my<=584)||(parkpress(mx,my,parking))) && button)//点击锁车，判断是否能锁车
         {
             lockcar(parking,car_position,&lockflag,x,y);
             if (lockflag == 1)//确认还车
@@ -729,6 +729,8 @@ void find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
             
                 judgeAreo(node,mx,my,&placeto,&toflag,&end);//确定点击区域，并修正坐标
                 
+                showpress(placeto.x,placeto.y);
+
                 if (toflag %2 != 0 && toflag != 1)
                 {
                     findNode(node,placeto,nearend,toflag);
@@ -873,17 +875,20 @@ void find(int *x, int *y, CARRENT *rcar, USEINFOR *infor, const PARK parking[])
             }
             else//若未点击到道路上,进行提示
             {
-                mousehide(*x,*y);
-                
-                save_image(512-210,384-140,512+210,384+140,"rentnote");
-                bar_round(512,384,416,270,50,1,64384);
-                bar_round(512,384,410,265,48,1,65535);
-                fdhz(390,360,2,2,"请在道路上行驶",64384);
-                fdhz(450,420,1,1,"按任意键继续",44373);
-                getch();
-                
-                printf_image(512-210,384-140,512+210,384+140,"rentnote");
-                reset_mouse(x,y);
+                if(parkpress(mx,my,parking) == 0)
+                {
+                    mousehide(*x,*y);
+                    
+                    save_image(512-210,384-140,512+210,384+140,"rentnote");
+                    bar_round(512,384,416,270,50,1,64384);
+                    bar_round(512,384,410,265,48,1,65535);
+                    fdhz(390,360,2,2,"请在道路上行驶",64384);
+                    fdhz(450,420,1,1,"按任意键继续",44373);
+                    getch();
+                    
+                    printf_image(512-210,384-140,512+210,384+140,"rentnote");
+                    reset_mouse(x,y);
+                }
             }
             
         }
@@ -1146,6 +1151,42 @@ void lockcar(const PARK parking[], CAR_CONDITION car_position, int *lockflag, in
     }
 }
 
+// 判断鼠标点击了停车场
+int parkpress(int x,int y, const PARK parking[])
+{
+    int i;//用于计数
+    int value = 0;//用于返回
+    const int r = 30;//停车场半径
+    double dis;//记录距离
+
+    for (i = 0; i < PARKNUM; i++)
+    {
+        dis = pow (x - parking[i].x,2)+pow(y-parking[i].y,2);
+        if (dis <= r*r)
+        {
+            value = 1;
+            break;
+        }
+        
+    }
+
+    return value;
+
+}
+//鼠标点击后显示一下
+void showpress(int x, int y)
+{
+    circle(x,y,12,63776);
+    delay(50);
+    circle(x,y,12,65535);
+    circle(x,y,10,64518);
+    delay(50);
+    circle(x,y,10,65535);
+    circle(x,y,8,64908);
+    delay(50);
+    circle(x,y,8,65535);
+
+}
 // void main()
 // {
 //     int i;

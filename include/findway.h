@@ -112,6 +112,22 @@ int mousepress(int mx,int my);
 
 void judgEnergy(int *energy,int *avoid, int *x, int *y, USEINFOR *infor);
 
+/***********************************************
+功能说明:确认能否锁车,判断小车与停车场的距离
+注意事项:
+参数说明:x,y:鼠标
+        parking:停车场数组
+        car_position:存小车当前位置坐标与方向的结构
+        lockflag:指示小车能否上锁的标志(传值进行改变)
+返回值说明:无
+****************************************************/
 void lockcar(const PARK parking[], CAR_CONDITION car_position, int * lockflag, int *x, int *y);
+
+
+// 判断鼠标点击了停车场
+int parkpress(int x,int y, const PARK parking[]);
+
+//鼠标点击后显示一下
+void showpress(int x, int y);
 
 #endif

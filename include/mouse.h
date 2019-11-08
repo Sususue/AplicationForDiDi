@@ -6,7 +6,7 @@ extern void cursor(int x, int y);
 extern void setMouseShape(int mark, int mx, int my);
 extern void mousehide(int x, int y);
 extern void getMousebk(int x, int y);
-extern int init();
+extern int init(void);
 extern void mouseInit(int *mx, int *my, int *mbutt);
 extern int readxy(int *mx, int *my, int *mbutt);
 extern void newxy(int *mx, int *my, int *mbutt);

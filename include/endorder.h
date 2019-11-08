@@ -16,7 +16,8 @@
         mincar:接送快车的号码
 返回值:无
 **********************************************/
-void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **placename, int *aimplace, /* int mincar, */ char *ordertime,float price);
+// void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **placename, int *aimplace, /* int mincar, */ char *ordertime,float price);
+void neworder(int *x,int *y,USEINFOR *infor,/*  const */ CARFA *car,/*  const  */char **placename, int *aimplace, /* int mincar, */ char *ordertime,float price);
 
 
 

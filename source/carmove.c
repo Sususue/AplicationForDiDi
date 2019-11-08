@@ -103,17 +103,24 @@ void carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag,int *sig)
 			/*保持图像*/
 	        delay0(50);
 	        newxy(x,y,&button);
-		    put_image((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,(*car_position).pic);
+		    
 			if (flag==2)
 			{
 				bar((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,65535);
+				(*car_position).ypixel -=1;
 				//sprintf(mprogress,"%.2f",* progress);
 				//outtextxy(850,548,mprogress,1,1,15,64384);
 				//bar_round(896,558,190,47,8,1,65535);
 			}
+			else
+			{
+				put_image((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,(*car_position).pic);
+				(*car_position).ypixel -=1;
+	        	get_image((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,(*car_position).pic);
+			}
+			
 			//(*car_position).xpixel +=1;
-	        (*car_position).ypixel -=1;
-	        get_image((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,(*car_position).pic);
+	        
 			
 			
 			mx = *x;
@@ -133,17 +140,24 @@ void carmove_basic(CAR_CONDITION *car_position,int *x,int *y, int flag,int *sig)
 		    /*保持图像*/
 	        delay0(50);
 	        newxy(x,y,&button);
-		    put_image((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,(*car_position).pic);
+		    
 			if (flag==2)
 			{
 				bar((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,65535);
+				(*car_position).ypixel +=1;
 				//sprintf(mprogress,"%.2f",* progress);
 				//outtextxy(850,548,mprogress,1,1,15,64384);
 				//bar_round(896,558,190,47,8,1,65535);
 			}
+			else
+			{
+				put_image((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,(*car_position).pic);
+				(*car_position).ypixel +=1;
+	       		get_image((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,(*car_position).pic);
+			}
+			
 			//(*car_position).xpixel +=1;
-	        (*car_position).ypixel +=1;
-	        get_image((*car_position).xpixel-11,(*car_position).ypixel-21,(*car_position).xpixel+12,(*car_position).ypixel+22,(*car_position).pic);
+	        
 			
 			
 			mx = *x;
@@ -1378,7 +1392,7 @@ int carmove_on(int x1,int y1, int x2, int y2,int *x,int *y, int flag,float *prog
 	/*获取小车背景并绘制小车*/
 	get_image((car_position).xpixel-11,(car_position).ypixel-21,(car_position).xpixel+12,(car_position).ypixel+22,(car_position).pic);
 
-	if (flag==2)
+	if (flag==2)//在循环里存存不了第一张背景
 	{
 		bar((car_position).xpixel-11,(car_position).ypixel-21,(car_position).xpixel+12,(car_position).ypixel+22,65535);
 		get_image((police_position1).xpixel-11,(police_position1).ypixel-21,(police_position1).xpixel+12,(police_position1).ypixel+22,(police_position1).pic);
@@ -1811,13 +1825,11 @@ int carmove_right(int x1,int y1, int x2, int y2,int *x,int *y, int flag,float *p
 	
 	}
 	
-	
-	
+
 	car_draw_left(car_position);
 	
 	j=x2-x1;
-	// get_image((police_position1).xpixel-21,(police_position1).ypixel-11,(police_position1).xpixel+22,(police_position1).ypixel+12,(police_position1).pic);
-	// get_image((police_position2).xpixel-21,(police_position2).ypixel-11,(police_position2).xpixel+22,(police_position2).ypixel+12,(police_position2).pic);
+
 	/*开始动画绘制*/
 	for(i=0;i<2*j;i++)
 	{

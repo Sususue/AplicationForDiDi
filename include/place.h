@@ -10,7 +10,7 @@
                0:学校 1:小区 2:东湖 3:商场 4:图书馆 5:游泳馆
         mode:NOW -1:表示显示现在位置; AIM 1：表示显示目的地位置
 *********************************************/
-void showplace(int place,int mode, const PLACE *location, const char *placename[]);
+void showplace(int place,int mode, const PLACE *location,/*  const  */char *placename[]);
 
 
 /*********************************************

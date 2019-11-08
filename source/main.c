@@ -4,9 +4,8 @@
 
 void main()
 {
-	unsigned int a;
+	// unsigned int a;
 	int enterjudge=0;//判断进入登录页面还是进入主界面
-	//int finish=0;
 	int x,y,button;//
 	USER user;
 	USER *p_user= &user;
@@ -14,7 +13,7 @@ void main()
 	USEINFOR *p_order= &order;
 
 	SetSVGA64k();
-	a = GetSVGA();
+	// a = GetSVGA();
 	
 	srand((int)time(0));
 	

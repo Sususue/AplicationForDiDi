@@ -36,16 +36,16 @@ typedef struct tagRGBQUAD
 } RGBQUAD;
 
 /*设置svga显示模式 1024*768 256*/
-extern void SetSVGA256();
+extern void SetSVGA256(void);
 
 
 
 /*模式 1024*768 64k*/
-extern void SetSVGA64k();
+extern void SetSVGA64k(void);
 
 
 /*获得当前svga显示模式的信息，返回显示模式号*/
-extern unsigned int GetSVGA();
+extern unsigned int GetSVGA(void);
 
 
 /*获取SVGA显示模式号bx。摘录常用的模式号如下：

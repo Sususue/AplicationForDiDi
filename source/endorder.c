@@ -2,7 +2,7 @@
 #include "endorder.h"
 
 // 打车完成后生成订单
-void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **placename, int *aimplace,/*  int mincar, */ char *ordertime,float price)
+void neworder(int *x,int *y,USEINFOR *infor,/*  const  */CARFA *car,/*  const  */char **placename, int *aimplace,/*  int mincar, */ char *ordertime,float price)
 {
     int button=0;
     int mx=0;
@@ -87,7 +87,6 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **plac
     strcpy(ordernew->endname,placename[*aimplace]);
     strcpy(ordernew->money,chprice);
     strcpy(ordernew->orderstime,ordertime);
-    // changeOrder(infor);//更改文件中的订单数量，以及生成本次订单的图片并保存
     addOrder(infor,ordernew);//将订单信息存进文件
     while (1)
     {
@@ -111,6 +110,10 @@ void neworder(int *x,int *y,USEINFOR *infor, const CARFA *car, const char **plac
             exit(0);
         }
     }
+
+    free(ordernew);
+    ordernew = NULL;
+
     mousehide(*x,*y);
     printf_image(83,109,683,659,"orderadd");
     //对BACK键进行遮挡

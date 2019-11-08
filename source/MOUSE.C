@@ -123,7 +123,7 @@ void mousehide(int x, int y)
 		}
 }
 
-int init()  //鼠标器初始化操作
+int init(void)  //鼠标器初始化操作
 {
 	int retcode;
 	regs.x.ax = 0;
@@ -208,7 +208,7 @@ int readxy(int *mx, int *my, int *mbutt)      //读取鼠标的位置
 
 void newxy(int *mx, int *my, int *mbutt)    //在新的位置处画鼠标
 {
-	static int i = 0;
+	// static int i = 0;
 	int ch, xx0 = *mx, yy0 = *my;
 	int xm, ym;
 

@@ -4,7 +4,7 @@
 
 
 /*设置svga显示模式 1024*768 256*/
-void SetSVGA256()
+void SetSVGA256(void)
 {
 	union REGS in;
 	in.x.ax = 0x4f02;
@@ -19,7 +19,7 @@ void SetSVGA256()
 
 
 /*模式 1024*768 64k*/
-void SetSVGA64k()
+void SetSVGA64k(void)
 {
 	union REGS in;
 	in.x.ax = 0x4f02;
@@ -33,7 +33,7 @@ void SetSVGA64k()
 }
 
 /*获得当前svga显示模式的信息，返回显示模式号*/
-unsigned int GetSVGA()
+unsigned int GetSVGA(void)
 {
 	union REGS out;
 	out.x.ax = 0x4f03;

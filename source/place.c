@@ -8,7 +8,7 @@
 
 
 // void showplace(int place, int mode, const PLACE *location, const char **placename)
-void showplace(int place, int mode, const PLACE *location, const char *placename[])
+void showplace(int place, int mode, const PLACE *location, /* const  */char *placename[])
 {
     int showx;//确定显示位置
     int showy;

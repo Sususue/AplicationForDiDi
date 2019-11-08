@@ -22,50 +22,11 @@ extern void car_take_box(int *x, int *y,USEINFOR *infor);
         aimplace:目标地点对应的编号(不是坐标)
 返回值:无
 *****************************/
-extern void driver_info(int *x,int *y, USEINFOR *infor, CARFA *car, const PLACE *location, const char **placename, int *aimplace, int mincar,int waitime);
+extern void driver_info(int *x,int *y, USEINFOR *infor, CARFA *car, const PLACE *location,/*  const  */char **placename, int *aimplace, int mincar,int waitime);
 
 
-/**************************
-点击"预约"弹出预约选择弹框
-**************************/
-extern int pre_appoint(int *x,int *y);
 
 
-/**************************
-返回即时状态函数
-***************************/
-extern void immediate(int *x,int *y);
-
-
-/***************************
-四个方向的小车画图函数
-x,y为小车中心点坐标
-****************************/
-extern void car_draw_right(CAR_CONDITION car_position);
-
-extern void car_draw_left(CAR_CONDITION car_position);
-
-extern void car_draw_on(CAR_CONDITION car_position);
-
-extern void car_draw_down(CAR_CONDITION car_position);
-
-
-extern void police_draw_right(CAR_CONDITION car_position);
-
-extern void police_draw_left(CAR_CONDITION car_position);
-
-extern void police_draw_on(CAR_CONDITION car_position);
-
-extern void police_draw_down(CAR_CONDITION car_position);
-
-
-extern void car_draw_right1(int x,int y);
-
-extern void car_draw_left1(int x,int y);
-
-extern void car_draw_on1(int x,int y);
-
-extern void car_draw_down1(int x,int y);
 
 
 
@@ -74,16 +35,15 @@ extern void car_draw_down1(int x,int y);
 参数说明:car:快车结构变量，当前的快车信息
 *********************************************/
 // void newfastcar(CARFAST *car);
-void newfastcar(CARFA *car);
+// void newfastcar(CARFA *car);
 
 /*********************************************
 功能说明:传入车辆数组，退出后，更改司机
-参数说明:car:快车的结构数组
+参数说明:car:快车的结构
 *********************************************/
 void changecar(CARFA *thiscar, int x,int y);
 
-// 更改司机状态为不能接单
-void changecall(CARFA *thiscar, int callstyle);
+
 /*********************************************
 功能说明:取消订单
 参数说明:x,y:鼠标
